@@ -2,7 +2,28 @@
 
 function loadCards(){
     console.log("in load cards")
-    console.log(cardList);
+    let cards = cardList;
+    let html = "";
+    console.log(cards);
+    html += '<div class="category">';
+    for(let card of cards.cards.general){
+        // icon-name, unicode, text
+        console.log(card);
+        html += `
+        <div class="card">
+            <svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+                <g id="line">
+                    <polygon fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" points="35.9928,10.7363 27.7913,27.3699 9.4394,30.0436 22.7245,42.9838 19.5962,61.2637 36.0084,52.6276 52.427,61.2515 49.2851,42.9739 62.5606,30.0239 44.2067,27.3638"/>
+                </g>
+            </svg>
+            <img src="https://openmoji.org/data/color/svg/${card.unicode}.svg" alt="${card.iconName}">
+            <p>${card.text}</p>
+        </div>`;
+
+    }
+
+    html += '</div>';
+    $("#general").html(html);
 
 }
 

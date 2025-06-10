@@ -67,9 +67,86 @@ h1, h2, h3, h4, h5, h6 {
 /* START STYLES */
 body {
     font-family: var(--font);
+    display: grid;
+    grid-template-rows: max-content 1fr max-content;
 }
 
 header {
     /* TO DO change header background color */
     background-color: red;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    align-items: center;
+}
+
+nav ul {
+    display: flex;
+    flex-direction: row;
+    list-style-type: none;
+    justify-content: flex-end;
+}
+
+nav li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 144px;
+    min-height: 72px;
+}
+
+nav a {
+    font-size: 1.15rem;
+    text-decoration: none;
+    padding: 1rem;
+}
+
+nav a:hover{
+    border: 1px solid black;
+}
+
+.category {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-evenly;
+    gap: 2rem 1rem;
+}
+
+.card {
+    width: 300px;
+    height: 200px;
+    border: 1px solid black;
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    align-items: center;
+    border-radius: 1rem;
+    position: relative;
+    justify-items: stretch;
+    padding: 1rem;
+}
+
+.card svg {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 40px;
+}
+
+.card img {
+    width: 100px;
+}
+
+.card p {
+    font-size: 1.25rem;
+}
+
+img[alt="head shaking vertically"],
+img[alt="head shaking horizontally"]{
+    width: 145px;
+    margin-left: -16px;
+}
+
+img[alt="head shaking vertically"] + p,
+img[alt="head shaking horizontally"] + p {
+    margin-left: -28px;
 }
