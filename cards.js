@@ -1,14 +1,23 @@
 "use strict";
 
-function loadCards(){
-    console.log("in load cards")
+// TODO List
+// createCard, editCard, removeCard
+// tts api on card click
+// allow for starred cards
+// save settings in local storage
+
+
+function loadCards(category){
     let cards = cardList;
     let html = "";
-    console.log(cards);
     html += '<div class="category">';
-    for(let card of cards.cards.general){
-        // icon-name, unicode, text
-        console.log(card);
+
+
+
+    let catIndex = Object.keys(cards.cards).indexOf(category);
+
+    for(let card of cards.cards[category]){
+        // iconName, unicode, text
         html += `
         <div class="card">
             <svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
@@ -23,13 +32,25 @@ function loadCards(){
     }
 
     html += '</div>';
-    $("#general").html(html);
+    $(`#${category}`).html(html);
+    $("#tabs").tabs({
+        // set the active tab to the category that is selected
+        active: catIndex,
+        // call load cards when user clicks on a different tab
+        activate: function(event, ui){
+            loadCards(ui.newPanel[0].attributes.id.value);
+        }
+    })
 
 }
 
 
+
+
 $(function(){
     console.log("ready");
-    loadCards();
+    // check if pref are set to load another category on page load and if not set to general
+    let categoryPref = localStorage.getItem("categoryPref") ? localStorage.getItem("categoryPref") : "general"
+    loadCards(categoryPref);
     $("#tabs").tabs();
 })

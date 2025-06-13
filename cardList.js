@@ -68,6 +68,8 @@ let cardList = {
                 "unicode": "1F634",
                 "text": "I'm so tired"
             }
-        ]
+        ],
+        "custom": [],
+        "starred": []
     }
 }
