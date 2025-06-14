@@ -68,7 +68,8 @@ h1, h2, h3, h4, h5, h6 {
 body {
     font-family: var(--font);
     display: grid;
-    grid-template-rows: max-content 1fr max-content;
+    grid-template-rows: max-content 1fr 80px;
+    /* height: 100vh; */
 }
 
 header {
@@ -109,7 +110,7 @@ nav a:hover{
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: space-evenly;
-    gap: 2rem 1rem;
+    gap: 1rem;
 }
 
 .card {
@@ -122,7 +123,7 @@ nav a:hover{
     border-radius: 1rem;
     position: relative;
     justify-items: stretch;
-    padding: 1rem;
+    padding: 0.5rem;
 }
 
 .card svg {
@@ -155,4 +156,11 @@ img[alt="head shaking horizontally"] + p {
 .emoji img {
     width: 100px;
     height: 100px;
+}
+
+
+footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

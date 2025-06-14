@@ -9,6 +9,9 @@ let emojiList = [
     {
         "name": "zipper-mouth-face",
         "unicode": "1F910",
+    },{
+        "name": "grinning-face",
+        "unicode": "1F600",
     },
     {
         "name": "mantlepiece-clock",
