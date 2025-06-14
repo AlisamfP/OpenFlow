@@ -150,3 +150,9 @@ img[alt="head shaking vertically"] + p,
 img[alt="head shaking horizontally"] + p {
     margin-left: -28px;
 }
+
+
+.emoji img {
+    width: 100px;
+    height: 100px;
+}
