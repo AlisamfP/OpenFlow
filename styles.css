@@ -161,6 +161,14 @@ img[alt="head shaking horizontally"] + p {
     grid-column: 1/-1;
 }
 
+.active {
+    background-color: red;
+}
+
+.errorInput {
+    border: 3px solid red;
+}
+
 #all-emojis {
     max-width: 300px;
     max-height: 300px;

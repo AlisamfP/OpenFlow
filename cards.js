@@ -16,9 +16,10 @@ function loadCards(category){
     let html = "";
     html += '<div class="category">';
 
+    
+    cards.cards.custom = JSON.parse(localStorage.getItem("customCards"))
+    
     console.log(cards)
-
-
 
     let catIndex = Object.keys(cards.cards).indexOf(category);
 
