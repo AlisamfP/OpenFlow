@@ -1646,7 +1646,7 @@ let emojiList = [
         "unicode": "E20D"
     },
     {
-        "name": "great-pyramid-of-giza",
+        "name": "great-pyramids-of-giza",
         "unicode": "E20F"
     },
     {

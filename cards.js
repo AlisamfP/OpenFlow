@@ -17,15 +17,13 @@ function loadCards(category){
     html += '<div class="category">';
 
     
-    cards.cards.custom = JSON.parse(localStorage.getItem("customCards"))
+    cards.cards.custom = localStorage.getItem("customCards") ? JSON.parse(localStorage.getItem("customCards")) : [];
     
-    console.log(cards)
 
     let catIndex = Object.keys(cards.cards).indexOf(category);
 
     for(let card of cards.cards[category]){
 
-        console.log(card)
         // iconName, unicode, text
         html += `
         <div class="card">
@@ -50,10 +48,14 @@ function loadCards(category){
             loadCards(ui.newPanel[0].attributes.id.value);
         }
     })
+    $(".card").on("click", speakPhrase)
 
 }
 
-
+function speakPhrase(e){
+    e.preventDefault();
+    responsiveVoice.speak(e.currentTarget.innerText)
+}
 
 
 $(function(){
