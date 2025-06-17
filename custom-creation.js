@@ -56,7 +56,6 @@ function createCard(){
 $(function(){
     console.log("ready");
     loadEmojis();
-    console.log(JSON.parse(localStorage.getItem("customCards")))
 
     $(".emoji").on("click", updatePreview)
     $("#cardText").on("input", updatePreview)
