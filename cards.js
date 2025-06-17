@@ -17,7 +17,7 @@ function loadCards(category){
     html += '<div class="category">';
 
     
-    cards.cards.custom = JSON.parse(localStorage.getItem("customCards"))
+    cards.cards.custom = localStorage.getItem("customCards") ? JSON.parse(localStorage.getItem("customCards")) : [];
     
 
     let catIndex = Object.keys(cards.cards).indexOf(category);
@@ -54,7 +54,6 @@ function loadCards(category){
 
 function speakPhrase(e){
     e.preventDefault();
-    console.log("speaking phrases")
     responsiveVoice.speak(e.currentTarget.innerText)
 }
 
