@@ -234,7 +234,7 @@ let emojiList = [
         "unicode": "1F4A5" 
     },{
         "name": "dizzy",
-        "unicode": "1F4Ab" 
+        "unicode": "1F4AB" 
     },{
         "name": "sweat-droplets",
         "unicode": "1F4A6" 
@@ -551,7 +551,7 @@ let emojiList = [
     },
     {
         "name": "bug",
-        "unicode": "!F418"
+        "unicode": "1F41B"
     },
     {
         "name": "honeybee",
@@ -1319,7 +1319,7 @@ let emojiList = [
     },
     {
         "name": "screwdriver",
-        "unicode": "!FA9B"
+        "unicode": "1FA9B"
     },
     {
         "name": "gear",
@@ -1331,7 +1331,7 @@ let emojiList = [
     },
     {
         "name": "white-cane",
-        "unicode": "1F9Af"
+        "unicode": "1F9AF"
     },
     {
         "name": "magnet",

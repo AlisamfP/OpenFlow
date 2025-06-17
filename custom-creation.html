@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/themes/smoothness/jquery-ui.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js"></script>
 
+
     <!-- Nunito font from google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -43,12 +44,21 @@
         </nav>
     </header>
     <main>
-        <section>
+        <section id="custom-card-creation">
             <h2>Custom Card Creation</h2>
             <div id="options">
-                <div id="all-emojis"></div>
+                <div id="all-emojis">
+                </div>
+                <div id="card-text-input">
+                    <label for="cardText">Enter the text you want to say here: </label>
+                    <input type="text" id="cardText" name="cardText">
+                </div>
             </div>
-            <div>PREVIEW</div>
+            <div id="card-preview">
+                <div class="card">
+                    
+                </div>
+            </div>
         </section>
     </main>
     <footer>Site created by Alisa Palson<br>icons by: </footer>

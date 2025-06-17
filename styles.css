@@ -152,10 +152,41 @@ img[alt="head shaking horizontally"] + p {
     margin-left: -28px;
 }
 
+#custom-card-creation {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+#custom-card-creation h2 {
+    grid-column: 1/-1;
+}
+
+#all-emojis {
+    max-width: 300px;
+    max-height: 300px;
+    overflow-y: scroll;
+}
+
+.emoji {
+    display: flex;
+    align-items: center;
+}
 
 .emoji img {
     width: 100px;
     height: 100px;
+}
+
+.emoji img[alt="head shaking vertically"],
+.emoji img[alt="head shaking horizontally"]{
+    height: 125px;
+    width: 145px;
+    margin-left: -8%;
+}
+
+.emoji img[alt="head shaking vertically"] + p,
+.emoji img[alt="head shaking horizontally"] + p {
+    margin-left: -20px;
 }
 
 
