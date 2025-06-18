@@ -118,19 +118,27 @@ nav a:hover{
     height: 200px;
     border: 1px solid black;
     display: grid;
-    grid-template-columns: max-content 1fr;
-    align-items: center;
+    grid-template-rows: max-content 1fr;
     border-radius: 1rem;
-    position: relative;
-    justify-items: stretch;
+    justify-items: start;
+    align-items: baseline;
     padding: 0.5rem;
 }
 
-.card svg {
-    position: absolute;
-    top: 4px;
-    right: 4px;
+.star {
+    grid-column: 1/-1;
     width: 40px;
+    justify-self: end;
+}
+
+.star:hover {
+    color: red;
+}
+
+.card-content {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    align-items: center;
 }
 
 .card img {

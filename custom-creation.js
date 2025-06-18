@@ -13,6 +13,18 @@ function loadEmojis(){
     $("#all-emojis").html(html);
 }
 
+function filterEmojiList(e){
+    e.preventDefault();
+    let searchTerm = $("#emojiFilter").val().trim().toLowerCase();
+    let emojiListItems = document.querySelectorAll(".emoji");
+    emojiListItems.forEach(function(item) {
+        item.style.display = 'flex';
+        if(!item.innerText.toLowerCase().includes(searchTerm)){
+            item.style.display = 'none';
+        }
+    })
+}
+
 function updatePreview(e){
     e.preventDefault();
     console.log("update preview")
@@ -50,6 +62,7 @@ function createCard(){
         console.log(card)
         customCards.push(card);
         localStorage.setItem("customCards", JSON.stringify(customCards))
+        
     }
 }
  
@@ -57,7 +70,8 @@ $(function(){
     console.log("ready");
     loadEmojis();
 
-    $(".emoji").on("click", updatePreview)
-    $("#cardText").on("input", updatePreview)
+    $(".emoji").on("click", updatePreview);
+    $("#cardText").on("input", updatePreview);
+    $("#emojiFilter").on("input", filterEmojiList);
     $("#createBtn").on("click", createCard);
 })
