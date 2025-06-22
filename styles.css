@@ -1,5 +1,15 @@
 :root {
     --background: #f3f3f3;
+    --dark-green: #8AA093;
+    --darker-green: #62776b;
+    --blue: #7796aa;
+    --tan: #e8c4aa;
+    --light-tan: #f2e2de;
+    --light-green: #bed5c5;
+    --dk-pink: #aa95a6;
+    --dk-grey: #222;
+    --darkest-green: #333D36;
+
     --font: "Nunito", sans-serif;
 }
 
@@ -68,16 +78,30 @@ h1, h2, h3, h4, h5, h6 {
 body {
     font-family: var(--font);
     display: grid;
-    grid-template-rows: max-content 1fr 80px;
+    grid-template-rows: 100px 1fr 80px;
     height: 100vh;
+    color: var(--dk-grey);
+    background: var(--background);
 }
 
 header {
     /* TO DO change header background color */
-    background-color: red;
+    background-color: var(--light-green);
     display: grid;
     grid-template-columns: 1fr 2fr;
     align-items: center;
+    padding: 0 1em;
+}
+
+a {
+    color: var(--darkest-green);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--dk-grey);
+    text-decoration: underline;
+    text-underline-offset: 1rem;
 }
 
 nav ul {
@@ -91,19 +115,17 @@ nav li {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 144px;
-    min-height: 72px;
+    max-width: 144px;
+    max-height: 72px;
 }
 
 nav a {
-    font-size: 1.15rem;
+    font-size: 1rem;
     text-decoration: none;
     padding: 1rem;
+    color: var(--darkest-green);
 }
 
-nav a:hover{
-    border: 1px solid black;
-}
 
 .category {
     display: flex;
@@ -114,7 +136,7 @@ nav a:hover{
 }
 
 .card {
-    width: 300px;
+    width: 30%;
     height: 200px;
     border: 1px solid black;
     display: grid;
@@ -129,16 +151,19 @@ nav a:hover{
     grid-column: 1/-1;
     width: 40px;
     justify-self: end;
+    color: var(--background);
 }
 
+
 .star:hover {
-    color: red;
+    color: var(--dk-pink);
 }
 
 .card-content {
     display: grid;
     grid-template-columns: max-content 1fr;
     align-items: center;
+    width: 100%;
 }
 
 .card img {
@@ -208,6 +233,33 @@ img[alt="head shaking horizontally"] + p {
 
 footer {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 0 1em;
+}
+
+/* giant screen card size */
+@media screen and (min-width: 1500px) {
+    .card {
+        width: 20%;
+    }
+}
+
+/* tablet styles */
+@media screen and (max-width: 1000px)  {
+
+    .card {
+        width: 40%;
+    }
+}
+
+/* mobile styles */
+@media screen and (max-width: 750px)  {
+    body {
+        background-color: blue;
+    }
+    .card {
+        width: 100%;
+    }
 }

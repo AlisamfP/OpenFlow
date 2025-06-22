@@ -21,17 +21,18 @@ function loadCards(category) {
     // iconName, unicode, text
     html += `
         <div class="card">
-            <div class="star">
+            <span class="star" role="img" aria-label="Move Card to Starred Section">
                 <svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
                     <g id="line">
-                        <polygon fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" points="35.9928,10.7363 27.7913,27.3699 9.4394,30.0436 22.7245,42.9838 19.5962,61.2637 36.0084,52.6276 52.427,61.2515 49.2851,42.9739 62.5606,30.0239 44.2067,27.3638"/>
+                        <polygon fill="currentColor" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" points="35.9928,10.7363 27.7913,27.3699 9.4394,30.0436 22.7245,42.9838 19.5962,61.2637 36.0084,52.6276 52.427,61.2515 49.2851,42.9739 62.5606,30.0239 44.2067,27.3638"/>
                     </g>
                 </svg>
-            </div>
+            </span>
             <div class="card-content">
-            <img src="https://openmoji.org/data/color/svg/${
-              card.icon.unicode
-            }.svg" alt="${card.icon.name.replace(/-/g, " ")}">
+            <img 
+              src="https://openmoji.org/data/color/svg/${card.icon.unicode}.svg" 
+              alt="${card.icon.name.replace(/-/g, " ")}"
+              role="img">
             <p>${card.text}</p>
             </div>
         </div>`;
@@ -53,13 +54,33 @@ function loadCards(category) {
 
 function speakPhrase(e) {
   e.preventDefault();
-  responsiveVoice.speak(e.currentTarget.innerText);
+
+  if (responsiveVoice.voiceSupport()) {
+    console.log("browser supports tts")
+  }
+
+
+  responsiveVoice.cancel();
+  let voice = localStorage.getItem("selectedVoice");
+  let pitch = localStorage.getItem("pitch");
+  console.log(voice)
+  if (voice) {
+    console.log("theres a voice...", voice)
+    responsiveVoice.setDefaultVoice(voice);
+  }
+  let options = {
+    pitch: pitch
+  }
+
+  responsiveVoice.speak(e.currentTarget.innerText, voice, options);
 }
 
 function saveStarred(e) {
   e.preventDefault();
   console.log("STARRR")
 }
+
+
 
 $(function () {
   console.log("ready");

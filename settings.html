@@ -19,21 +19,22 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="styles.css">
-    <script type="text/javascript" src="emojiList.js"></script>
-    <script type="text/javascript" src="cardList.js"></script>
-    <script type="text/javascript" src="cards.js"></script>
-    <title>Open Flow</title>
+    <link rel="stylesheet" href="./styles.css">
+    <!-- <script type="text/javascript" src="./emojiList.js"></script>
+    <script type="text/javascript" src="./cardList.js"></script>
+    <script type="text/javascript" src="./cards.js"></script> -->
+    <script type="text/javascript" src="./settings.js"></script>
+    <title>Open Flow | Settings</title>
 </head>
 <body>
     <header>
-        <h1><a href="index.html">Open Flow</a></h1>
+        <h1><a href="./index.html">Open Flow</a></h1>
         <nav>
             <ul>
                 <li><a href="./custom-creation.html">
                     Custom Cards</a>
                 </li>
-                <li><a href="./settings.html">
+                <li><a href="#">
                     Settings</a>
                 </li>
                 <li><a href="#">
@@ -46,22 +47,21 @@
         </nav>
     </header>
     <main>
+        <h2>Settings</h2>
         <section>
-            <h2>Cards</h2>
-            <div id="tabs">
-                <ul>
-                    <li><a href="#general">General</a></li>
-                    <li><a href="#feelings">Feelings</a></li>
-                    <li><a href="#custom">Custom</a></li>
-                    <li><a href="#starred">Starred</a></li>
-                </ul>
-                <div id="general" class="category" role="list">
-                </div>
-                <div id="feelings" class="category">
-                </div>
-                <div id="custom" class="category"></div>
-                <div id="starred" class="category"></div>
-            </div>
+            <h3>Voice Settings</h3>
+            <form>
+                <label for="voice">Choose a Voice Type: </label>
+                <select name="voice" id="voice">
+                    <option value="Voices are loading..." disabled></option>
+                </select>
+
+                <label for="pitch">Set the Pitch</label>
+                <input type="range" name="pitch" id="pitch" min="0" max="1.5" value="1" step="0.1">
+                <p>Value: <output id="pitch-value"></output></p>
+                
+                <button id="save-voice" type="submit">Save Voice Selection</button>
+            </form>
         </section>
     </main>
     <footer><p>Site created by Alisa Palson</p>
