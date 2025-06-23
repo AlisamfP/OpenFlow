@@ -91,4 +91,8 @@ $(function () {
     : "general";
   loadCards(categoryPref);
   $("#tabs").tabs();
+
+
+
+
 });

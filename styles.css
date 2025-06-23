@@ -1,5 +1,12 @@
 :root {
-    --background: #f3f3f3;
+    --text: #212121;
+    --background: #f2f2f2;
+    --primary: #333d36;
+    --secondary: #a1bac4;
+    --accent: #bdadba;
+
+
+
     --dark-green: #8AA093;
     --darker-green: #62776b;
     --blue: #7796aa;
@@ -11,6 +18,7 @@
     --darkest-green: #333D36;
 
     --font: "Nunito", sans-serif;
+    --font-size: 20px;
 }
 
 /* CSS Reset from https://www.joshwcomeau.com/css/custom-css-reset/ */
@@ -41,18 +49,31 @@ body {
 }
 
 /* 6. Improve media defaults */
-img, picture, video, canvas, svg {
+img,
+picture,
+video,
+canvas,
+svg {
     display: block;
     max-width: 100%;
 }
 
 /* 7. Inherit fonts for form controls */
-input, button, textarea, select {
+input,
+button,
+textarea,
+select {
     font: inherit;
 }
 
 /* 8. Avoid text overflows */
-p, h1, h2, h3, h4, h5, h6 {
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     overflow-wrap: break-word;
 }
 
@@ -61,7 +82,12 @@ p {
     text-wrap: pretty;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     text-wrap: balance;
 }
 
@@ -80,8 +106,9 @@ body {
     display: grid;
     grid-template-rows: 100px 1fr 80px;
     height: 100vh;
-    color: var(--dk-grey);
+    color: var(--text);
     background: var(--background);
+    font-size: var(--font-size);
 }
 
 header {
@@ -94,36 +121,48 @@ header {
 }
 
 a {
-    color: var(--darkest-green);
-    text-decoration: none;
+    color: var(--text);
+    text-decoration: none; 
+    border-bottom: 3px solid transparent;
 }
 
 a:hover {
-    color: var(--dk-grey);
-    text-decoration: underline;
-    text-underline-offset: 1rem;
+    color: var(--primary);
+    border-bottom: 3px solid black;
 }
 
 nav ul {
     display: flex;
     flex-direction: row;
     list-style-type: none;
-    justify-content: flex-end;
+    justify-content: space-between;
+    gap: 0.5em;
 }
 
 nav li {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    max-width: 144px;
-    max-height: 72px;
+    padding: 0.25em 0.5em;
+    border-radius: 0.5rem;
 }
 
 nav a {
-    font-size: 1rem;
+    font-size: 1em;
     text-decoration: none;
-    padding: 1rem;
-    color: var(--darkest-green);
+    padding: 0.5rem;
+    color: var(--text);
+}
+
+.buttonPrimary {
+    color: var(--background);
+    background: var(--primary);
+    font-size: 1.5rem;
+    padding: 0.5em 2em;
+    transition: transform ease 0.2s, box-shadow ease 0.2s;
+}
+
+.buttonPrimary:hover {
+    transform: translate(0, -3px);
+    box-shadow: 0 10px 40px -5px var(--primary);
 }
 
 
@@ -145,6 +184,10 @@ nav a {
     justify-items: start;
     align-items: baseline;
     padding: 0.5rem;
+}
+
+.card:hover {
+    background-color: red;
 }
 
 .star {
@@ -175,7 +218,7 @@ nav a {
 }
 
 img[alt="head shaking vertically"],
-img[alt="head shaking horizontally"]{
+img[alt="head shaking horizontally"] {
     width: 145px;
     margin-left: -16px;
 }
@@ -219,7 +262,7 @@ img[alt="head shaking horizontally"] + p {
 }
 
 .emoji img[alt="head shaking vertically"],
-.emoji img[alt="head shaking horizontally"]{
+.emoji img[alt="head shaking horizontally"] {
     height: 125px;
     width: 145px;
     margin-left: -8%;
@@ -231,12 +274,141 @@ img[alt="head shaking horizontally"] + p {
 }
 
 
+
+/* SETTINGS PAGE STYLES */
+#settings {
+    background: var(--background);
+    padding: 1.5em;
+    height: 100%;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 1em;
+    border: 3px solid black;
+}
+
+legend {
+    grid-column: 1/-1;
+    font-size: 1.25em;
+}
+
+.rangeGroup {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0 2em;
+    justify-items: center;
+}
+
+.voiceSettings {
+    display: flex;
+    width: 100%;
+    gap: 1em;
+    justify-items: center;
+    border: none;
+
+}
+
+.select-wrapper {
+    position: relative;
+}
+
+.select-wrapper select {
+    appearance: none;
+    -webkit-appearance: none;
+    padding: 0.675em 3em 0.675em 1em;
+    border: 1px solid #caced1;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Custom arrows */
+.select-wrapper::before,
+.select-wrapper::after {
+    --size: 0.3rem;
+    content: "";
+    position: absolute;
+    right: 1rem;
+    pointer-events: none;
+    border-left: var(--size) solid transparent;
+    border-right: var(--size) solid transparent;
+}
+
+.select-wrapper::before {
+    border-bottom: var(--size) solid black;
+    top: 40%;
+}
+
+.select-wrapper::after {
+    border-top: var(--size) solid black;
+    top: 55%;
+}
+
+.select-wrapper option:checked {
+    background: green;
+}
+
+.voiceSelect option {
+    padding: 1em;
+    position: relative;
+}
+
+.settingSection {
+    display: grid;
+    grid-template-columns: min-content 1fr;
+
+}
+
+.settingSection label {
+    grid-column: 1/-1;
+    justify-self: start;
+}
+
+#settings input[type="range"] {
+    width: 100%;
+    margin: 0;
+    writing-mode: sideways-lr;
+}
+
+#settings datalist option {
+    padding: 0;
+}
+
+datalist {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 200px;
+}
+
+.rangeValue {
+    display: flex;
+    flex-direction: row;
+}
+
+.toast {
+    background: var(--darkest-green);
+    color: var(--background);
+    font-family: var(--font);
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+    padding: 1.5em;
+}
+
+
 footer {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 0 1em;
+    border-top: 3px solid black;
+    background-color: var();
 }
 
 /* giant screen card size */
@@ -247,7 +419,7 @@ footer {
 }
 
 /* tablet styles */
-@media screen and (max-width: 1000px)  {
+@media screen and (max-width: 1000px) {
 
     .card {
         width: 40%;
@@ -255,10 +427,11 @@ footer {
 }
 
 /* mobile styles */
-@media screen and (max-width: 750px)  {
+@media screen and (max-width: 750px) {
     body {
         background-color: blue;
     }
+
     .card {
         width: 100%;
     }
