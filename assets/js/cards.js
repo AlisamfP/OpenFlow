@@ -24,32 +24,45 @@ function loadCards(category) {
 		? JSON.parse(localStorage.getItem("customCards"))
 		: [];
 
+	cards.cards.favorites = localStorage.getItem("favCards")
+		? JSON.parse(localStorage.getItem("favCards"))
+		: [];
+
 
 	let catIndex = Object.keys(cards.cards).indexOf(categoryName);
 
 	if (categoryName === "custom" && cards.cards.custom.length == 0) {
-		html += `<div>
-      You haven't created any custom cards yet</div>`;
-	} else {
+		html += `<div class="no-cards">
+      <h2>You haven't created any custom cards yet</h2><p>Don't fear! You can make them here!</p><button class="button-primary" onClick="document.location='./custom-creation.html'">Make A Custom Card</button></div>`;
+	}
+	else if(categoryName === "favorites" && cards.cards.favorites.length === 0){
+		html += `<div class="no-cards"><h2>No Cards Added To Favorites</h2><p>Try clicking on the heart icon near the top right of the card to add it to your favorites.</p></div>`;
+	} 
+	else {
 		for (let card of cards.cards[categoryName]) {
+			const isFav = cards.cards.favorites.some(fav =>
+				fav.text === card.text && fav.icon.unicode === card.icon.unicode
+			);
+
+			const favClass = isFav ? "favorite" : "";
+			const favAriaLabel = isFav? "Remove card from favorites" : "Save card to favorites"
 			console.log(card)
-			// iconName, unicode, text
 			html += `
-        <div class="card" tabindex="0">
-            <span class="heart-icon" role="button" tabindex="0" aria-label="Like this card">
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-					fill="currentColor" stroke="#000000" stroke-width="1.5" stroke-linecap="round"
-					stroke-linejoin="round">
-					<path
-						d="M12 10.375c0-2.416-1.959-4.375-4.375-4.375S3.25 7.959 3.25 10.375c0 1.127.159 2.784 1.75 4.375l7 5.25s5.409-3.659 7-5.25 1.75-3.248 1.75-4.375c0-2.416-1.959-4.375-4.375-4.375S12 7.959 12 10.375z" />
-				</svg>
-            </span>
-            <section class="card-content">
-                <img class="emoji" src="https://openmoji.org/data/color/svg/${card.icon.unicode
-				}.svg" alt="${card.icon.name.replace(/-/g, " ")}" role="img" data-unicode="${card.icon.unicode}">
-                <h3 class="card-text">${card.text}</h3>
-            </section>
-        </div>`;
+				<div class="card" tabindex="0">
+					<span class="heart-icon ${favClass}" role="button" tabindex="0" aria-label="${favAriaLabel}">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+							fill="currentColor" stroke="#000000" stroke-width="1.5" stroke-linecap="round"
+							stroke-linejoin="round">
+							<path
+								d="M12 10.375c0-2.416-1.959-4.375-4.375-4.375S3.25 7.959 3.25 10.375c0 1.127.159 2.784 1.75 4.375l7 5.25s5.409-3.659 7-5.25 1.75-3.248 1.75-4.375c0-2.416-1.959-4.375-4.375-4.375S12 7.959 12 10.375z" />
+						</svg>
+					</span>
+					<section class="card-content">
+						<img class="emoji" src="https://openmoji.org/data/color/svg/${card.icon.unicode
+						}.svg" alt="${card.icon.name.replace(/-/g, " ")}" role="img" data-unicode="${card.icon.unicode}">
+						<h3 class="card-text">${card.text}</h3>
+					</section>
+				</div>`;
 		}
 	}
 
@@ -63,7 +76,7 @@ function loadCards(category) {
 
 	// add event listeners for the new cards and star
 	$(".card-content").on("click", speakPhrase);
-	$(".star").on("click", saveStarred);
+	$(".heart-icon").on("click", saveToFavorites);
 
 	$("#tabs").tabs("refresh");
 }
@@ -90,13 +103,47 @@ function speakPhrase(e) {
 	responsiveVoice.speak(e.currentTarget.innerText, voice, options);
 }
 
-function saveStarred(e) {
-	e.preventDefault();
+function saveToFavorites(e) {
 	console.log("STARRR");
-	console.log(e);
+	e.preventDefault();
+	
+	// get icon element
+	const $icon = $(e.currentTarget);
+
+	// get card element
+	const $card = $icon.closest(".card");
+
+	// extract text and unicode from card
+	const cardText = $card.find(".card-text").text().trim();
+	const emojiCode = $card.find(".emoji").data("unicode");
+
+	const cardToSave = {
+		icon: emojiList.find((emoji) => emoji.unicode === emojiCode),
+		text: cardText,
+	}
+	console.log(cardToSave);
+
+	let favCards = JSON.parse(localStorage.getItem("favCards")) || [];
+
+	const isFav = $icon.hasClass("favorite")
+	console.log(isFav)
+
+	if(isFav) {
+		// remove from favorites if it's there and the heart gets pressed
+		favCards = favCards.filter(card => !(card.text === cardText && card.icon.unicode === emojiCode))
+		$icon.removeClass("favorite")
+		$icon.attr("aria-label", "Save card to favorites");
+	}else {
+		favCards.push(cardToSave)
+		$icon.addClass("favorite");
+		$icon.attr("aria-label", "Remove card from favorites");
+	}
+
+	localStorage.setItem("favCards", JSON.stringify(favCards));
+	$icon.trigger('blur');
 }
 
-function updateTabs(e){
+function updateTabs(e) {
 	e.preventDefault();
 	let selectedTab = e.target.value;
 	$(`#tabs a[href='${hrefMap[selectedTab]}']`).click()
@@ -136,15 +183,16 @@ $(function () {
 	// replacing the generated spans with unicode
 	$(".slicknav_icon").html("\u2630");
 
-	
-	
+
+
 	$("#mobileTabSelect").select2({
 		minimumResultsForSearch: Infinity,
 		width: "100%"
 	});
-	
+
 	console.log($("#mobileTabSelect"))
-	
+
 	$("#mobileTabSelect").on("change", updateTabs)
+	$(".card").on("click", ".heart-icon", saveToFavorites);
 	loadCards(categoryPref);
 });

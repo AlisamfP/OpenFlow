@@ -140,9 +140,12 @@ function deleteCard(e) {
 
     console.log(storedCards);
 
-
-    // // Save updated list to localStorage
-    localStorage.setItem("customCards", JSON.stringify(storedCards));
+    if (storedCards.length === 0) {
+        localStorage.removeItem("customCards");
+    } else {
+        // Save updated list to localStorage
+        localStorage.setItem("customCards", JSON.stringify(storedCards));
+    }
 
     // // Update global array
     customCards = storedCards;
@@ -157,17 +160,14 @@ function deleteCard(e) {
 function loadCustomCards() {
     let cardsFromStorage = localStorage.getItem("customCards");
 
-
-    if (!cardsFromStorage || cardsFromStorage.length === 0) {
-        console.log("NO CARDS");
+    if (!cardsFromStorage) {
         $("#CustomCardList-section").hide();
         return;
     }
-    
+
     customCards = JSON.parse(localStorage.getItem("customCards"));
 
-    console.log(customCards);
-    html = "";
+    let html = "";
     for (let card of customCards) {
         html += ` <div class="card" tabindex="0">
                 <span class="trash-icon" role="button" tabindex="0" aria-label="Delete this card">
@@ -195,7 +195,6 @@ function loadCustomCards() {
         </div>`;
     }
 
-    // $(".trash-icon").on("click", deleteCard);
 
     $("#CustomCardList-section").show();
     $("#CustomCardList").html(html);
@@ -226,5 +225,5 @@ $(function () {
 
     $("#CustomCardList").on("click", ".trash-icon", deleteCard);
 
-    
+
 });

@@ -432,6 +432,13 @@ a:hover {
     width: 40px;
     justify-self: end;
     color: var(--background);
+    cursor: pointer;
+}
+
+
+.heart-icon:hover, .trash-icon:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
 }
 
 .heart-icon svg, .trash-icon svg {
@@ -439,12 +446,20 @@ a:hover {
     height: 2rem;
 }
 
-.heart-icon:hover svg {
+.heart-icon:hover svg,
+.heart-icon:focus        {
     color: var(--bright-pink);
+    outline: none;
 }
-.heart-icon:focus svg,
+
 .heart-icon:focus-visible svg {
-  color: var(--bright-pink);
+  outline: 2px solid var(--bright-pink);
+}
+
+.favorite {
+    color: var(--bright-pink);
+    transform: scale(1.05);
+    filter: brightness(1.1);
 }
 
 .trash-icon:hover {
@@ -767,7 +782,7 @@ footer {
    Responsive Styles
 ========================= */
 
-/* giant screen card size */
+/* large screen */
 @media screen and (min-width: 1500px) {
     .card {
         width: 20%;
@@ -783,10 +798,6 @@ footer {
 
 /* mobile styles */
 @media screen and (max-width: 750px) {
-    body {
-        /* background-color: blue; */
-    }
-
     header {
         padding: 0.5em;
     }
@@ -800,6 +811,7 @@ footer {
         align-self: auto;
     }
 
+    /* hide mobile tab select element to show select2 generated one */
     #mobileTabSelect {
         display: none;
     }
@@ -823,12 +835,6 @@ footer {
         font-size: var(--font-size);
     }
 
-    /* currently selected item in list */
-    .nice-select .option:hover, 
-    .nice-select .option.focus, 
-    .nice-select .option.selected.focus {
-        text-decoration: underline;
-    }
 
     /*dropdown */
     .list {
