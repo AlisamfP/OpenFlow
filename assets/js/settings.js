@@ -19,17 +19,19 @@ function saveSettings(e) {
     let pitch = $("#pitch").val();
     let volume = $("#volume").val();
     let rate = $("#rate").val();
+    let categoryPref = $("#categoryPref").val();
 
-    console.log(pitch)
+    console.log(categoryPref)
 
     localStorage.setItem("selectedVoice", selectedVoice);
     localStorage.setItem("pitch", pitch);
     localStorage.setItem("volume", volume);
     localStorage.setItem("rate", rate);
+    localStorage.setItem("categoryPref", categoryPref);
 
     Toastify({
         text: "Settings saved",
-        duration: -1, // -1 for forever toast
+        duration: 3000, // -1 for forever toast
         selector: "settings",
         className: "toast",
         close: true,
@@ -48,6 +50,16 @@ function saveSettings(e) {
 
 $(function () {
     console.log("ready");
+    $("#nav-list").slicknav({
+        label: "Menu",
+        prependTo: "nav"
+    });
+
+    // slick shows hamburger button using css
+    // since it generates the spans for it, but I'm not using their css
+    // replacing the generated spans with unicode
+    $(".slicknav_icon").html("\u2630");
+
     loadVoices();
 
     // check if options are in local storage and if not set them to the default
@@ -59,13 +71,10 @@ $(function () {
 
     // update range with either previous or default value
     $("#pitch").val(pitch)
-
-
     $("#rate").val(rate)
-
-
     $("#volume").val(volume)
 
-    $("#save-voice").click(saveSettings);
+
+    $("#saveVoice").click(saveSettings);
 
 });

@@ -1,26 +1,49 @@
+/* =========================
+   :root Variables & Themes
+========================= */
 :root {
-    --text: #212121;
+    /* --text: #212121;
     --background: #f2f2f2;
     --primary: #333d36;
     --secondary: #a1bac4;
-    --accent: #bdadba;
+    --accent: #bdadba; */
 
-
-
-    --dark-green: #8AA093;
+    /* --dark-green: #8AA093;
     --darker-green: #62776b;
-    --blue: #7796aa;
     --tan: #e8c4aa;
     --light-tan: #f2e2de;
     --light-green: #bed5c5;
     --dk-pink: #aa95a6;
     --dk-grey: #222;
-    --darkest-green: #333D36;
+    --darkest-green: #333D36; */
 
     --font: "Nunito", sans-serif;
     --font-size: 20px;
+
+    --trans-dur: 0.3s;
+    --trans-timing: cubic-bezier(0.76, 0.05, 0.24, 0.95);
+    --trans-timing-in: cubic-bezier(0.76, 0.05, 0.86, 0.06);
+    --trans-timing-out: cubic-bezier(0.05, 0.76, 0.06, 0.86);
+
+    --blue: #7796aa;
+    --dk-grey: #333;
+    --error: #B10000;
 }
 
+[data-theme="light"] {
+    --background: #f2f2f2;
+    --text: #212121;
+    --background: #f2f2f2;
+    --primary: #8AA093;
+    --primary-alt: #333d36;
+    --secondary: #a1bac4;
+    --accent: #bdadba;
+}
+
+
+/* =========================
+   CSS Reset & Base Styles
+========================= */
 /* CSS Reset from https://www.joshwcomeau.com/css/custom-css-reset/ */
 /* 1. Use a more-intuitive box-sizing model */
 *,
@@ -100,7 +123,215 @@ h6 {
 }
 
 
-/* START STYLES */
+/* INCLUSIVELY HIDDEN STYLES from https://www.scottohara.me/blog/2017/04/14/inclusively-hidden.html */
+.visually-hidden:not(:focus):not(:active) {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
+/*
+  Style the skip links to be fixed to the 
+  top of the page, and have an initial 
+  negative Y-axis value.
+ */
+.skip-link {
+    background: #000;
+    color: #fff;
+    left: 0;
+    padding: .75em;
+    position: fixed;
+    top: 0;
+    transform: translateY(-10em);
+    transition: transform .2s ease-in-out;
+}
+
+/*
+  Upon focus of the skip link, transition
+  it into view by returning its Y-axis to
+  the default 0 value.
+ */
+.skip-link:focus {
+    transform: translateY(0em);
+}
+
+
+/* =========================
+   Global Utility Classes
+========================= */
+
+.active {
+    border-bottom: 3px solid var(--accent);
+}
+
+a:focus,
+a:focus-visible {
+    outline: 1px solid var(--text);
+}
+
+.toggle-input:focus {
+    outline: 1px solid var(--text);
+}
+
+.button-primary {
+    color: var(--background);
+    background: var(--primary);
+    font-size: 1.5rem;
+    padding: 0.5em 2em;
+    transition: transform ease 0.2s, box-shadow ease 0.2s;
+}
+
+.button-primary:hover {
+    transform: translate(0, -1px);
+    box-shadow: 0 10px 40px -5px var(--primary-alt);
+}
+
+.button-primary:focus {
+    outline: red;
+}
+
+/* TESTING TABS */
+.js-tabcontent[aria-hidden=true] {
+    display: none;
+}
+
+/* hide mobile nav on desktop styles */
+.slicknav_menu {
+    display: none;
+}
+
+
+/* =========================
+   Toggle Styles
+========================= */
+
+.toggle {
+    margin: auto;
+    position: relative;
+}
+
+.toggle-icon,
+.toggle-input {
+    display: block;
+}
+
+.toggle-icon {
+    position: absolute;
+    top: 0.5em;
+    right: 0.375em;
+    width: 1em;
+    height: 1em;
+    transition:
+        opacity calc(var(--trans-dur) / 2),
+        transform calc(var(--trans-dur) / 2);
+}
+
+.toggle-icon polyline {
+    transition: stroke-dashoffset calc(var(--trans-dur) / 2);
+}
+
+.toggle-icon--light,
+.toggle-icon--light polyline {
+    transition-delay: calc(var(--trans-dur) / 2);
+    transition-timing-function: var(--trans-timing-out);
+}
+
+.toggle-icon--dark {
+    opacity: 0;
+    transform: translateX(-0.75em) scale(0.75);
+    transition-timing-function: var(--trans-timing-in);
+}
+
+.toggle-input {
+    background-color: var(--dk-grey);
+    border-radius: 1.75em;
+    outline: transparent;
+    position: relative;
+    width: 4em;
+    height: 2em;
+    -webkit-appearance: none;
+    appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    transition:
+        background-color var(--trans-dur) var(--trans-timing),
+        box-shadow 0.15s linear;
+}
+
+.toggle-input:before,
+.toggle-input:after {
+    content: "";
+    display: block;
+    position: absolute;
+}
+
+.toggle-input:before {
+    background-color: var(--primary);
+    border-radius: inherit;
+    inset: 0;
+    transition: background-color var(--trans-dur) var(--trans-timing);
+}
+
+.toggle-input:after {
+    background-color: var(--background);
+    border-radius: 50%;
+    box-shadow: 0.05em 0.05em 0.05em hsla(var(--hue), 90%, 10%, 0.1);
+    top: 0.25em;
+    left: 0.15em;
+    width: 1.5em;
+    height: 1.5em;
+    transition:
+        background-color var(--trans-dur) var(--trans-timing),
+        transform var(--trans-dur) var(--trans-timing);
+    z-index: 1;
+}
+
+.toggle-input:checked:before {
+    background-color: var(--blue);
+}
+
+.toggle-input:checked:after {
+    background-color: var(--dk-grey);
+    transform: translateX(2.15em);
+}
+
+.toggle-input:checked ~ .toggle-icon--light,
+.toggle-input:checked ~ .toggle-icon--light polyline {
+    transition-delay: 0s;
+    transition-timing-function: var(--trans-timing-in);
+}
+
+.toggle-input:checked ~ .toggle-icon--light {
+    opacity: 0;
+    transform: translateX(-0.75em) scale(0.75);
+}
+
+.toggle-input:checked ~ .toggle-icon--light polyline {
+    stroke-dashoffset: 1.5;
+}
+
+.toggle-input:checked ~ .toggle-icon--dark {
+    opacity: 1;
+    transform: translateX(-2.15em);
+    transition-delay: calc(var(--trans-dur) / 2);
+    transition-timing-function: var(--trans-timing-out);
+}
+
+.input-desc {
+    font-size: 0.75em;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+
+/* =========================
+   Layout & Base Styles
+========================= */
+
 body {
     font-family: var(--font);
     display: grid;
@@ -109,11 +340,11 @@ body {
     color: var(--text);
     background: var(--background);
     font-size: var(--font-size);
+    margin: 0 auto;
 }
 
 header {
-    /* TO DO change header background color */
-    background-color: var(--light-green);
+    background-color: var(--secondary);
     display: grid;
     grid-template-columns: 1fr 2fr;
     align-items: center;
@@ -122,16 +353,16 @@ header {
 
 a {
     color: var(--text);
-    text-decoration: none; 
+    text-decoration: none;
     border-bottom: 3px solid transparent;
 }
 
 a:hover {
-    color: var(--primary);
-    border-bottom: 3px solid black;
+    color: var(--primary-alt);
+    border-bottom: 3px solid var(--primary-alt);
 }
 
-nav ul {
+#nav-list {
     display: flex;
     flex-direction: row;
     list-style-type: none;
@@ -139,40 +370,30 @@ nav ul {
     gap: 0.5em;
 }
 
-nav li {
+#nav-list li {
     display: flex;
+    flex-direction: column;
     padding: 0.25em 0.5em;
     border-radius: 0.5rem;
+    justify-content: center;
+    gap: 0.5em;
 }
 
-nav a {
+#nav-list a {
     font-size: 1em;
     text-decoration: none;
     padding: 0.5rem;
     color: var(--text);
 }
 
-.buttonPrimary {
-    color: var(--background);
-    background: var(--primary);
-    font-size: 1.5rem;
-    padding: 0.5em 2em;
-    transition: transform ease 0.2s, box-shadow ease 0.2s;
-}
-
-.buttonPrimary:hover {
-    transform: translate(0, -3px);
-    box-shadow: 0 10px 40px -5px var(--primary);
+#mobileTabSelect, .select-container {
+    display: none;
 }
 
 
-.category {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: space-evenly;
-    gap: 1rem;
-}
+/* =========================
+   Card Styles
+========================= */
 
 .card {
     width: 30%;
@@ -184,10 +405,21 @@ nav a {
     justify-items: start;
     align-items: baseline;
     padding: 0.5rem;
+    transition: transform ease 0.2s, box-shadow ease 0.2s;
+    cursor: pointer;
 }
 
 .card:hover {
     background-color: red;
+    transform: translate(0, -3px);
+    box-shadow: 0 10px 40px -5px var(--primary);
+}
+
+.card:focus,
+.card:focus-visible {
+    outline: none;
+    transform: translate(0, -1px);
+    box-shadow: 0 10px 40px -5px var(--primary-alt);
 }
 
 .star {
@@ -197,28 +429,31 @@ nav a {
     color: var(--background);
 }
 
-
 .star:hover {
     color: var(--dk-pink);
 }
 
 .card-content {
     display: grid;
-    grid-template-columns: max-content 1fr;
+    grid-template-columns: minmax(max-content, 100px) 1fr;
     align-items: center;
     width: 100%;
+    grid-template-rows: 100px;
 }
 
-.card img {
+.emoji {
     width: 100px;
+    height: auto;
 }
 
-.card p {
+.card-text {
     font-size: 1.25rem;
+    font-weight: 500;
+    grid-column: 2/3;
 }
 
-img[alt="head shaking vertically"],
-img[alt="head shaking horizontally"] {
+.card .emoji[alt="head shaking vertically"],
+.card .emoji[alt="head shaking horizontally"] {
     width: 145px;
     margin-left: -16px;
 }
@@ -228,13 +463,66 @@ img[alt="head shaking horizontally"] + p {
     margin-left: -28px;
 }
 
-#custom-card-creation {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+/* =========================
+   Category & Emoji Selection Styles
+========================= */
+
+.category {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-evenly;
+    gap: 1rem;
+    padding: 0.5em;
 }
 
-#custom-card-creation h2 {
+#CustomCardCreation {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: min-content 1fr;
+    padding: 1em;
+    height: 100%;
+}
+
+#emoji-select {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: end;
+    gap: 3em;
+    padding: 1em;
+}
+
+#CustomCardCreation h2 {
     grid-column: 1/-1;
+}
+
+#options {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+#card-text-input {
+    display: flex;
+    flex-direction: column;
+}
+
+#card-preview {
+    justify-self: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#CustomCardCreation .card {
+    min-width: 300px;
+}
+
+#CreateCardBtn {
+    grid-column: 2/3;
+    justify-self: end;
 }
 
 .active {
@@ -251,38 +539,76 @@ img[alt="head shaking horizontally"] + p {
     overflow-y: scroll;
 }
 
-.emoji {
+/* =========================
+   Select2 Styles
+========================= */
+
+/* increase size of selection area */
+.select2-container--default .select2-selection--single {
+    display: grid;
+    align-content: center;
+    height: 50px;
+}
+
+/* increase size of dropdown selection arrow */
+#CustomCardCreation .select2-container--default .select2-selection--single .select2-selection__arrow {
+    width: 50px;
+    height: 50px;
+    top: 33%;
+}
+
+/* increase size less on homepage */
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    top: 18%;
+    right: 1em;
+}
+
+/* increase the size of arrow */
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+    border-width: 10px 8px 0 8px;
+}
+
+/* increase size of arrow when dropdown is open */
+.select2-container--open .select2-selection__arrow b {
+    border-width: 0 8px 10px 8px !important;
+}
+
+/* increase selection area size larger for custom card page due to emojis */
+#CustomCardCreation .select2-container--default,
+#CustomCardCreation .select2-selection--single {
+    height: 100px;
+}
+
+.emoji-selection {
     display: flex;
     align-items: center;
 }
 
-.emoji img {
-    width: 100px;
-    height: 100px;
-}
-
-.emoji img[alt="head shaking vertically"],
-.emoji img[alt="head shaking horizontally"] {
+/* these emojis appear smaller than the others so to make them seem the same size the size is inc and margin adjusted */
+.emoji[alt="head shaking vertically"],
+.emoji[alt="head shaking horizontally"] {
     height: 125px;
     width: 145px;
     margin-left: -8%;
 }
 
-.emoji img[alt="head shaking vertically"] + p,
-.emoji img[alt="head shaking horizontally"] + p {
+.emoji[alt="head shaking vertically"] + p,
+.emoji[alt="head shaking horizontally"] + p {
     margin-left: -20px;
 }
 
 
+/* =========================
+   Settings Page Styles
+========================= */
 
-/* SETTINGS PAGE STYLES */
 #settings {
     background: var(--background);
     padding: 1.5em;
     height: 100%;
 }
 
-form {
+#settings form {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -308,7 +634,6 @@ legend {
     gap: 1em;
     justify-items: center;
     border: none;
-
 }
 
 .select-wrapper {
@@ -360,7 +685,6 @@ legend {
 .settingSection {
     display: grid;
     grid-template-columns: min-content 1fr;
-
 }
 
 .settingSection label {
@@ -391,15 +715,28 @@ datalist {
 }
 
 .toast {
-    background: var(--darkest-green);
+    background: var(--primary-alt);
     color: var(--background);
     font-family: var(--font);
     display: flex;
     flex-direction: row;
     gap: 1em;
-    padding: 1.5em;
+    padding: 1em;
 }
 
+.toast-error {
+    background: var(--error);
+    /* color: var(--background);
+    font-family: var(--font);
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+    padding: 1.5em; */
+}
+
+/* =========================
+   Footer Styles
+========================= */
 
 footer {
     display: flex;
@@ -408,8 +745,13 @@ footer {
     align-items: center;
     padding: 0 1em;
     border-top: 3px solid black;
-    background-color: var();
+    background-color: var(--secondary);
 }
+
+
+/* =========================
+   Responsive Styles
+========================= */
 
 /* giant screen card size */
 @media screen and (min-width: 1500px) {
@@ -420,7 +762,6 @@ footer {
 
 /* tablet styles */
 @media screen and (max-width: 1000px) {
-
     .card {
         width: 40%;
     }
@@ -429,10 +770,130 @@ footer {
 /* mobile styles */
 @media screen and (max-width: 750px) {
     body {
-        background-color: blue;
+        /* background-color: blue; */
+    }
+
+    header {
+        padding: 0.5em;
+    }
+
+    h1 {
+        grid-column: 2/3;
+    }
+
+    nav {
+        grid-area: 1/1/1/1;
+        align-self: auto;
+    }
+
+    #mobileTabSelect {
+        display: none;
+    }
+
+    .select-container {
+        display: unset;
+        padding: 1em 0;
+    }
+
+    .tabs-container {
+        display: flex;
+        flex-direction: column;
+        padding: 1em;
+    }
+
+    /* CATEGORY DROPDOWN STYLES */
+    /* input */
+    .select2-container {
+        background: var(--background);
+        color: var(--text);
+        font-size: var(--font-size);
+    }
+
+    /* currently selected item in list */
+    .nice-select .option:hover, 
+    .nice-select .option.focus, 
+    .nice-select .option.selected.focus {
+        text-decoration: underline;
+    }
+
+    /*dropdown */
+    .list {
+        background: var(--background);
+        color: var(--text);
+    }
+
+    /* changing the color of the active tab in the dropdown */
+    .current {
+        color: var(--text);
+        display: block;
+        width: 100%;
+    }
+
+    /* hide the tabs when on mobile */
+    #tabs ul.js-tablist {
+        display: none;
+    }
+
+    /* dark mode toggle styles */
+    .toggle-input {
+        width: 100%;
+    }
+
+    .toggle-input:after {
+        left: 0.25em;
+    }
+
+    .toggle-icon {
+        right: 0.5em;
+    }
+
+    .toggle-input:checked:after {
+        transform: translateX(5.75em);
+    }
+
+    .toggle-input:checked ~ .toggle-icon--light {
+        transform: translateX(-0.75em) scale(0.75);
+    }
+
+    .toggle-input:checked ~ .toggle-icon--dark {
+        transform: translateX(-5.75em);
+    }
+
+    .slicknav_nav {
+        display: flex;
+        flex-direction: column;
+        padding: 1em;
+        background: var(--secondary);
+    }
+
+    .slicknav_menu {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        z-index: 2;
+    }
+
+    .slicknav_icon {
+        padding: 1em;
+    }
+
+    .slicknav_menu li {
+        list-style-type: none;
+        padding: 1em;
+    }
+
+    .slicknav_menu a {
+        padding: 5px 10px;
+        margin: 2px 5px;
+        text-decoration: none;
+    }
+
+    #nav-list {
+        display: none;
     }
 
     .card {
         width: 100%;
+        min-width: 350px;
     }
 }
