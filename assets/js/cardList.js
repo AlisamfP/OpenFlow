@@ -57,6 +57,6 @@ let cardList = {
             }
         ],
         "custom": [],
-        "starred": []
+        "favorites": []
     }
 }

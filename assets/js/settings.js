@@ -10,7 +10,10 @@ function loadVoices() {
             html += `<option value=${voice.name.replace(/\s/g, "-")}>${voice.name}</option>`;
         }
     }
-    $("#voice").html(html);
+    $("#voice").html(html).select2({
+        placeholder: "Choose from these available options",
+    });
+    
 }
 
 function saveSettings(e) {
@@ -68,11 +71,18 @@ $(function () {
     let pitch = localStorage.getItem("pitch") ? localStorage.getItem("pitch") : 1;
     let rate = localStorage.getItem("rate") ? localStorage.getItem("rate") : 0.75;
     let volume = localStorage.getItem("volume") ? localStorage.getItem("volume") : 0.5;
+    let categoryPref = localStorage.getItem("categoryPref") ? localStorage.getItem("categoryPref") : "general"
 
     // update range with either previous or default value
     $("#pitch").val(pitch)
     $("#rate").val(rate)
     $("#volume").val(volume)
+    $("#categoryPref").select2({
+        minimumResultsForSearch: Infinity,
+		width: "100%"
+    });
+
+    $("#categoryPref").val(categoryPref).trigger("change");
 
 
     $("#saveVoice").click(saveSettings);

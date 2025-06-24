@@ -13,18 +13,19 @@
     --tan: #e8c4aa;
     --light-tan: #f2e2de;
     --light-green: #bed5c5;
-    --dk-pink: #aa95a6;
     --dk-grey: #222;
     --darkest-green: #333D36; */
-
+    
     --font: "Nunito", sans-serif;
     --font-size: 20px;
-
+    
     --trans-dur: 0.3s;
     --trans-timing: cubic-bezier(0.76, 0.05, 0.24, 0.95);
     --trans-timing-in: cubic-bezier(0.76, 0.05, 0.86, 0.06);
     --trans-timing-out: cubic-bezier(0.05, 0.76, 0.06, 0.86);
-
+    
+    --dk-pink: #aa95a6;
+    --bright-pink: #c07fb4;
     --blue: #7796aa;
     --dk-grey: #333;
     --error: #B10000;
@@ -197,6 +198,10 @@ a:focus-visible {
 /* TESTING TABS */
 .js-tabcontent[aria-hidden=true] {
     display: none;
+}
+
+.ui-tabs .ui-tabs-panel {
+    display: flex;
 }
 
 /* hide mobile nav on desktop styles */
@@ -396,6 +401,7 @@ a:hover {
 ========================= */
 
 .card {
+    min-width: 300px;
     width: 30%;
     height: 200px;
     border: 1px solid black;
@@ -410,7 +416,6 @@ a:hover {
 }
 
 .card:hover {
-    background-color: red;
     transform: translate(0, -3px);
     box-shadow: 0 10px 40px -5px var(--primary);
 }
@@ -422,15 +427,28 @@ a:hover {
     box-shadow: 0 10px 40px -5px var(--primary-alt);
 }
 
-.star {
+.heart-icon, .trash-icon {
     grid-column: 1/-1;
     width: 40px;
     justify-self: end;
     color: var(--background);
 }
 
-.star:hover {
-    color: var(--dk-pink);
+.heart-icon svg, .trash-icon svg {
+    width: 2rem;
+    height: 2rem;
+}
+
+.heart-icon:hover svg {
+    color: var(--bright-pink);
+}
+.heart-icon:focus svg,
+.heart-icon:focus-visible svg {
+  color: var(--bright-pink);
+}
+
+.trash-icon:hover {
+    color: var(--error);
 }
 
 .card-content {
@@ -492,9 +510,6 @@ img[alt="head shaking horizontally"] + p {
     padding: 1em;
 }
 
-#CustomCardCreation h2 {
-    grid-column: 1/-1;
-}
 
 #options {
     display: flex;
@@ -510,14 +525,36 @@ img[alt="head shaking horizontally"] + p {
 }
 
 #card-preview {
-    justify-self: center;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+#CustomCards {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+#CustomCardCreation h2 {
+    grid-column: 1/-1;
+}
+
 #CustomCardCreation .card {
     min-width: 300px;
+}
+
+#CustomCardList-section {
+    grid-column: 2/3;
+    grid-row: 1/ span 2;
+}
+
+#CustomCardList {
+    display: flex;
+    flex-direction: column;
+    padding: 1em 0;
+    /* background: var(--accent); */
+    border: 3px solid var(--primary);
+    align-items: center;
 }
 
 #CreateCardBtn {
@@ -609,9 +646,9 @@ img[alt="head shaking horizontally"] + p {
 }
 
 #settings form {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
     padding: 1em;
     border: 3px solid black;
 }
@@ -652,30 +689,7 @@ legend {
 }
 
 /* Custom arrows */
-.select-wrapper::before,
-.select-wrapper::after {
-    --size: 0.3rem;
-    content: "";
-    position: absolute;
-    right: 1rem;
-    pointer-events: none;
-    border-left: var(--size) solid transparent;
-    border-right: var(--size) solid transparent;
-}
 
-.select-wrapper::before {
-    border-bottom: var(--size) solid black;
-    top: 40%;
-}
-
-.select-wrapper::after {
-    border-top: var(--size) solid black;
-    top: 55%;
-}
-
-.select-wrapper option:checked {
-    background: green;
-}
 
 .voiceSelect option {
     padding: 1em;

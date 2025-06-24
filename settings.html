@@ -18,6 +18,10 @@
     <!-- adding slick nav -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/SlickNav/1.0.10/jquery.slicknav.min.js"></script>
 
+    <!-- adding select 2 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <!-- adding toastify js -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 
@@ -92,10 +96,10 @@
                     <legend>General Settings</legend>
                     <label for="categoryPref">Change the default category for the home page</label>
                     <select name="categoryPref" id="categoryPref">
-                        <option value="general_first">General</option>
-                        <option value="feelings_second">Feelings</option>
-                        <option value="custom_third">Custom</option>
-                        <option value="starred_fourth">Starred</option>
+                        <option value="general">General</option>
+                        <option value="feelings">Feelings</option>
+                        <option value="custom">Custom</option>
+                        <option value="favorites">Favorites</option>
                     </select>
                 </fieldset>
                 <fieldset class="voiceSettings">
@@ -150,6 +154,7 @@
                 <button id="saveVoice" type="submit" class="button-primary">Save Settings</button>
             </form>
         </section>
+
 
     </main>
     <footer>
