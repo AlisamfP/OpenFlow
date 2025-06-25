@@ -168,7 +168,7 @@ h6 {
 body {
     font-family: var(--font);
     display: grid;
-    grid-template-rows: 100px 1fr 80px;
+    grid-template-rows: min-content 1fr min-content;
     height: 100vh;
     color: var(--text);
     background: var(--background);
@@ -209,7 +209,7 @@ a {
 
 a:hover {
     color: var(--primary-alt);
-    border-bottom: var(--border-underline-amount) solid var(--primary-alt);
+    border-bottom: var(--border-underline-amount) solid var(--primary);
 }
 
 #nav-list {
@@ -225,7 +225,6 @@ a:hover {
     display: flex;
     flex-direction: column;
     padding: 0.25em 0.5em;
-    border-radius: var(--border-radius);
     justify-content: center;
     text-align: center;
 }
@@ -303,8 +302,8 @@ a:hover {
     display: none;
 }
 
-.active {
-    border-bottom: var(--border-underline-amount) solid var(--accent);
+.active a {
+    border-bottom: var(--border-underline-amount) solid var(--primary-alt);
 }
 
 a:focus,
@@ -665,19 +664,11 @@ img[alt="head shaking horizontally"] + p {
     width: 100%;
 }
 
-.active {
-    background-color: red;
-}
 
 .errorInput {
     border: 3px solid red;
 }
 
-#all-emojis {
-    max-width: 300px;
-    max-height: 300px;
-    overflow-y: scroll;
-}
 
 /* =========================
    Select2 Styles
