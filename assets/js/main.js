@@ -1,5 +1,6 @@
+let audioOn = true;
+
 function toggleDarkMode(){
-    console.log("toggled");
     let theme = $("html").attr("data-theme");
 
     if (theme === "dark") {
@@ -9,21 +10,47 @@ function toggleDarkMode(){
     }
 
     $("html").attr("data-theme", theme);
-    $(".input-desc").text(theme === "dark" ? "Dark Mode Active" : "Light Mode Active");
+    $(".dark-mode .input-desc").text(theme === "dark" ? "Dark Mode Active" : "Light Mode Active");
 
     // Save preference to localStorage
     localStorage.setItem("theme", theme);
     
 }
 
+function toggleAudioOff(e){
+    e.preventDefault();
+    console.log("TRIGGERING AUDIOO")
+    audioOn = !audioOn;
+
+    // Toggle icons
+    $(".icon-sound-on").toggleClass("hidden", !audioOn);
+    $(".icon-sound-off").toggleClass("hidden", audioOn);
+
+    // Update aria and title
+    $(this)
+        .attr("aria-pressed", !audioOn)
+        .attr("title", audioOn ? "Turn sound off" : "Turn sound on");
+
+     $(".audio-mode .input-desc").text(audioOn ? "Audio On" : "Audio Off");
+
+    // Save to localStorage if you want persistence
+    localStorage.setItem("audioOn", audioOn.toString());
+
+}
+
 
 $(function () {
-    console.log("ready");
+    // Set initial audioOn value from localStorage
+    const storedAudioOpt = localStorage.getItem("audioOn");
+    if (storedAudioOpt !== null) {
+        audioOn = storedAudioOpt === "true";
+    }
     // initialize the nav bar
     $("#nav-list").slicknav({
         label: "Menu",
         prependTo: "nav"
     });
+
 
     const savedTheme = localStorage.getItem("theme");
     let currentTheme;
@@ -38,7 +65,8 @@ $(function () {
     }
 
     $("html").attr("data-theme", currentTheme);
-    $(".input-desc").text(currentTheme === "dark" ? "Dark Mode Active" : "Light Mode Active");
+    $(".dark-mode .input-desc").text(currentTheme === "dark" ? "Dark Mode Active" : "Light Mode Active");
+    $(".audio-mode .input-desc").text(audioOn ? "Audio On" : "Audio Off");
 
     $("#darkModeToggle").prop("checked", currentTheme === "dark")
 
@@ -48,4 +76,14 @@ $(function () {
     $(".slicknav_icon").html("\u2630");
 
     $("#darkModeToggle").on("input", toggleDarkMode)
+
+
+    // set correct icon state on load
+    $(".icon-sound-on").toggleClass("hidden", !audioOn);
+    $(".icon-sound-off").toggleClass("hidden", audioOn);
+    $("-audio-toggle")
+        .attr("aria-pressed", !audioOn)
+        .attr("title", audioOn ? "Turn sound off" : "Turn sound on");
+
+    $(".audio-mode").on("click", toggleAudioOff);
 });

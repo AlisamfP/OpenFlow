@@ -32,9 +32,9 @@ function loadCards(category) {
 		html += `<div class="no-cards">
       <h2>You haven't created any custom cards yet</h2><p>Don't fear! You can make them here!</p><button class="button-primary" onClick="document.location='./custom-creation.html'">Make A Custom Card</button></div>`;
 	}
-	else if(categoryName === "favorites" && cards.cards.favorites.length === 0){
+	else if (categoryName === "favorites" && cards.cards.favorites.length === 0) {
 		html += `<div class="no-cards"><h2>No Cards Added To Favorites</h2><p>Try clicking on the heart icon near the top right of the card to add it to your favorites.</p></div>`;
-	} 
+	}
 	else {
 		for (let card of cards.cards[categoryName]) {
 			const isFav = cards.cards.favorites.some(fav =>
@@ -42,8 +42,8 @@ function loadCards(category) {
 			);
 
 			const favClass = isFav ? "favorite" : "";
-			const favAriaLabel = isFav? "Remove card from favorites" : "Save card to favorites"
-			
+			const favAriaLabel = isFav ? "Remove card from favorites" : "Save card to favorites"
+
 			html += `
 				<div class="card" tabindex="0">
 					<span class="heart-icon ${favClass}" role="button" tabindex="0" aria-label="${favAriaLabel}">
@@ -56,7 +56,7 @@ function loadCards(category) {
 					</span>
 					<section class="card-content">
 						<img class="emoji" src="https://openmoji.org/data/color/svg/${card.icon.unicode
-						}.svg" alt="${card.icon.name.replace(/-/g, " ")}" role="img" data-unicode="${card.icon.unicode}">
+				}.svg" alt="${card.icon.name.replace(/-/g, " ")}" role="img" data-unicode="${card.icon.unicode}">
 						<h3 class="card-text">${card.text}</h3>
 					</section>
 				</div>`;
@@ -78,30 +78,44 @@ function loadCards(category) {
 
 function speakPhrase(e) {
 	e.preventDefault();
+	let audioOn = localStorage.getItem("audioOn");
 
-	if (responsiveVoice.voiceSupport()) {
-		console.log("browser supports tts");
+	audioOn = audioOn === null ? true : audioOn === "true"
+	let $card = $(this).closest(".card");
+
+	if ($.fullscreen.isFullScreen()) {
+		$.fullscreen.exit();
 	}
 
-	responsiveVoice.cancel();
-	let voice = localStorage.getItem("selectedVoice");
-	let pitch = localStorage.getItem("pitch");
-	console.log(voice);
-	if (voice) {
-		console.log("theres a voice...", voice);
-		responsiveVoice.setDefaultVoice(voice);
-	}
-	let options = {
-		pitch: pitch,
-	};
 
-	responsiveVoice.speak(e.currentTarget.innerText, voice, options);
+	if (!audioOn) {
+		$card.fullscreen({
+			toggleClass: "fullscreen-mode"
+		});
+	} else {
+		if (responsiveVoice.voiceSupport()) {
+			responsiveVoice.cancel();
+			let voice = localStorage.getItem("selectedVoice");
+			let pitch = localStorage.getItem("pitch");
+			if (voice) {
+				responsiveVoice.setDefaultVoice(voice);
+			}
+			let options = {
+				pitch: pitch,
+			};
+			
+			responsiveVoice.speak(e.currentTarget.innerText, voice, options);
+		}else {
+			console.error("browser does not support tts")
+			localStorage.setItem("audioOn", "false");
+		}
+	}
+
 }
 
 function saveToFavorites(e) {
-	console.log("STARRR");
 	e.preventDefault();
-	
+
 	// get icon element
 	const $icon = $(e.currentTarget);
 
@@ -116,19 +130,17 @@ function saveToFavorites(e) {
 		icon: emojiList.find((emoji) => emoji.unicode === emojiCode),
 		text: cardText,
 	}
-	console.log(cardToSave);
 
 	let favCards = JSON.parse(localStorage.getItem("favCards")) || [];
 
 	const isFav = $icon.hasClass("favorite")
-	console.log(isFav)
 
-	if(isFav) {
+	if (isFav) {
 		// remove from favorites if it's there and the heart gets pressed
 		favCards = favCards.filter(card => !(card.text === cardText && card.icon.unicode === emojiCode))
 		$icon.removeClass("favorite")
 		$icon.attr("aria-label", "Save card to favorites");
-	}else {
+	} else {
 		favCards.push(cardToSave)
 		$icon.addClass("favorite");
 		$icon.attr("aria-label", "Remove card from favorites");
@@ -152,7 +164,6 @@ $(function () {
 		: "general";
 
 
-	console.log("PREF ISS...", categoryPref)
 
 	// initialize the tabs
 	$("#tabs").tabs({
@@ -176,4 +187,14 @@ $(function () {
 	$(".card").on("click", ".heart-icon", saveToFavorites);
 	loadCards(categoryPref);
 	$("#tabs .ui-corner-all, #tabs .ui-corner-top, #tabs .ui-corner-bottom").removeClass("ui-corner-all ui-corner-top ui-corner-bottom");
+	$(document).on("fullscreenchange webkitfullscreenchange mozfullscreenchange", function () {
+		if (!$.fullscreen.isFullScreen()) {
+			$(".fullscreen-mode").removeClass("fullscreen-mode");
+		}
+		$(document).on("click", ".card.fullscreen-mode", function () {
+			if ($.fullscreen.isFullScreen()) {
+				$.fullscreen.exit();
+			}
+		});
+	});
 });

@@ -34,7 +34,7 @@
 
     <link rel="stylesheet" href="./styles.css">
     <script src="./assets/js/main.js"></script>
-    <script type="text/javascript" src="./assets/js/settings.js"></script>
+    <script src="./assets/js/settings.js"></script>
     <title>Open Flow | Settings</title>
 </head>
 
@@ -50,8 +50,26 @@
                 <li class="nav-active"><a href="#">
                         Settings</a>
                 </li>
-                <li><a href="#">
-                        Audio Off</a>
+                <li class="audio-mode"><button id="audioToggle" aria-pressed="false" aria-label="Toggle sound"
+                        class="audio-toggle" title="Turn sound off">
+                        <svg class="icon-sound-on" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                            stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                            viewBox="0 0 24 24">
+                            <path d="M3 10v4h4l5 5V5l-5 5H3z" />
+                            <path d="M16.5 9.5a4 4 0 0 1 0 5" />
+                            <path d="M19 7a7 7 0 0 1 0 10" />
+                        </svg>
+
+                        <svg class="icon-sound-off hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                            fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" viewBox="0 0 24 24">
+                            <path d="M3 10v4h4l5 5V5l-5 5H3z" />
+                            <path d="M16.5 9.5a4 4 0 0 1 0 5" />
+                            <path d="M19 7a7 7 0 0 1 0 10" />
+                            <line x1="2" y1="2" x2="22" y2="22" />
+                        </svg>
+                    </button>
+                    <span class="input-desc">Audio On</span>
                 </li>
                 <li>
                     <label class="toggle" for="darkModeToggle">
@@ -113,7 +131,7 @@
                             </select>
                         </div>
                     </div>
-                    <fieldset class="rangeGroup" role="group" aria-labelledby="RangeGroupLabel">
+                    <fieldset class="rangeGroup" aria-labelledby="RangeGroupLabel">
                         <legend id="RangeGroupLabel">Adjust Voice Characteristics</legend>
 
                         <div class="settingSection">
@@ -163,7 +181,7 @@
         <p>icons by: <a href="https://openmoji.org/">OpenMoji</a></p>
     </footer>
     <!-- adding toastify script -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 </body>
 
 </html>

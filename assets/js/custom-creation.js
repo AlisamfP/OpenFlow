@@ -3,9 +3,6 @@ let currentEmojiCode = "";
 
 function formatEmoji(emoji) {
     if (!emoji.id) return emoji.text;
-    // if(emoji.id === "placeholder"){
-    //     return;
-    // }
     let $emoji =
         $(`<span class="emoji-selection"><img loading="lazy" class="emoji" src="https://openmoji.org/data/color/svg/${emoji.id}.svg" alt="${emoji.element.id}">
             <p>${emoji.element.id}</p></span>`);
@@ -32,7 +29,6 @@ function loadEmojis() {
 
 function updatePreview(type) {
     $("#cardText").removeClass("errorInput");
-    console.log("update preview");
 
     let text = $("#cardText").val();
 
@@ -48,7 +44,6 @@ function updatePreview(type) {
     let unicode = $selectedEmoji.value;
     let emojiName = $selectedEmoji.id;
 
-    // console.log(text, unicode, emojiName)
 
     let html = `        
         <img 
@@ -70,7 +65,6 @@ function createCard(e) {
     let unicode = $selectedEmoji.value;
 
     if ($("#cardText").val().trim() === "") {
-        console.log("no text");
         $("#cardText").addClass("errorInput");
         Toastify({
             text: "Please enter text for the card",
@@ -120,7 +114,6 @@ function createCard(e) {
 }
 
 function deleteCard(e) {
-    console.log("IN DELETE")
     e.preventDefault();
     // get card
     let $card = $(e.currentTarget).closest(".card");
@@ -129,7 +122,6 @@ function deleteCard(e) {
     let cardText = $card.find(".card-text").text().trim();
     let cardEmojiCode = $card.find(".emoji").data("unicode");
 
-    console.log(cardEmojiCode);
 
     // Load current cards from localStorage
     let storedCards = JSON.parse(localStorage.getItem("customCards")) || [];
@@ -139,7 +131,6 @@ function deleteCard(e) {
         return !(card.text === cardText && card.icon.unicode === cardEmojiCode)
     });
 
-    console.log(storedCards);
 
     if (storedCards.length === 0) {
         localStorage.removeItem("customCards");

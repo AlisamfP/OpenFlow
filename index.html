@@ -22,6 +22,9 @@
     <!-- adding accessible tabs -->
     <script src="./assets/js/jquery-accessible-tabs.js"></script>
 
+    <!-- adding jquery fullscreen -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery.fullscreen@0.6.0/release/jquery.fullscreen.min.js"></script>
+
     <!-- adding select 2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -53,10 +56,28 @@
                 <li><a href="./settings.html">
                         Settings</a>
                 </li>
-                <li><a href="#">
-                        Audio Off</a>
+                <li class="audio-mode"><button id="audioToggle" aria-pressed="false" aria-label="Toggle sound" class="audio-toggle"
+                        title="Turn sound off">
+                        <svg class="icon-sound-on" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                            stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                            viewBox="0 0 24 24">
+                            <path d="M3 10v4h4l5 5V5l-5 5H3z" />
+                            <path d="M16.5 9.5a4 4 0 0 1 0 5" />
+                            <path d="M19 7a7 7 0 0 1 0 10" />
+                        </svg>
+
+                        <svg class="icon-sound-off hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                            fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" viewBox="0 0 24 24">
+                            <path d="M3 10v4h4l5 5V5l-5 5H3z" />
+                            <path d="M16.5 9.5a4 4 0 0 1 0 5" />
+                            <path d="M19 7a7 7 0 0 1 0 10" />
+                            <line x1="2" y1="2" x2="22" y2="22" />
+                        </svg>
+                    </button>
+                    <span class="input-desc">Audio On</span>
                 </li>
-                <li>
+                <li class="dark-mode">
                     <label class="toggle" for="darkModeToggle">
                         <input class="toggle-input" id="darkModeToggle" name="darkModeToggle" type="checkbox"
                             role="switch" tabindex="0" aria-label="Toggle Dark Mode">
@@ -85,7 +106,7 @@
                             </g>
                         </svg>
                     </label>
-                    <span class="input-desc">Dark Mode Toggle</span>
+                    <span class="input-desc">Toggle dark?</span>
                 </li>
             </ul>
 

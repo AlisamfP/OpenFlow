@@ -54,7 +54,6 @@ function saveSettings(e) {
 
 
 $(function () {
-    console.log("ready");
     // load in the voices from responsive voice
     loadVoices();
 
