@@ -43,7 +43,7 @@
 
 
 /* =========================
-   CSS Reset & Base Styles
+   CSS Reset
 ========================= */
 /* CSS Reset from https://www.joshwcomeau.com/css/custom-css-reset/ */
 /* 1. Use a more-intuitive box-sizing model */
@@ -356,6 +356,22 @@ header {
     padding: 0 1em;
 }
 
+h1 {
+   font-size: 2.25em; 
+}
+
+h2 {
+    font-size: 1.75em;
+}
+
+h3 {
+    font-size: 1.25em;
+}
+
+h4 {
+    font-size: 1em;
+}
+
 a {
     color: var(--text);
     text-decoration: none;
@@ -660,17 +676,19 @@ img[alt="head shaking horizontally"] + p {
     height: 100%;
 }
 
+
 #settings form {
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: start;
     padding: 1em;
-    border: 3px solid black;
+    /* border: 3px solid black; */
 }
 
 legend {
     grid-column: 1/-1;
     font-size: 1.25em;
+    font-weight: bold; 
 }
 
 .rangeGroup {
@@ -682,6 +700,7 @@ legend {
 
 .voiceSettings {
     display: flex;
+    flex-direction: column;
     width: 100%;
     gap: 1em;
     justify-items: center;
@@ -703,8 +722,9 @@ legend {
     box-sizing: border-box;
 }
 
-/* Custom arrows */
-
+.generalSettings {
+    border: 1px solid var(--primary-alt);
+}
 
 .voiceSelect option {
     padding: 1em;
@@ -755,12 +775,16 @@ datalist {
 
 .toast-error {
     background: var(--error);
-    /* color: var(--background);
+    color: var(--background);
     font-family: var(--font);
     display: flex;
     flex-direction: row;
     gap: 1em;
-    padding: 1.5em; */
+    padding: 1.5em;
+}
+
+#saveSettings {
+    grid-column: 2/3;
 }
 
 /* =========================
@@ -787,6 +811,7 @@ footer {
     .card {
         width: 20%;
     }
+
 }
 
 /* tablet styles */
@@ -794,16 +819,21 @@ footer {
     .card {
         width: 40%;
     }
+
+    #settings form {
+        padding: 0;
+    }
 }
 
 /* mobile styles */
 @media screen and (max-width: 750px) {
     header {
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+        align-items: center;
         padding: 0.5em;
-    }
-
-    h1 {
-        grid-column: 2/3;
+        /* grid-template-columns: 150px 1fr; */
     }
 
     nav {
@@ -880,6 +910,7 @@ footer {
     }
 
     .slicknav_nav {
+        position: relative;
         display: flex;
         flex-direction: column;
         padding: 1em;
@@ -891,6 +922,9 @@ footer {
         flex-direction: column;
         position: absolute;
         z-index: 2;
+        top: 1em;
+        left: 0.5em;
+        background: var(--secondary);
     }
 
     .slicknav_icon {
@@ -903,9 +937,13 @@ footer {
     }
 
     .slicknav_menu a {
-        padding: 5px 10px;
+        /* padding: 5px 10px; */
         margin: 2px 5px;
         text-decoration: none;
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
+        justify-content: flex-end;
     }
 
     #nav-list {
@@ -915,5 +953,21 @@ footer {
     .card {
         width: 100%;
         min-width: 350px;
+    }
+
+    /* SETTINGS FORM */
+    #settings form {
+        gap: 1.5em;
+        /* grid-template-columns: 1fr; */
+        border: none;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+
+    .voiceSettings {
+        flex-direction: column;
+        border: 1px solid var(--primary-alt);
     }
 }

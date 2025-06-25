@@ -201,19 +201,10 @@ function loadCustomCards() {
 }
 
 $(function () {
-    console.log("ready");
-    $("#nav-list").slicknav({
-        label: "Menu",
-        prependTo: "nav",
-    });
+
 
     loadEmojis();
     loadCustomCards();
-
-    // slick shows hamburger button using css
-    // since it generates the spans for it, but I'm not using their css
-    // replacing the generated spans with unicode
-    $(".slicknav_icon").html("\u2630");
 
     $("#emojiSelect").on("input", () => {
         updatePreview("emoji");

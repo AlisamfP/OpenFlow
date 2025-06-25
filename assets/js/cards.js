@@ -1,8 +1,5 @@
 "use strict";
 
-// TODO List
-// createCard, editCard, removeCard
-// allow for favorites cards
 const hrefMap = {
 	general: "#general_first",
 	feelings: "#feelings_second",
@@ -66,15 +63,13 @@ function loadCards(category) {
 		}
 	}
 
-	// html += "</div>";
 
-	console.log("catindex....", catIndex)
 	$(`${panelId}`).html(html).addClass("js-tabcontent");
 
 	$("#tabs").tabs("option", "active", catIndex);
 	$("#mobileTabSelect").val(categoryName).trigger("change");
 
-	// add event listeners for the new cards and star
+	// add event listeners for the new cards and heart
 	$(".card-content").on("click", speakPhrase);
 	$(".heart-icon").on("click", saveToFavorites);
 
@@ -151,17 +146,15 @@ function updateTabs(e) {
 }
 
 $(function () {
-	console.log("ready");
-	// getAllEmojis()
 	// check if pref are set to load another category on page load and if not set to general
 	let categoryPref = localStorage.getItem("categoryPref")
 		? localStorage.getItem("categoryPref")
 		: "general";
 
-	console.log(localStorage.getItem("categoryPref"))
 
 	console.log("PREF ISS...", categoryPref)
 
+	// initialize the tabs
 	$("#tabs").tabs({
 		activate: function (event, ui) {
 			loadCards(ui.newPanel[0].attributes.id.value);
@@ -172,25 +165,12 @@ $(function () {
 	});
 
 
-	$("#nav-list").slicknav({
-		label: "Menu",
-		prependTo: "nav",
-	});
-
-
-	// slick shows hamburger button using css
-	// since it generates the spans for it, but I'm not using their css
-	// replacing the generated spans with unicode
-	$(".slicknav_icon").html("\u2630");
-
-
-
+	// initialize the dropdown menu for mobile category selection (replaces tabs)
 	$("#mobileTabSelect").select2({
 		minimumResultsForSearch: Infinity,
 		width: "100%"
 	});
 
-	console.log($("#mobileTabSelect"))
 
 	$("#mobileTabSelect").on("change", updateTabs)
 	$(".card").on("click", ".heart-icon", saveToFavorites);

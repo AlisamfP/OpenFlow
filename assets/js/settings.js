@@ -10,8 +10,10 @@ function loadVoices() {
             html += `<option value=${voice.name.replace(/\s/g, "-")}>${voice.name}</option>`;
         }
     }
+    // initialize the voice options dropdown
     $("#voice").html(html).select2({
         placeholder: "Choose from these available options",
+        		width: "100%"
     });
     
 }
@@ -24,7 +26,6 @@ function saveSettings(e) {
     let rate = $("#rate").val();
     let categoryPref = $("#categoryPref").val();
 
-    console.log(categoryPref)
 
     localStorage.setItem("selectedVoice", selectedVoice);
     localStorage.setItem("pitch", pitch);
@@ -32,6 +33,7 @@ function saveSettings(e) {
     localStorage.setItem("rate", rate);
     localStorage.setItem("categoryPref", categoryPref);
 
+    // notify the user that the settings were saved
     Toastify({
         text: "Settings saved",
         duration: 3000, // -1 for forever toast
@@ -45,7 +47,7 @@ function saveSettings(e) {
             y: 100
         },
         stopOnFocus: true, // Prevents dismissing of toast on hover
-        ariaLive: "polite"
+        ariaLive: "polite" 
     }).showToast();
 }
 
@@ -53,16 +55,7 @@ function saveSettings(e) {
 
 $(function () {
     console.log("ready");
-    $("#nav-list").slicknav({
-        label: "Menu",
-        prependTo: "nav"
-    });
-
-    // slick shows hamburger button using css
-    // since it generates the spans for it, but I'm not using their css
-    // replacing the generated spans with unicode
-    $(".slicknav_icon").html("\u2630");
-
+    // load in the voices from responsive voice
     loadVoices();
 
     // check if options are in local storage and if not set them to the default
@@ -82,9 +75,10 @@ $(function () {
 		width: "100%"
     });
 
+    // set dropdown to previous setting
     $("#categoryPref").val(categoryPref).trigger("change");
 
 
-    $("#saveVoice").click(saveSettings);
+    $("#saveSettings").click(saveSettings);
 
 });
