@@ -227,7 +227,6 @@ a:hover {
     padding: 0.25em 0.5em;
     border-radius: var(--border-radius);
     justify-content: center;
-    /* gap: 0.5em; */
     text-align: center;
 }
 
@@ -258,27 +257,20 @@ a:hover {
     background: var(--card-back);
     color: var(--text);
     font-size: clamp(2rem, 5vw, 4rem);
-    flex-direction: column;
-    justify-content: center;
+    grid-template-rows: min-content 1fr min-content;
     padding: 2rem;
     z-index: 9999;
-    width: 100vw;
-    height: 100vh;
-    max-width: none;
-    max-height: none;
-    border: none;
     box-shadow: none;
     cursor: default;
     text-align: center;
 }
 
+.card.fullscreen-mode .heart-icon {
+    display: none;
+}
+
 .card.fullscreen-mode .emoji {
-    max-width: 60vw;
-    max-height: 60vh;
-    width: auto;
-    height: auto;
-    margin-bottom: 2rem;
-    object-fit: contain;
+    width: 100%;
 }
 
 .card.fullscreen-mode .card-text {
@@ -290,12 +282,21 @@ a:hover {
     word-wrap: break-word;
 }
 
+.card.fullscreen-mode .card-content {
+    align-content: center;
+    height: 100%;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+}
+
 .card.fullscreen-mode::after {
     content: "Click to exit fullscreen";
     font-size: 1rem;
     color: var(--accent);
     margin-top: 1rem;
     opacity: 0.6;
+    justify-self: center;
+    position: absolute;
 }
 
 .hidden {
