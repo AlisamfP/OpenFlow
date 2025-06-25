@@ -1,23 +1,28 @@
 let audioOn = true;
 
-function toggleDarkMode(){
+function toggleDarkMode() {
     let theme = $("html").attr("data-theme");
 
-    if (theme === "dark") {
-        theme = "light";
-    } else {
-        theme = "dark";
+    if(theme === "dark"){
+        // change to light theme
+        $("html").attr("data-theme", "light");
+        $(".icon-light").removeClass("hidden")
+        $(".icon-dark").addClass("hidden");
+        $(".dark-mode .input-desc").text("Light Mode Active");
+        localStorage.setItem("theme", "light");
+    }
+    else {
+        $("html").attr("data-theme", "dark");
+        $(".icon-dark").removeClass("hidden")
+        $(".icon-light").addClass("hidden");
+        $(".dark-mode .input-desc").text("Dark Mode Active");
+        localStorage.setItem("theme", "dark");
     }
 
-    $("html").attr("data-theme", theme);
-    $(".dark-mode .input-desc").text(theme === "dark" ? "Dark Mode Active" : "Light Mode Active");
 
-    // Save preference to localStorage
-    localStorage.setItem("theme", theme);
-    
 }
 
-function toggleAudioOff(e){
+function toggleAudioOff(e) {
     e.preventDefault();
     console.log("TRIGGERING AUDIOO")
     audioOn = !audioOn;
@@ -31,7 +36,7 @@ function toggleAudioOff(e){
         .attr("aria-pressed", !audioOn)
         .attr("title", audioOn ? "Turn sound off" : "Turn sound on");
 
-     $(".audio-mode .input-desc").text(audioOn ? "Audio On" : "Audio Off");
+    $(".audio-mode .input-desc").text(audioOn ? "Audio On" : "Audio Off");
 
     // Save to localStorage if you want persistence
     localStorage.setItem("audioOn", audioOn.toString());
@@ -68,14 +73,20 @@ $(function () {
     $(".dark-mode .input-desc").text(currentTheme === "dark" ? "Dark Mode Active" : "Light Mode Active");
     $(".audio-mode .input-desc").text(audioOn ? "Audio On" : "Audio Off");
 
-    $("#darkModeToggle").prop("checked", currentTheme === "dark")
+    // set correct icon state on load
+
+    $("#darkModeToggle").attr("aria-pressed", currentTheme === "dark");
+    $(".icon-light").toggleClass("hidden", currentTheme === "dark");
+    $(".icon-dark").toggleClass("hidden", currentTheme !== "dark");
+    $("#darkModeToggle .input-desc").text(currentTheme === "dark" ? "Dark Mode Active" : "Light Mode Active");
+
 
     // slick shows hamburger button using css
     // since it generates the spans for it, but I'm not using their css
     // replacing the generated spans with unicode
     $(".slicknav_icon").html("\u2630");
 
-    $("#darkModeToggle").on("input", toggleDarkMode)
+
 
 
     // set correct icon state on load
@@ -85,5 +96,7 @@ $(function () {
         .attr("aria-pressed", !audioOn)
         .attr("title", audioOn ? "Turn sound off" : "Turn sound on");
 
+    $(".dark-mode").on("click", toggleDarkMode);
     $(".audio-mode").on("click", toggleAudioOff);
+
 });

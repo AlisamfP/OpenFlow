@@ -50,10 +50,10 @@
                 <li class="nav-active"><a href="#">
                         Settings</a>
                 </li>
-                <li class="audio-mode"><button id="audioToggle" aria-pressed="false" aria-label="Toggle sound"
-                        class="audio-toggle" title="Turn sound off">
+                <li class="audio-mode">
+                    <button id="audioToggle" aria-pressed="false" aria-label="Toggle sound" class="audio-toggle" title="Turn sound off">
                         <svg class="icon-sound-on" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                            stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
                             viewBox="0 0 24 24">
                             <path d="M3 10v4h4l5 5V5l-5 5H3z" />
                             <path d="M16.5 9.5a4 4 0 0 1 0 5" />
@@ -61,7 +61,7 @@
                         </svg>
 
                         <svg class="icon-sound-off hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round"
+                            fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                             stroke-linejoin="round" viewBox="0 0 24 24">
                             <path d="M3 10v4h4l5 5V5l-5 5H3z" />
                             <path d="M16.5 9.5a4 4 0 0 1 0 5" />
@@ -71,13 +71,11 @@
                     </button>
                     <span class="input-desc">Audio On</span>
                 </li>
-                <li>
-                    <label class="toggle" for="darkModeToggle">
-                        <input class="toggle-input" id="darkModeToggle" name="darkModeToggle" type="checkbox"
-                            role="switch" tabindex="0" aria-label="Toggle Dark Mode">
-                        <svg class="toggle-icon toggle-icon--light" viewBox="0 0 12 12" width="12px" height="12px"
+                <li class="dark-mode">
+                    <button id="darkModeToggle" class="dark-mode-toggle" aria-pressed="false" aria-label="Toggle dark mode" title="Toggle dark mode">
+                        <svg class="icon-light" viewBox="0 0 12 12" width="12px" height="12px"
                             aria-hidden="true">
-                            <g fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round">
+                            <g fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round">
                                 <circle cx="6" cy="6" r="2" />
                                 <g stroke-dasharray="1.5 1.5">
                                     <polyline points="6 10,6 11.5" transform="rotate(0,6,6)" />
@@ -91,16 +89,16 @@
                                 </g>
                             </g>
                         </svg>
-                        <svg class="toggle-icon toggle-icon--dark" viewBox="0 0 12 12" width="12px" height="12px"
-                            aria-hidden="true">
-                            <g fill="none" stroke="#fff" stroke-width="1" stroke-linejoin="round"
-                                transform="rotate(-45,6,6)">
-                                <path
-                                    d="m9,10c-2.209,0-4-1.791-4-4s1.791-4,4-4c.304,0,.598.041.883.105-.995-.992-2.367-1.605-3.883-1.605C2.962.5.5,2.962.5,6s2.462,5.5,5.5,5.5c1.516,0,2.888-.613,3.883-1.605-.285.064-.578.105-.883.105Z" />
+                        <svg class="icon-dark" viewBox="0 0 12 12" width="12px" height="12px"
+                        aria-hidden="true">
+                        <g fill="none" stroke="currentColor" stroke-width="1" stroke-linejoin="round"
+                        transform="rotate(-45,6,6)">
+                        <path
+                        d="m9,10c-2.209,0-4-1.791-4-4s1.791-4,4-4c.304,0,.598.041.883.105-.995-.992-2.367-1.605-3.883-1.605C2.962.5.5,2.962.5,6s2.462,5.5,5.5,5.5c1.516,0,2.888-.613,3.883-1.605-.285.064-.578.105-.883.105Z" />
                             </g>
                         </svg>
-                    </label>
-                    <span class="input-desc">Dark Mode Toggle</span>
+                    </button>
+                    <span class="input-desc">Toggle dark?</span>
                 </li>
             </ul>
 

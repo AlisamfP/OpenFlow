@@ -41,21 +41,17 @@
     --primary-alt: #333d36;
     --secondary: #a1bac4;
     --accent: #bdadba;
+    --card-back: #d3d3d3;
 }
 
 [data-theme="dark"] {
     --background: #333;
-    /* dark gray background */
     --text: #d0d0d0;
-    /* light gray text */
     --primary: #6a8a72;
-    /* muted green */
     --primary-alt: #4b5c49;
-    /* darker muted green */
     --secondary: #5f7d8a;
-    /* muted blue-gray */
     --accent: #a07f8e;
-    /* muted mauve */
+    --card-back: #3e3e3e;
 }
 
 
@@ -242,7 +238,8 @@ a:hover {
     padding: 0.25em 0.5em;
     border-radius: var(--border-radius);
     justify-content: center;
-    gap: 0.5em;
+    /* gap: 0.5em; */
+    text-align: center;
 }
 
 #nav-list a {
@@ -267,7 +264,7 @@ a:hover {
 ========================= */
 
 .card.fullscreen-mode {
-    background: var(--background);
+    background: var(--card-back);
     color: var(--text);
     font-size: clamp(2rem, 5vw, 4rem);
     flex-direction: column;
@@ -323,9 +320,6 @@ a:focus-visible {
     outline: 1px solid var(--text);
 }
 
-.toggle-input:focus {
-    outline: 1px solid var(--text);
-}
 
 .button-primary {
     color: var(--background);
@@ -378,8 +372,9 @@ html .ui-button.ui-state-disabled:active {
 
 /* Tab container (tabs nav) */
 .ui-tabs-nav {
-    background: var(--secondary);
+    background: var(--background);
     padding: 0.5em 1em;
+    border-color: transparent;
     border-radius: var(--border-radius) var(--border-radius) 0 0;
     border-bottom: 2px solid var(--primary-alt);
     display: flex;
@@ -398,7 +393,7 @@ html .ui-button.ui-state-disabled:active {
 .ui-tabs-nav li a {
     display: block;
     padding: 0.5em 1.25em;
-    background: var(--background);
+    background: var(--card-back);
     color: var(--primary-alt);
     text-decoration: none;
     font-weight: 600;
@@ -442,116 +437,6 @@ html .ui-button.ui-state-disabled:active {
    Toggle Styles
 ========================= */
 
-.toggle {
-    margin: auto;
-    position: relative;
-}
-
-.toggle-icon,
-.toggle-input {
-    display: block;
-}
-
-.toggle-icon {
-    position: absolute;
-    top: 0.5em;
-    right: 0.375em;
-    width: 1em;
-    height: 1em;
-    transition:
-        opacity calc(var(--trans-dur) / 2),
-        transform calc(var(--trans-dur) / 2);
-}
-
-.toggle-icon polyline {
-    transition: stroke-dashoffset calc(var(--trans-dur) / 2);
-}
-
-.toggle-icon--light,
-.toggle-icon--light polyline {
-    transition-delay: calc(var(--trans-dur) / 2);
-    transition-timing-function: var(--trans-timing-out);
-}
-
-.toggle-icon--dark {
-    opacity: 0;
-    transform: translateX(-0.75em) scale(0.75);
-    transition-timing-function: var(--trans-timing-in);
-}
-
-.toggle-input {
-    background-color: var(--dk-grey);
-    border-radius: 1.75em;
-    outline: transparent;
-    position: relative;
-    width: 4em;
-    height: 2em;
-    -webkit-appearance: none;
-    appearance: none;
-    -webkit-tap-highlight-color: transparent;
-    transition:
-        background-color var(--trans-dur) var(--trans-timing),
-        box-shadow 0.15s linear;
-}
-
-.toggle-input:before,
-.toggle-input:after {
-    content: "";
-    display: block;
-    position: absolute;
-}
-
-.toggle-input:before {
-    background-color: var(--primary);
-    border-radius: inherit;
-    inset: 0;
-    transition: background-color var(--trans-dur) var(--trans-timing);
-}
-
-.toggle-input:after {
-    background-color: var(--background);
-    border-radius: 50%;
-    box-shadow: 0.05em 0.05em 0.05em hsla(var(--hue), 90%, 10%, 0.1);
-    top: 0.25em;
-    left: 0.15em;
-    width: 1.5em;
-    height: 1.5em;
-    transition:
-        background-color var(--trans-dur) var(--trans-timing),
-        transform var(--trans-dur) var(--trans-timing);
-    z-index: 1;
-}
-
-.toggle-input:checked:before {
-    background-color: var(--blue);
-}
-
-.toggle-input:checked:after {
-    background-color: var(--dk-grey);
-    transform: translateX(2.15em);
-}
-
-.toggle-input:checked ~ .toggle-icon--light,
-.toggle-input:checked ~ .toggle-icon--light polyline {
-    transition-delay: 0s;
-    transition-timing-function: var(--trans-timing-in);
-}
-
-.toggle-input:checked ~ .toggle-icon--light {
-    opacity: 0;
-    transform: translateX(-0.75em) scale(0.75);
-}
-
-.toggle-input:checked ~ .toggle-icon--light polyline {
-    stroke-dashoffset: 1.5;
-}
-
-.toggle-input:checked ~ .toggle-icon--dark {
-    opacity: 1;
-    transform: translateX(-2.15em);
-    transition-delay: calc(var(--trans-dur) / 2);
-    transition-timing-function: var(--trans-timing-out);
-}
 
 .input-desc {
     font-size: 0.75em;
@@ -561,7 +446,7 @@ html .ui-button.ui-state-disabled:active {
 }
 
 
-.audio-toggle {
+.audio-toggle, .dark-mode-toggle {
     background: none;
     border: none;
     cursor: pointer;
@@ -572,9 +457,11 @@ html .ui-button.ui-state-disabled:active {
     color: var(--text);
 }
 
-.audio-toggle svg {
+.audio-toggle svg,
+.dark-mode-toggle svg {
     width: 2rem;
     height: 2rem;
+    color: var(--text);
 }
 
 .icon-settings {
@@ -591,6 +478,7 @@ html .ui-button.ui-state-disabled:active {
 ========================= */
 
 .card {
+    background: var(--card-back);
     min-width: 300px;
     max-width: 100%;
     width: 30%;
@@ -987,6 +875,11 @@ footer {
         width: 20%;
     }
 
+
+    #emoji-select {
+        padding: 0.5em;
+    }
+
 }
 
 /* tablet styles */
@@ -1023,7 +916,7 @@ footer {
         display: flex;
         flex-direction: column;
         justify-content: end;
-        align-items: center;
+        align-items: end;
         padding: 0.5em;
         /* grid-template-columns: 150px 1fr; */
     }
@@ -1076,32 +969,9 @@ footer {
         display: none;
     }
 
-    /* dark mode toggle styles */
-    .toggle-input {
-        width: 100%;
-    }
 
-    .toggle-input:after {
-        left: 0.25em;
-    }
-
-    .toggle-icon {
-        right: 0.5em;
-    }
-
-    .toggle-input:checked:after {
-        transform: translateX(4.75em);
-    }
-
-    .toggle-input:checked ~ .toggle-icon--light {
-        transform: translateX(-0.75em) scale(0.75);
-    }
-
-    .toggle-input:checked ~ .toggle-icon--dark {
-        transform: translateX(-4.75em);
-    }
-
-    .audio-toggle{
+    .audio-toggle,
+    .dark-mode-toggle{
         width: 100%;
     }
 
@@ -1119,8 +989,7 @@ footer {
         position: absolute;
         z-index: 2;
         top: 1em;
-        left: 0.5em;
-        background: var(--secondary);
+        left: 0;
     }
 
     .slicknav_icon {
@@ -1148,7 +1017,7 @@ footer {
 
     .card {
         width: 100%;
-        min-width: 350px;
+        min-width: 250px;
     }
 
     /* SETTINGS FORM */
@@ -1170,4 +1039,5 @@ footer {
     #card-preview {
         width: 100%;
     }
+
 }
