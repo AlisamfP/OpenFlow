@@ -386,7 +386,7 @@ html .ui-button.ui-state-disabled:active {
     display: block;
     padding: 0.5em 1.25em;
     background: var(--card-back);
-    color: var(--primary-alt);
+    color: var(--text) !important;
     text-decoration: none;
     font-weight: 600;
     border-radius: var(--border-radius) var(--border-radius) 0 0;
@@ -396,15 +396,15 @@ html .ui-button.ui-state-disabled:active {
 /* Hover effect */
 .ui-tabs-nav li.ui-state-hover a {
     background: var(--primary);
-    color: var(--background);
+    color: var(--text);
     border-color: var(--primary-alt);
     cursor: pointer;
 }
 
 /* Active tab */
 .ui-tabs-nav li.ui-state-active a {
-    background: var(--primary-alt);
-    color: var(--background);
+    background: var(--primary);
+    color: var(--text);
     font-weight: 700;
     border: 1px solid var(--primary-alt);
     border-bottom: 2px solid var(--background);
