@@ -70,8 +70,8 @@ function loadCards(category) {
 	$("#mobileTabSelect").val(categoryName).trigger("change");
 
 	// add event listeners for the new cards and heart
-	$(".card-content").on("click", speakPhrase);
-	$(".heart-icon").on("click", saveToFavorites);
+	$(".card-content").off("click").on("click", speakPhrase);
+	$(".heart-icon").off("click").on("click", saveToFavorites);
 
 	$("#tabs").tabs("refresh");
 }
@@ -186,7 +186,8 @@ $(function () {
 	$("#mobileTabSelect").on("change", updateTabs)
 	$(".card").on("click", ".heart-icon", saveToFavorites);
 	loadCards(categoryPref);
-	$("#tabs .ui-corner-all, #tabs .ui-corner-top, #tabs .ui-corner-bottom").removeClass("ui-corner-all ui-corner-top ui-corner-bottom");
+	// $("#tabs .ui-corner-all, #tabs .ui-corner-top, #tabs .ui-corner-bottom").removeClass("ui-corner-all ui-corner-top ui-corner-bottom");
+
 	$(document).on("fullscreenchange webkitfullscreenchange mozfullscreenchange", function () {
 		if (!$.fullscreen.isFullScreen()) {
 			$(".fullscreen-mode").removeClass("fullscreen-mode");

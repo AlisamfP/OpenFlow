@@ -478,7 +478,7 @@ html .ui-button.ui-state-disabled:active {
     height: 200px;
     border: 1px solid var(--text);
     display: grid;
-    grid-template-rows: max-content 1fr;
+    grid-template-columns: 1fr min-content;
     border-radius: var(--border-radius);
     justify-items: start;
     align-items: baseline;
@@ -503,7 +503,7 @@ html .ui-button.ui-state-disabled:active {
 
 .heart-icon,
 .trash-icon {
-    grid-column: 1/-1;
+    grid-column: 2/3;
     width: 40px;
     justify-self: end;
     color: var(--background);
@@ -549,6 +549,7 @@ html .ui-button.ui-state-disabled:active {
     align-items: center;
     width: 100%;
     grid-template-rows: 100px;
+    padding-bottom: 2em;
 }
 
 .emoji {
