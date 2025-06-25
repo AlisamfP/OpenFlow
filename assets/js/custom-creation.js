@@ -26,6 +26,7 @@ function loadEmojis() {
         placeholder: "Search emojis or browse below",
         templateResult: formatEmoji,
         templateSelection: formatEmoji,
+        width: "100%"
     });
 }
 

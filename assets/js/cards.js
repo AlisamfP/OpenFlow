@@ -43,7 +43,7 @@ function loadCards(category) {
 
 			const favClass = isFav ? "favorite" : "";
 			const favAriaLabel = isFav? "Remove card from favorites" : "Save card to favorites"
-			console.log(card)
+			
 			html += `
 				<div class="card" tabindex="0">
 					<span class="heart-icon ${favClass}" role="button" tabindex="0" aria-label="${favAriaLabel}">
@@ -175,4 +175,5 @@ $(function () {
 	$("#mobileTabSelect").on("change", updateTabs)
 	$(".card").on("click", ".heart-icon", saveToFavorites);
 	loadCards(categoryPref);
+	$("#tabs .ui-corner-all, #tabs .ui-corner-top, #tabs .ui-corner-bottom").removeClass("ui-corner-all ui-corner-top ui-corner-bottom");
 });

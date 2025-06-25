@@ -92,14 +92,14 @@
                             name="cardText" />
                     </div>
                     <div id="emojiSelectWrapper">
-
-                        <h3><label for="emojiSelect">
+                        <label for="emojiSelect">
                                 Select an Emoji for your card
-                            </label></h3>
+                            </label>
                         <select name="emojiSelect" id="emojiSelect" hidden inert></select>
                     </div>
                 </div>
-                <div id="card-preview" aria-live="polite">
+                <section id="card-preview" aria-live="polite">
+                    <h3>Card Preview</h3>
                     <div class="card">
                         <span class="heart-icon" role="button" tabindex="0" aria-label="Like this card">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
@@ -111,7 +111,7 @@
                         </span>
                         <section class="card-content"></section>
                     </div>
-                </div>
+                </section>
 
                 <div id="CreateCardBtn">
                     <button id="createBtn" class="button-primary" type="submit">Create Custom Card</button>
