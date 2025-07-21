@@ -1,5 +1,5 @@
 import { Card } from "./Card";
-import { CardList } from "../assets/cardList";
+import { CardList } from "../assets/CardList";
 
 interface CardGridProps {
   category: "general" | "feelings" | "custom" | "favorites";

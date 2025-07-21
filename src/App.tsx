@@ -16,7 +16,7 @@ function App() {
     };
 
     return (
-        <div className="font-nunito grid grid-rows-[min-content_1fr_min-content] h-screen text-text bg-background text-base my-0 mx-auto">
+        <div className="font-nunito grid grid-rows-[min-content_1fr_min-content] h-screen text-text bg-background text-base my-0 mx-auto w-full">
             <Header />
             <main>
                 <section>
@@ -31,7 +31,7 @@ function App() {
                             <option value="favorites">Favorites</option>
                         </select>
                     </div> */}
-                        <div id="tabs" className="js-tabs border-none">
+                        <div className="border-none">
                             <ul className="flex flex-row justify-between p-4">
                                 <li className="js-tablist_item">
                                     <button
