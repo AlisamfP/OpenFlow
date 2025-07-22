@@ -1,175 +1,130 @@
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
+import {
+    IconButton,
+    Typography,
+    Collapse,
+    Navbar,
+} from "@material-tailwind/react";
+import { PiCards, PiGear, PiList, PiPlus, PiX } from "react-icons/pi";
+
+import AudioToggle from "./AudioToggle";
+import DarkModeToggle from "./DarkModeToggle";
+
+import type { ComponentType, SVGProps } from "react";
+
+interface LinkItem {
+    icon: ComponentType<SVGProps<SVGSVGElement>> | null;
+    title: string;
+    href: string;
+}
+
+const LINKS: LinkItem[] = [
+    {
+        icon: PiCards,
+        title: "Cards",
+        href: "#",
+    },
+    {
+        icon: PiPlus,
+        title: "Custom Cards",
+        href: "#",
+    },
+    {
+        icon: PiGear,
+        title: "Settings",
+        href: "#",
+    },
+    {
+        icon: null,
+        title: "Audio Toggle",
+        href: "#",
+    },
+    {
+        icon: null,
+        title: "Dark Mode Toggle",
+        href: "#",
+    },
+];
+
+function NavList(): JSX.Element {
+    return (
+        <ul className="mt-4 flex flex-col gap-x-6 gap-y-1.5 lg:mt-0 lg:flex-row lg:items-center">
+            {LINKS.map(({ icon: Icon, title, href }) => {
+                if (title === "Audio Toggle") {
+                    return (
+                        <li key={title} className="hover:bg-primary-alt p-2 rounded-md">
+                            <AudioToggle />
+                        </li>
+                    );
+                }
+                if (title === "Dark Mode Toggle") {
+                    return (
+                        <li key={title} className="hover:bg-primary-alt p-2 rounded-md">
+                            <DarkModeToggle />
+                        </li>
+                    );
+                } else {
+                    return (
+                        <li key={title} className="hover:bg-primary-alt p-2 rounded-md">
+                            <Typography as="a" href={href} className="flex items-center gap-x-2 p-1 text-2xl">
+                                {Icon && <Icon />}
+                                {title}
+                            </Typography>
+                        </li>
+                    );
+                }
+            })}
+        </ul>
+    );
+}
 
 function Header() {
-    const darkMode = "dark";
-    const lightMode = "light";
-    const getDataTheme = (theme: string) => theme === darkMode ? darkMode : lightMode;
-    const getToggledTheme = (theme: string) => theme === darkMode ? lightMode : darkMode;
+    const [openNav, setOpenNav] = useState(false);
 
-    const initialTheme = localStorage.getItem("dataTheme");
-    const [theme, setTheme] = useState<string | null>(initialTheme);
-
-    useLayoutEffect(() => {
-        document.documentElement.setAttribute("data-theme", getDataTheme(theme as string))
-    }, [theme])
-
-    const toggleTheme = () => {
-        const newTheme = getToggledTheme(theme as string);
-        setTheme(newTheme);
-        localStorage.setItem("dataTheme", getDataTheme(newTheme))
-    }
-
+    useEffect(() => {
+        window.addEventListener(
+            "resize",
+            () => window.innerWidth >= 960 && setOpenNav(false)
+        );
+    }, []);
 
     return (
-        <header className="bg-secondary grid grid-cols-[1fr_2fr] items-end px-4">
-            <h1 className="text-4xl lg:px-2 lg:py-0">
+        <header className="bg-secondary">
+            {/* <h1 className="text-4xl lg:px-2 lg:py-0">
                 <a href="index.html">Open Flow</a>
-            </h1>
-            <nav className="sm:[grid-area:1/1/1/1]">
-                <ul
-                    id="nav-list"
-                    className="grid grid-cols-[1fr_1fr_1fr_max-content_max-content] list-none justify-between items-end gap-2"
-                >
-                    <li className="flex flex-col px-2 py-1 justify-center text-center">
-                        <a className="p-2 text-text flex flex-col items-center" href="#">
-                            Cards
-                        </a>
-                    </li>
-                    <li className="flex flex-col px-2 py-1 justify-center text-center">
-                        <a
-                            className="p-2 text-text flex flex-col items-center"
-                            href="./custom-creation.html"
-                        >
-                            Custom Cards
-                        </a>
-                    </li>
-                    <li className="flex flex-col px-2 py-1 justify-center text-center">
-                        <a
-                            className="p-2 text-text flex flex-col items-center"
-                            href="./settings.html"
-                        >
-                            Settings
-                        </a>
-                    </li>
-                    <li className="flex flex-col px-2 py-1 justify-center text-center">
-                        <button
-                            id="audioToggle"
-                            aria-pressed="false"
-                            aria-label="Toggle sound"
-                            className="audio-toggle"
-                            title="Turn sound off"
-                        >
-                            <svg
-                                className="icon-sound-on"
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                viewBox="0 0 24 24"
-                            >
-                                <path d="M3 10v4h4l5 5V5l-5 5H3z" />
-                                <path d="M16.5 9.5a4 4 0 0 1 0 5" />
-                                <path d="M19 7a7 7 0 0 1 0 10" />
-                            </svg>
-
-                            <svg
-                                className="icon-sound-off hidden"
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                viewBox="0 0 24 24"
-                            >
-                                <path d="M3 10v4h4l5 5V5l-5 5H3z" />
-                                <path d="M16.5 9.5a4 4 0 0 1 0 5" />
-                                <path d="M19 7a7 7 0 0 1 0 10" />
-                                <line x1="2" y1="2" x2="22" y2="22" />
-                            </svg>
-                        </button>
-                        <span className="input-desc">Audio On</span>
-                    </li>
-                    <li className="flex flex-col px-2 py-1 justify-center text-center">
-                        <button
-                            id="darkModeToggle"
-                            className="dark-mode-toggle"
-                            aria-pressed="false"
-                            aria-label="Toggle dark mode"
-                            title="Toggle dark mode"
-                            onClick={toggleTheme}
-                        >
-                            <svg
-                                className={`${theme === lightMode ? "visible" : "hidden"}`}
-                                viewBox="0 0 24 24"
-                                width="24px"
-                                height="24px"
-                                aria-hidden="true"
-                            >
-                                <g
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="1"
-                                    strokeLinecap="round"
-                                    transform="scale(2)"
-                                >
-                                    <circle cx="6" cy="6" r="2" />
-                                    <g strokeDasharray="1.5 1.5">
-                                        <polyline points="6 10,6 11.5" transform="rotate(0,6,6)" />
-                                        <polyline points="6 10,6 11.5" transform="rotate(45,6,6)" />
-                                        <polyline points="6 10,6 11.5" transform="rotate(90,6,6)" />
-                                        <polyline
-                                            points="6 10,6 11.5"
-                                            transform="rotate(135,6,6)"
-                                        />
-                                        <polyline
-                                            points="6 10,6 11.5"
-                                            transform="rotate(180,6,6)"
-                                        />
-                                        <polyline
-                                            points="6 10,6 11.5"
-                                            transform="rotate(225,6,6)"
-                                        />
-                                        <polyline
-                                            points="6 10,6 11.5"
-                                            transform="rotate(270,6,6)"
-                                        />
-                                        <polyline
-                                            points="6 10,6 11.5"
-                                            transform="rotate(315,6,6)"
-                                        />
-                                    </g>
-                                </g>
-                            </svg>
-                            <svg
-                                className={`${theme === darkMode ? "visible" : "hidden"}`}
-                                viewBox="0 0 24 24"
-                                width="24px"
-                                height="24px"
-                                aria-hidden="true"
-                            >
-                                <g
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="0.75"
-                                    strokeLinejoin="round"
-                                    transform="rotate(-45,12,12) scale(2)"
-                                >
-                                    <path d="m9,10c-2.209,0-4-1.791-4-4s1.791-4,4-4c.304,0,.598.041.883.105-.995-.992-2.367-1.605-3.883-1.605C2.962.5.5,2.962.5,6s2.462,5.5,5.5,5.5c1.516,0,2.888-.613,3.883-1.605-.285.064-.578.105-.883.105Z" />
-                                </g>
-                            </svg>
-                        </button>
-                        <span className="input-desc">Toggle dark?</span>
-                    </li>
-                </ul>
-            </nav>
+            </h1> */}
+            <Navbar className="mx-auto w-full max-w-screen bg-secondary">
+                <div className="flex items-center gap-4">
+                    <Typography
+                        as="a"
+                        type="h1"
+                        href="#"
+                        className={`-ml-2 block py-1 px-6 font-semibold min-w-max ${openNav ? "border-b-2" : ""}`}
+                    >
+                        Open Flow
+                    </Typography>
+                    {/* <hr className="ml-1 mr-1.5 hidden h-6 w-px border-l border-t-0 border-card-back lg:block" /> */}
+                    <div className="hidden lg:block w-full">
+                        <NavList />
+                    </div>
+                    <IconButton
+                        size="lg"
+                        onClick={() => setOpenNav(!openNav)}
+                        className="ml-auto grid lg:hidden"
+                    >
+                        {openNav ? (
+                            <PiX className="text-2xl" />
+                        ) : (
+                            <PiList className="text-2xl" />
+                        )}
+                    </IconButton>
+                </div>
+                <Collapse open={openNav}>
+                    <NavList />
+                </Collapse>
+            </Navbar>
+           
         </header>
     );
 }
