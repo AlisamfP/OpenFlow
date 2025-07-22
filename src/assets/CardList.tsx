@@ -5,20 +5,20 @@ interface Emoji {
     unicode: string;
 }
 
-interface Card {
+interface CardData {
     icon: Emoji | undefined;
     text: string;
     isFav: boolean;
 }
 
 interface Cards {
-    general: Card[];
-    feelings: Card[];
-    custom: Card[];
-    favorites: Card[];
+    general: CardData[];
+    feelings: CardData[];
+    custom: CardData[];
+    favorites: CardData[];
 }
 
-const getCustomCards = (): Card[] => {
+const getCustomCards = (): CardData[] => {
     const customCards = localStorage.getItem("customCards");
     if(typeof customCards === 'string' && customCards.trim() != "") {
         console.log("There are custom cards in local storage...")
@@ -28,7 +28,7 @@ const getCustomCards = (): Card[] => {
     return [];
 }
 
-const getFavCards = (): Card[] => {
+const getFavCards = (): CardData[] => {
     const favCards = localStorage.getItem("favCards")
     if(typeof favCards === 'string' && favCards.trim() != "") {
         return JSON.parse(favCards);
@@ -46,7 +46,7 @@ export const CardList = (): Cards => {
     const customCards = getCustomCards()
 
     const cards: Cards = {
-        general: [
+        "general": [
             {
                 icon: EmojiList.find((emoji) => emoji.name === "head-shaking-vertically"),
                 text: "Yes"
@@ -87,7 +87,7 @@ export const CardList = (): Cards => {
             ...card,
             isFav: checkFav(card.text, card.icon, favorites)
         })),
-        feelings: [
+        "feelings": [
             {
                 icon: EmojiList.find((emoji) => emoji.name === "grinning-face"),
                 text: "I'm happy and content"
@@ -108,11 +108,11 @@ export const CardList = (): Cards => {
             ...card,
             isFav: checkFav(card.text, card.icon, favorites)
         })),
-        custom: customCards.map(card => ({
+        "custom": customCards.map(card => ({
             ...card,
             isFav: checkFav(card.text, card.icon, favorites)
         })),
-        favorites: favorites
+        "favorites": favorites
     }
     return cards;
 }
