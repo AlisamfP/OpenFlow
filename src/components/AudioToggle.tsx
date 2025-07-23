@@ -1,4 +1,4 @@
-import { Button } from "@material-tailwind/react";
+import { IconButton } from "@mui/material";
 import { useState, useEffect } from "react";
 import { PiSpeakerHigh, PiSpeakerX } from "react-icons/pi";
 
@@ -20,7 +20,7 @@ function AudioToggle() {
     
     return (
         <>
-            <Button
+            <IconButton
                 id="audioToggle"
                 aria-pressed="false"
                 aria-label="Toggle sound"
@@ -30,7 +30,7 @@ function AudioToggle() {
             >
                 {TTSOn ? (<PiSpeakerHigh />) : (<PiSpeakerX />)}
                 {TTSOn ? "Audio On" : "Audio Off"}
-            </Button>
+            </IconButton>
         </>
     )
 }

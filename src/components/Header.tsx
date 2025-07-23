@@ -1,12 +1,22 @@
 import { useEffect, useState } from "react";
 
 import {
+    Box,
+    Container,
     IconButton,
     Typography,
-    Collapse,
-    Navbar,
-} from "@material-tailwind/react";
-import { PiCards, PiGear, PiList, PiPlus, PiX } from "react-icons/pi";
+    Button,
+    Menu,
+    MenuItem,
+    AppBar,
+    Toolbar,
+} from "@mui/material";
+import {
+    PiCards,
+    PiGear,
+    PiList,
+    PiPlus
+} from "react-icons/pi";
 
 import AudioToggle from "./AudioToggle";
 import DarkModeToggle from "./DarkModeToggle";
@@ -47,85 +57,185 @@ const LINKS: LinkItem[] = [
     },
 ];
 
-function NavList(): JSX.Element {
+function NavListDesktop(): JSX.Element {
     return (
-        <ul className="mt-4 flex flex-col gap-x-6 gap-y-1.5 lg:mt-0 lg:flex-row lg:items-center">
-            {LINKS.map(({ icon: Icon, title, href }) => {
-                if (title === "Audio Toggle") {
-                    return (
-                        <li key={title} className="hover:bg-primary-alt p-2 rounded-md">
-                            <AudioToggle />
-                        </li>
-                    );
-                }
-                if (title === "Dark Mode Toggle") {
-                    return (
-                        <li key={title} className="hover:bg-primary-alt p-2 rounded-md">
-                            <DarkModeToggle />
-                        </li>
-                    );
-                } else {
-                    return (
-                        <li key={title} className="hover:bg-primary-alt p-2 rounded-md">
-                            <Typography as="a" href={href} className="flex items-center gap-x-2 p-1 text-2xl">
-                                {Icon && <Icon />}
-                                {title}
-                            </Typography>
-                        </li>
-                    );
-                }
-            })}
-        </ul>
+        <Box sx={{flexGrow: 1, display: { xs: 'none', md: 'flex'}}}>
+        {LINKS.map(({ icon: Icon, title, href }) => {
+            if (title === "Audio Toggle") {
+                return (
+                    <div key={title}>
+
+                        <AudioToggle />
+                    </div>
+                );
+            }
+            if (title === "Dark Mode Toggle") {
+                return (
+                    <div key={title}>
+
+                    <DarkModeToggle />
+                    </div>
+                );
+            } else {
+                return (
+                    <Button key={title}>
+                        <Typography component="a" href={href} className="text-text">
+                            {Icon && <Icon />}
+                            {title}
+                        </Typography>
+                    </Button>
+                );
+            }
+        })}        
+        </Box>
+    )
+}
+
+function NavDropDownList(): JSX.Element {
+    return (
+    <>
+        {LINKS.map(({ icon: Icon, title, href }) => {
+            if (title === "Audio Toggle") {
+                return (
+                    <MenuItem key={title} className="hover:bg-primary-alt p-2 rounded-md">
+                        <AudioToggle />
+                    </MenuItem>
+                );
+            }
+            if (title === "Dark Mode Toggle") {
+                return (
+                    <MenuItem key={title} className="hover:bg-primary-alt p-2 rounded-md">
+                        <DarkModeToggle />
+                    </MenuItem>
+                );
+            } else {
+                return (
+                    <MenuItem key={title}>
+                        <Typography component="a" href={href} className="text-text">
+                            {Icon && <Icon />}
+                            {title}
+                        </Typography>
+                    </MenuItem>
+                );
+            }
+        })}
+    </>
+
     );
 }
 
 function Header() {
-    const [openNav, setOpenNav] = useState(false);
+    const [openNav, setOpenNav] = useState<null | HTMLElement>(null);
 
-    useEffect(() => {
-        window.addEventListener(
-            "resize",
-            () => window.innerWidth >= 960 && setOpenNav(false)
-        );
-    }, []);
+    const handleNavOpen = (e: React.MouseEvent<HTMLElement>) => {
+        setOpenNav(e.currentTarget);
+    }
+
+    const handleNavClose = () => {
+        setOpenNav(null);
+    }
 
     return (
-        <header className="bg-secondary">
-            {/* <h1 className="text-4xl lg:px-2 lg:py-0">
-                <a href="index.html">Open Flow</a>
-            </h1> */}
-            <Navbar className="mx-auto w-full max-w-screen bg-secondary">
-                <div className="flex items-center gap-4">
+        <AppBar>
+            <Container maxWidth="xl">
+                <Toolbar disableGutters>
                     <Typography
-                        as="a"
-                        type="h1"
-                        href="#"
-                        className={`-ml-2 block py-1 px-6 font-semibold min-w-max ${openNav ? "border-b-2" : ""}`}
+                        variant="h1"
+                        noWrap
+                        component="a"
+                        href="index.html"
+                        sx={{
+                            mr: 2,
+                            display: {xs: 'none', md: 'flex'},
+                            textDecoration: 'none',
+                            fontSize: '2.75em'
+                        }}
                     >
                         Open Flow
                     </Typography>
-                    {/* <hr className="ml-1 mr-1.5 hidden h-6 w-px border-l border-t-0 border-card-back lg:block" /> */}
-                    <div className="hidden lg:block w-full">
-                        <NavList />
-                    </div>
-                    <IconButton
-                        size="lg"
-                        onClick={() => setOpenNav(!openNav)}
-                        className="ml-auto grid lg:hidden"
+                    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none'}}}>
+                        <IconButton
+                            size="large"
+                            aria-controls="nav-menu"
+                            aria-haspopup="true"
+                            onClick={handleNavOpen}
+                        >
+                            <PiList />
+                        </IconButton>
+                        <Menu
+                            id="nav-menu"
+                            anchorEl={openNav}
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'left',
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'left',
+                            }}
+                            open={Boolean(openNav)}
+                            onClose={handleNavClose}
+                            sx={{
+                                display: {xs: 'block', md: 'none'}
+                            }}
+                        >
+                            <NavDropDownList />
+                        </Menu>
+                    </Box>
+                    <Typography
+                        variant="h1"
+                        noWrap
+                        component="a"
+                        href="index.html"
+                        sx={{
+                            mr: 2,
+                            display: {xs: 'flex', md: 'none'},
+                            flexGrow: 1,
+                            textDecoration: 'none',
+                            fontSize: '2.75em'
+                        }}
                     >
-                        {openNav ? (
-                            <PiX className="text-2xl" />
-                        ) : (
-                            <PiList className="text-2xl" />
-                        )}
-                    </IconButton>
-                </div>
-                <Collapse open={openNav}>
-                    <NavList />
-                </Collapse>
-            </Navbar>
-           
-        </header>
+                        Open Flow
+                    </Typography>
+                    <NavListDesktop/>
+                </Toolbar>
+            </Container>
+
+        </AppBar>
+        // <header className="bg-secondary">
+
+        //     <Navbar className="mx-auto w-full max-w-screen bg-secondary">
+        //         <div className="flex items-center gap-4">
+        //             <Typography
+        //                 as="a"
+        //                 type="h1"
+        //                 href="index.html"
+        //                 className={`-ml-2 block py-1 px-6 font-semibold min-w-max ${openNav ? "border-b-2" : ""}`}
+        //             >
+        //                 Open Flow
+        //             </Typography>
+        //             <div className="hidden lg:block w-full">
+        //                 <NavList />
+        //             </div>
+        //             <IconButton
+        //                 size="lg"
+        //                 onClick={() => setOpenNav(!openNav)}
+        //                 className="ml-auto grid lg:hidden"
+        //             >
+        //                 {openNav ? (
+        //                     <PiX className="text-2xl" />
+        //                 ) : (
+        //                     <PiList className="text-2xl" />
+        //                 )}
+        //             </IconButton>
+        //         </div>
+        //         <Collapse open={openNav}>
+        //             <NavList />
+        //         </Collapse>
+        //     </Navbar>
+
+        // </header>
     );
 }
 

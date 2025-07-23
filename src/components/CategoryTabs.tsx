@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Tabs } from "@material-tailwind/react";
+import { Box, Tabs, Tab } from "@mui/material";
 import { Card } from "./Card";
 import { CardList } from "../assets/CardList";
 
@@ -21,36 +21,40 @@ interface Cards {
     favorites: CardData[];
 }
 
+function a11yProps(index: number) {
+    return {
+        id: `tab-${index}`,
+        'aria-controls': `tabpanel-${index}`
+    }
+}
+
 const CategoryTabs: React.FC = () => {
-    const [selectedCategory, setSelectedCategory] = useState<keyof Cards>("general");
-
-
     const cards: Cards = CardList();
     const tabKeys = Object.keys(cards) as (keyof Cards)[];
+    const [selectedCatIndex, setselectedCatIndex] = useState(0);
+    
+    const handleTabChange = (e: React.SyntheticEvent, newValue: number) => {
+        setselectedCatIndex(newValue)
+    }
 
     return (
-        <Tabs defaultValue={selectedCategory} className="w-full flex flex-col">
-            <Tabs.List className="bg-card-back w-full rounded-lg">
-                {tabKeys.map((tab: keyof Cards, i:number) => (
-                    <Tabs.Trigger
-                    value={tab}
-                    key={i}
-                    className={`z-10 w-full p-4 rounded-lg text-2xl`}
-                    onClick={() => setSelectedCategory(tab)}>
-                        {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                    </Tabs.Trigger>
+        <Box className="bg-background mt-5">
+
+            <Tabs value={selectedCatIndex} onChange={handleTabChange} sx={{marginTop: '5em'}} variant="fullWidth">
+                {tabKeys.map((tab, i) => (
+                    <Tab
+                        key={tab}
+                        label={tab}
+                        {...a11yProps(i)}>
+                    </Tab>
                 ))}
-                <Tabs.TriggerIndicator className="py-1 rounded-lg"/>
-            </Tabs.List>
-                {tabKeys.map((tab: keyof Cards) => (
-                    <Tabs.Panel key={tab} value={tab} className="flex flex-wrap gap-4">
-                        {cards[tab].map(({ text, icon, isFav }: CardData, i:number) => (
-                            <Card key={i} text={text} icon={icon} isFav={isFav} />
-                        ))}
-                    </Tabs.Panel>
-                )
-                )}
-        </Tabs>
+            </Tabs>
+            <Box role="tabpanel" id={`tabpanel-${selectedCatIndex}`} aria-labelledby={`tab-${selectedCatIndex}`} sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: '1em' }}>
+                {cards[tabKeys[selectedCatIndex]].map(({ text, icon, isFav }: CardData, i: number) => (
+                    <Card key={text + i} text={text} icon={icon} isFav={isFav} />
+                ))}
+            </Box>
+        </Box>
     )
 }
 

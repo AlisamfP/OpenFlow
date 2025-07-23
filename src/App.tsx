@@ -1,22 +1,72 @@
 import Header from "./components/Header.tsx";
 import Footer from "./components/Footer.tsx";
-// import CardGrid from "./components/CardGrid";
 import CategoryTabs from "./components/CategoryTabs.tsx";
 
+import Settings from "./components/Settings.tsx";
+import { createTheme, ThemeProvider } from "@mui/material";
 
+
+const darkTheme = createTheme({  
+    colorSchemes: {
+        light: {
+            palette: {
+                primary: {
+                    main: '#8aa093',
+                },
+                secondary: {
+                    main: '#a1bac4',
+                },
+                background: {
+                    default: '#f2f2f2',
+                    paper: '#d3d3d3',
+                },
+                text: {
+                    primary: '#212121',
+                }
+            }
+        },
+        dark: {
+            palette: {
+                primary: {
+                    main: '#6a8a72',
+                },
+                secondary: {
+                    main: '#5f7d8a',
+                },
+                background: {
+                    default: '#333',
+                    paper: '#3e3e3e',
+                },
+                text: {
+                    primary: '#d0d0d0',
+                }
+            }
+        }
+    },
+    typography: {
+        fontSize: 20,
+        fontFamily: 'Nunito',
+    },
+});
 
 function App() {
+
     return (
-        <div className="font-nunito grid grid-rows-[min-content_1fr_min-content] h-full text-text bg-background text-base my-0 mx-auto w-full">
-            <Header />
-            <main>
-                <h2 className="sr-only">Cards</h2>
-                <div className="flex flex-col p-4">
-                    <CategoryTabs/>
-                </div>
-            </main>
-            <Footer />
-        </div>
+        <ThemeProvider theme={darkTheme} defaultMode="light">
+
+            <div className="font-nunito grid grid-rows-[min-content_1fr_min-content] h-full text-text bg-background text-base my-0 mx-auto w-full">
+                <Header />
+                <main>
+                    <div className="flex flex-col p-4">
+                        <CategoryTabs />
+                    </div>
+                    <div>
+                        {/* <Settings /> */}
+                    </div>
+                </main>
+                <Footer />
+            </div>
+        </ThemeProvider>
     );
 }
 
