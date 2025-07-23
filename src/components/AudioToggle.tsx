@@ -1,4 +1,4 @@
-import { IconButton } from "@mui/material";
+import { ListItemIcon, ListItemText, Switch } from "@mui/material";
 import { useState, useEffect } from "react";
 import { PiSpeakerHigh, PiSpeakerX } from "react-icons/pi";
 
@@ -17,21 +17,30 @@ function AudioToggle() {
         setTTSOn(prevAudioOn => !prevAudioOn);
     }
 
-    
+
     return (
         <>
-            <IconButton
-                id="audioToggle"
-                aria-pressed="false"
-                aria-label="Toggle sound"
-                className="flex items-center gap-x-2 p-1 text-2xl cursor-pointer"
-                title="Turn sound off"
-                onClick={handleToggle}
-            >
+            <ListItemIcon>
                 {TTSOn ? (<PiSpeakerHigh />) : (<PiSpeakerX />)}
+
+            </ListItemIcon>
+            <ListItemText>
                 {TTSOn ? "Audio On" : "Audio Off"}
-            </IconButton>
+
+            </ListItemText>
+            <Switch
+                slotProps={{
+                    input: {
+                        'aria-label': 'Toggle Audio'
+                    }
+                }}
+                edge="end"
+                checked={TTSOn}
+                onChange={handleToggle}
+                color="secondary"
+            />
         </>
+
     )
 }
 

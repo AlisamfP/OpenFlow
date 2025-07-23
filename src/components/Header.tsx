@@ -8,6 +8,9 @@ import {
     Button,
     Menu,
     MenuItem,
+    ListItemButton,
+    ListItemText,
+    ListItemIcon,
     AppBar,
     Toolbar,
 } from "@mui/material";
@@ -57,69 +60,76 @@ const LINKS: LinkItem[] = [
     },
 ];
 
+// Hoizontal Buttons for Desktop
 function NavListDesktop(): JSX.Element {
     return (
-        <Box sx={{flexGrow: 1, display: { xs: 'none', md: 'flex'}}}>
-        {LINKS.map(({ icon: Icon, title, href }) => {
-            if (title === "Audio Toggle") {
-                return (
-                    <div key={title}>
+        <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+            {LINKS.map(({ icon: Icon, title, href }) => {
+                if (title === "Audio Toggle") {
+                    return (
+                        <div key={title}>
 
-                        <AudioToggle />
-                    </div>
-                );
-            }
-            if (title === "Dark Mode Toggle") {
-                return (
-                    <div key={title}>
+                            <AudioToggle />
+                        </div>
+                    );
+                }
+                if (title === "Dark Mode Toggle") {
+                    return (
+                        <div key={title}>
 
-                    <DarkModeToggle />
-                    </div>
-                );
-            } else {
-                return (
-                    <Button key={title}>
-                        <Typography component="a" href={href} className="text-text">
-                            {Icon && <Icon />}
-                            {title}
-                        </Typography>
-                    </Button>
-                );
-            }
-        })}        
+                            <DarkModeToggle />
+                        </div>
+                    );
+                } else {
+                    return (
+                        <Button key={title}>
+                            <Typography component="a" href={href} className="text-text">
+                                {Icon && <Icon />}
+                                {title}
+                            </Typography>
+                        </Button>
+                    );
+                }
+            })}
         </Box>
     )
 }
 
+// Drop Down Nav List On Mobile
 function NavDropDownList(): JSX.Element {
     return (
-    <>
-        {LINKS.map(({ icon: Icon, title, href }) => {
-            if (title === "Audio Toggle") {
-                return (
-                    <MenuItem key={title} className="hover:bg-primary-alt p-2 rounded-md">
-                        <AudioToggle />
-                    </MenuItem>
-                );
-            }
-            if (title === "Dark Mode Toggle") {
-                return (
-                    <MenuItem key={title} className="hover:bg-primary-alt p-2 rounded-md">
-                        <DarkModeToggle />
-                    </MenuItem>
-                );
-            } else {
-                return (
-                    <MenuItem key={title}>
-                        <Typography component="a" href={href} className="text-text">
-                            {Icon && <Icon />}
-                            {title}
-                        </Typography>
-                    </MenuItem>
-                );
-            }
-        })}
-    </>
+        <>
+            {LINKS.map(({ icon: Icon, title, href }) => {
+                if (title === "Audio Toggle") {
+                    return (
+                        <MenuItem key={title} >
+                            <AudioToggle />
+                        </MenuItem>
+                    );
+                }
+                if (title === "Dark Mode Toggle") {
+                    return (
+                        <MenuItem key={title}>
+                            <DarkModeToggle />
+                        </MenuItem>
+                    );
+                } else {
+                    return (
+                        <MenuItem key={title} component="a" href={href}>
+                            <ListItemIcon
+                                key={`${title}-icon`}
+                            >
+                                {Icon && <Icon />}
+                            </ListItemIcon>
+                            <ListItemText>
+
+                                {title}
+                            </ListItemText>
+                        </MenuItem>
+                    );
+                }
+            })}
+        </>
 
     );
 }
@@ -136,7 +146,7 @@ function Header() {
     }
 
     return (
-        <AppBar>
+        <AppBar color="primary" enableColorOnDark>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <Typography
@@ -146,14 +156,15 @@ function Header() {
                         href="index.html"
                         sx={{
                             mr: 2,
-                            display: {xs: 'none', md: 'flex'},
+                            display: { xs: 'none', md: 'flex' },
                             textDecoration: 'none',
-                            fontSize: '2.75em'
+                            fontSize: '2.75em',
+                            color: 'text.primary'
                         }}
                     >
                         Open Flow
                     </Typography>
-                    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none'}}}>
+                    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                         <IconButton
                             size="large"
                             aria-controls="nav-menu"
@@ -177,7 +188,7 @@ function Header() {
                             open={Boolean(openNav)}
                             onClose={handleNavClose}
                             sx={{
-                                display: {xs: 'block', md: 'none'}
+                                display: { xs: 'block', md: 'none' }
                             }}
                         >
                             <NavDropDownList />
@@ -190,15 +201,25 @@ function Header() {
                         href="index.html"
                         sx={{
                             mr: 2,
-                            display: {xs: 'flex', md: 'none'},
+                            p: 2,
+                            color: 'text.primary',
+                            display: { xs: 'flex', md: 'none' },
                             flexGrow: 1,
                             textDecoration: 'none',
-                            fontSize: '2.75em'
+                            textUnderlineOffset: '0.75rem',
+                            fontSize: '2.75em',
+                            '& a': {
+                                color: "inherit",
+                            },
+                            '&:hover': {
+                                textDecoration: 'underline',
+                                textDecorationColor: 'text.primary'
+                            }
                         }}
                     >
                         Open Flow
                     </Typography>
-                    <NavListDesktop/>
+                    <NavListDesktop />
                 </Toolbar>
             </Container>
 
