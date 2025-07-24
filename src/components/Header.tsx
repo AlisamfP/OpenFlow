@@ -22,47 +22,58 @@ import { useAudioToggle } from "../hooks/useAudioToggle";
 
 import type { ComponentType, SVGProps } from "react";
 
+interface HeaderProps {
+    currentPage: "cards" | "custom" | "settings";
+    setPage: React.Dispatch<React.SetStateAction<"cards" | "custom" | "settings">>;
+}
+
 interface LinkItem {
     icon: ComponentType<SVGProps<SVGSVGElement>> | null;
     title: string;
-    href: string;
+    page: string;
 }
 
 const LINKS: LinkItem[] = [
     {
         icon: PiCards,
         title: "Cards",
-        href: "#",
+        page: "cards"
     },
     {
         icon: PiPlus,
         title: "Custom Cards",
-        href: "#",
+        page: "custom"
     },
     {
         icon: PiGear,
         title: "Settings",
-        href: "#",
+        page: "settings"
     },
     {
         icon: null,
         title: "Audio Toggle",
-        href: "#",
+        page: "#"
     },
     {
         icon: null,
         title: "Dark Mode Toggle",
-        href: "#",
+        page: "#"
     },
 ];
 
 // Hoizontal Buttons for Desktop
-function NavListDesktop(): JSX.Element {
+function NavListDesktop({
+    setPage, 
+    currentPage
+}: {
+    setPage: HeaderProps['setPage'];
+    currentPage: HeaderProps['currentPage'];
+}): JSX.Element {
     const { isDark, toggleMode } = useDarkMode();
     const { isAudioOn, toggleAudio } = useAudioToggle();
     return (
         <Box sx={{ display: { xs: "none", lg: "grid" }, gridTemplateColumns: 'repeat(5, max-content)', justifyContent: 'end', width: '100%', gap: 4 }}>
-            {LINKS.map(({ icon: Icon, title, href }) => {
+            {LINKS.map(({ icon: Icon, title, page }) => {
                 if (title === "Audio Toggle") {
                     return (    
                         <Tooltip key={title} title={isAudioOn ? "Audio On" : "Audio Off"}>
@@ -83,12 +94,11 @@ function NavListDesktop(): JSX.Element {
                 } else {
                     return (
                         <Button
-                            variant="text"
+                            variant={currentPage === page ? "contained": "text"}
                             color="text.primary"
                             key={title}
                             startIcon={Icon && <Icon />}
-                            component="a"
-                            href={href}
+                            onClick={() => page && setPage(page as HeaderProps['currentPage'])}
                         >
                             {title}
                         </Button>
@@ -101,12 +111,18 @@ function NavListDesktop(): JSX.Element {
 }
 
 // Drop Down Nav List On Mobile
-function NavDropDownList(): JSX.Element {
+function NavDropDownList({
+    setPage, 
+    currentPage
+}: {
+    setPage: HeaderProps['setPage'];
+    currentPage: HeaderProps['currentPage'];
+}): JSX.Element {
     const { isDark, toggleMode } = useDarkMode();
     const { isAudioOn, toggleAudio } = useAudioToggle();
     return (
         <>
-            {LINKS.map(({ icon: Icon, title, href }) => {
+            {LINKS.map(({ icon: Icon, title, page }) => {
                 if (title === "Audio Toggle") {
                     return (
                         <MenuItem key={title}>
@@ -154,7 +170,16 @@ function NavDropDownList(): JSX.Element {
                     );
                 } else {
                     return (
-                        <MenuItem key={title} component="a" href={href}>
+                        <MenuItem 
+                            key={title}
+                            selected={page === currentPage} 
+                            onClick={(e) => {
+                                e.preventDefault();
+                                if(page && page !== "#"){
+                                    setPage(page as HeaderProps['currentPage'])
+                                }
+                            }}
+                        >
                             <ListItemIcon key={`${title}-icon`}>
                                 {Icon && <Icon />}
                             </ListItemIcon>
@@ -167,8 +192,7 @@ function NavDropDownList(): JSX.Element {
     );
 }
 
-function Header() {
-
+function Header({currentPage, setPage}: HeaderProps) {
     const [openNav, setOpenNav] = useState<null | HTMLElement>(null);
 
     const handleNavOpen = (e: React.MouseEvent<HTMLElement>) => {
@@ -226,7 +250,7 @@ function Header() {
                                 display: { xs: "block", lg: "none" },
                             }}
                         >
-                            <NavDropDownList />
+                            <NavDropDownList setPage={setPage} currentPage={currentPage} />
                         </Menu>
                     </Box>
                     <Typography
@@ -254,7 +278,7 @@ function Header() {
                     >
                         Open Flow
                     </Typography>
-                    <NavListDesktop />
+                    <NavListDesktop setPage={setPage} currentPage={currentPage} />
                 </Toolbar>
             </Container>
         </AppBar>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {
+    Container,
     FormControl,
     FormControlLabel,
     FormGroup,
@@ -72,8 +73,8 @@ const Settings: React.FC = () => {
     }
 
     return (
-        <section id="settings">
-            <Typography variant="h3" color="primary">Settings</Typography>
+        <Container id="settings" sx={{ p: 2 }}>
+            <Typography variant="h3" color="primary" sx={{ py: 2 }}>Settings</Typography>
 
             <form aria-label="settings form">
                 <FormControl fullWidth>
@@ -92,68 +93,64 @@ const Settings: React.FC = () => {
                     </Select>
                 </FormControl>
 
-                <fieldset className="voiceSettings">
-                    <legend>Voice Settings</legend>
 
-                    <FormControl fullWidth margin="normal" disabled={voices.length === 0}>
-                        <InputLabel id="voice-label">{voices.length === 0 ? "Loading Voices....." : "Change Spoken Voice"}</InputLabel>
-                            {voices.length === 0 ? (
-                                <Select labelId="voice-label" id='voice-select' label="Loading Voices....." value="" disabled>
-                                    <MenuItem disabled value=""></MenuItem>
-                                </Select>
-                        ) : (
-                            <Select
-                                label="Change Spoken Voice"
-                                labelId="voice-label"
-                                value={selectedVoice}
-                                onChange={saveVoice}
-                                >
+
+                <FormControl fullWidth margin="normal" disabled={voices.length === 0}>
+                    <InputLabel id="voice-label">{voices.length === 0 ? "Loading Voices....." : "Change Spoken Voice"}</InputLabel>
+                    {voices.length === 0 ? (
+                        <Select labelId="voice-label" id='voice-select' label="Loading Voices....." value="" disabled>
+                            <MenuItem disabled value=""></MenuItem>
+                        </Select>
+                    ) : (
+                        <Select
+                            label="Change Spoken Voice"
+                            labelId="voice-label"
+                            value={selectedVoice}
+                            onChange={saveVoice}
+                        >
                             {voices.map((voice) => (
                                 <MenuItem key={voice.voiceURI} value={voice.voiceURI}>
-                                    {voice.name} ({voice.lang}){voice.default ? "XX" : ""}
+                                    {voice.name} ({voice.lang})
                                 </MenuItem>
                             ))}
                         </Select>
-                        )}
-                    </FormControl>
+                    )}
+                </FormControl>
 
-                    <FormControl component="fieldset" variant="standard" sx={{ border: '2px solid', borderColor: 'primary.main', p: 4 }}>
-                        <FormLabel component="legend">Adjust Voice Characteristics</FormLabel>
-                        <FormGroup sx={{ minHeight: '250px', gap: 4 }} row>
-                            {ALL_TTS_VOICE_SETTINGS.map(({ title, min, max, value, setValue }) => (
-                                <FormControlLabel
-                                    key={title}
-                                    label={title}
-                                    labelPlacement="bottom"
-                                    slotProps={{
-                                        typography: {
-                                            'color': 'text.primary'
-                                        }
+                <FormControl component="fieldset" variant="standard" sx={{ border: '2px solid', borderColor: 'primary.main', p: 4 }}>
+                    <FormLabel component="legend">Adjust Voice Characteristics</FormLabel>
+                    <FormGroup sx={{ minHeight: '250px', gap: 4 }} row>
+                        {ALL_TTS_VOICE_SETTINGS.map(({ title, min, max, value, setValue }) => (
+                            <FormControlLabel
+                                key={title}
+                                label={title}
+                                labelPlacement="bottom"
+                                slotProps={{
+                                    typography: {
+                                        'color': 'text.primary'
                                     }
-                                    }
-                                    control={
-                                        <Slider
-                                            orientation="vertical"
-                                            aria-label={title}
-                                            value={value}
-                                            onChange={handleSliderChange(title, setValue)}
-                                            min={min}
-                                            max={max}
-                                            step={0.25}
-                                            valueLabelDisplay="auto"
-                                        />
+                                }
+                                }
+                                control={
+                                    <Slider
+                                        orientation="vertical"
+                                        aria-label={title}
+                                        value={value}
+                                        onChange={handleSliderChange(title, setValue)}
+                                        min={min}
+                                        max={max}
+                                        step={0.25}
+                                        valueLabelDisplay="auto"
+                                    />
 
-                                    }
-                                />
-                            ))}
+                                }
+                            />
+                        ))}
 
-                        </FormGroup>
-                    </FormControl>
-                </fieldset>
-
-                <button id="saveSettings" type="submit" className="button-primary">Save Settings</button>
+                    </FormGroup>
+                </FormControl>
             </form>
-        </section>
+        </Container>
     )
 }
 

@@ -4,6 +4,7 @@ import CategoryTabs from "./components/CategoryTabs.tsx";
 
 import Settings from "./components/Settings.tsx";
 import { Box, Container, createTheme, ThemeProvider } from "@mui/material";
+import { useState } from "react";
 
 
 const darkTheme = createTheme({
@@ -50,18 +51,23 @@ const darkTheme = createTheme({
 });
 
 function App() {
+    const [page, setPage] = useState<"cards" | "custom" | "settings">("cards");
 
     return (
         <ThemeProvider theme={darkTheme} defaultMode="light">
             <Box sx={{ height: '100%', backgroundColor: 'background.default' }}>
-                <Header />
-                <Container sx={{ backgroundColor: 'background.default', marginTop: 5 }}>
-                    <Box>
-                        <Settings />
-                    </Box>
-                    <Box sx={{ p: 4 }}>
-                        <CategoryTabs />
-                    </Box>
+                <Header setPage={setPage} currentPage={page} />
+                <Container sx={{ backgroundColor: 'background.default', marginTop: 10 }}>
+                    {page === "settings" && (
+                        <Box>
+                            <Settings />
+                        </Box>
+                    )}
+                    {page === "cards" && (
+                        <Box sx={{ p: 4 }}>
+                            <CategoryTabs />
+                        </Box>
+                    )}
                 </Container>
                 <Footer />
             </Box>

@@ -69,7 +69,7 @@ const CategoryTabs: React.FC = () => {
     
     return (
         <Box>
-            <Tabs value={selectedCatIndex} onChange={handleTabChange} sx={{ mt: 7, backgroundColor: 'background.default', mb: 2, p:1, borderRadius: 1}} variant="fullWidth">
+            <Tabs value={selectedCatIndex} onChange={handleTabChange} sx={{  backgroundColor: 'background.default', mb: 2, p:1, borderRadius: 1}} variant="fullWidth">
                 {tabKeys.map((tab, i) => (
                     <Tab
                         key={tab}
