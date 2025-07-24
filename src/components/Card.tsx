@@ -6,6 +6,7 @@ interface CardProps {
     isFav: boolean;
     text: string;
     icon?: Emoji;
+    onClick: () => void;
     onToggleFavorite: () => void;
 }
 
@@ -15,7 +16,7 @@ interface Emoji {
 }
 
 
-export const Card = ({ isFav, text, icon, onToggleFavorite }: CardProps) => {
+export const Card = ({ isFav, text, icon, onClick, onToggleFavorite }: CardProps) => {
 
 
     return (
@@ -30,7 +31,10 @@ export const Card = ({ isFav, text, icon, onToggleFavorite }: CardProps) => {
                 action={
                     <IconButton
                         aria-label={isFav ? "Remove From Favorites" : "Add To Favorites"}
-                        onClick={onToggleFavorite}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onToggleFavorite()
+                        }}
                         size="medium"
                         sx={{
                             color: isFav ? pink[400] : 'secondary.main',
@@ -45,7 +49,7 @@ export const Card = ({ isFav, text, icon, onToggleFavorite }: CardProps) => {
 
                 }
             />
-            <CardActionArea>
+            <CardActionArea onClick={onClick}>
                 <CardContent sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1 }}>
                     {icon &&
                         <Box

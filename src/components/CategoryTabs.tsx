@@ -3,6 +3,7 @@ import { Box, Tabs, Tab } from "@mui/material";
 import { Card } from "./Card";
 import { CardList } from "../assets/CardList";
 import useLocalStorage from "../hooks/useLocalStorage";
+import { useTTS } from "../hooks/useTTS";
 
 interface Emoji {
     name: string;
@@ -31,8 +32,9 @@ function a11yProps(index: number) {
 
 
 const CategoryTabs: React.FC = () => {
-    const [ favCardIds, setFavCardIds ] = useLocalStorage<string[]>("favCardIds", [])
-
+    const [ favCardIds, setFavCardIds ] = useLocalStorage<string[]>("favCardIds", []);
+    const { speak, voices } = useTTS();
+    
     const toggleFavorite = (id: string) => {
         setFavCardIds(prev =>
             prev.includes(id) ? prev.filter(favId => favId !== id) : [...prev, id]
@@ -46,9 +48,25 @@ const CategoryTabs: React.FC = () => {
     const handleTabChange = (e: React.SyntheticEvent, newValue: number) => {
         setselectedCatIndex(newValue)
     }
-
+    
     const selectedCards = cards[tabKeys[selectedCatIndex]];
 
+    const pitch = parseFloat(localStorage.getItem("pitch")|| "1");
+    const rate = parseFloat(localStorage.getItem("rate")|| "1");
+    const volume = parseFloat(localStorage.getItem("volume")|| "1");
+    const savedVoice = localStorage.getItem("voice") || "";
+
+    const handleCardClick = (text:string) => {
+        const voice = voices.find(v => v.voiceURI === savedVoice) || null;
+        speak({
+            text, 
+            pitch, 
+            rate, 
+            volume, 
+            voice
+        })
+    }
+    
     return (
         <Box>
             <Tabs value={selectedCatIndex} onChange={handleTabChange} sx={{ mt: 7, backgroundColor: 'background.default', mb: 2, p:1, borderRadius: 1}} variant="fullWidth">
@@ -67,6 +85,7 @@ const CategoryTabs: React.FC = () => {
                         text={text} 
                         icon={icon} 
                         isFav={favCardIds.includes(id)}
+                        onClick={() => handleCardClick(text)}
                         onToggleFavorite={()=> toggleFavorite(id)} 
                     />
                 ))}

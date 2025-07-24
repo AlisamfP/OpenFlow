@@ -56,11 +56,11 @@ function App() {
             <Box sx={{ height: '100%', backgroundColor: 'background.default' }}>
                 <Header />
                 <Container sx={{ backgroundColor: 'background.default', marginTop: 5 }}>
-                    <Box sx={{ p: 4 }}>
-                        {/* <CategoryTabs /> */}
-                    </Box>
                     <Box>
                         <Settings />
+                    </Box>
+                    <Box sx={{ p: 4 }}>
+                        <CategoryTabs />
                     </Box>
                 </Container>
                 <Footer />
