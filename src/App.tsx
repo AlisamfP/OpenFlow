@@ -6,7 +6,7 @@ import Settings from "./components/Settings.tsx";
 import { Box, Container, createTheme, ThemeProvider } from "@mui/material";
 
 
-const darkTheme = createTheme({  
+const darkTheme = createTheme({
     colorSchemes: {
         light: {
             palette: {
@@ -53,25 +53,16 @@ function App() {
 
     return (
         <ThemeProvider theme={darkTheme} defaultMode="light">
-
-            <Box sx={{
-                height: '100%',
-                backgroundColor: 'background.default'
-            }} className="font-nunito grid grid-rows-[min-content_1fr_min-content] h-full text-text bg-background text-base my-0 mx-auto w-full">
+            <Box sx={{ height: '100%', backgroundColor: 'background.default' }}>
                 <Header />
-                <Container sx={{
-                    backgroundColor: 'background.default'
-                }}>
-
-                    <Box sx={{
-                        p: 4
-                    }}>
-                        <CategoryTabs />
+                <Container sx={{ backgroundColor: 'background.default', marginTop: 5 }}>
+                    <Box sx={{ p: 4 }}>
+                        {/* <CategoryTabs /> */}
                     </Box>
                     <Box>
-                        {/* <Settings /> */}
+                        <Settings />
                     </Box>
-                        </Container>
+                </Container>
                 <Footer />
             </Box>
         </ThemeProvider>

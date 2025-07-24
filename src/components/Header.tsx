@@ -17,11 +17,10 @@ import {
 } from "@mui/material";
 import { PiCards, PiGear, PiList, PiPlus, PiMoonStars, PiSun, PiSpeakerHigh, PiSpeakerSlash } from "react-icons/pi";
 
-import AudioToggle from "./AudioToggle";
 import { useDarkMode } from "../hooks/useDarkMode";
+import { useAudioToggle } from "../hooks/useAudioToggle";
 
 import type { ComponentType, SVGProps } from "react";
-import { useAudioToggle } from "../hooks/useAudioToggle";
 
 interface LinkItem {
     icon: ComponentType<SVGProps<SVGSVGElement>> | null;
@@ -65,7 +64,7 @@ function NavListDesktop(): JSX.Element {
         <Box sx={{ display: { xs: "none", lg: "grid" }, gridTemplateColumns: 'repeat(5, max-content)', justifyContent: 'end', width: '100%', gap: 4 }}>
             {LINKS.map(({ icon: Icon, title, href }) => {
                 if (title === "Audio Toggle") {
-                    return (
+                    return (    
                         <Tooltip key={title} title={isAudioOn ? "Audio On" : "Audio Off"}>
                             <IconButton onClick={toggleAudio} color="inherit" size="small" sx={{ ml: 1 }}>
                                 {isAudioOn ? <PiSpeakerHigh /> : <PiSpeakerSlash />}
@@ -259,39 +258,6 @@ function Header() {
                 </Toolbar>
             </Container>
         </AppBar>
-        // <header className="bg-secondary">
-
-        //     <Navbar className="mx-auto w-full max-w-screen bg-secondary">
-        //         <div className="flex items-center gap-4">
-        //             <Typography
-        //                 as="a"
-        //                 type="h1"
-        //                 href="index.html"
-        //                 className={`-ml-2 block py-1 px-6 font-semibold min-w-max ${openNav ? "border-b-2" : ""}`}
-        //             >
-        //                 Open Flow
-        //             </Typography>
-        //             <div className="hidden lg:block w-full">
-        //                 <NavList />
-        //             </div>
-        //             <IconButton
-        //                 size="lg"
-        //                 onClick={() => setOpenNav(!openNav)}
-        //                 className="ml-auto grid lg:hidden"
-        //             >
-        //                 {openNav ? (
-        //                     <PiX className="text-2xl" />
-        //                 ) : (
-        //                     <PiList className="text-2xl" />
-        //                 )}
-        //             </IconButton>
-        //         </div>
-        //         <Collapse open={openNav}>
-        //             <NavList />
-        //         </Collapse>
-        //     </Navbar>
-
-        // </header>
     );
 }
 
