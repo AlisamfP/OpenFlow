@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Box, Tabs, Tab } from "@mui/material";
 import { Card } from "./Card";
 import { CardList } from "../assets/CardList";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 interface Emoji {
     name: string;
@@ -9,9 +10,9 @@ interface Emoji {
 }
 
 interface CardData {
+    id: string;
     icon: Emoji | undefined;
     text: string;
-    isFav: boolean;
 }
 
 interface Cards {
@@ -28,19 +29,29 @@ function a11yProps(index: number) {
     }
 }
 
+
 const CategoryTabs: React.FC = () => {
-    const cards: Cards = CardList();
+    const [ favCardIds, setFavCardIds ] = useLocalStorage<string[]>("favCardIds", [])
+
+    const toggleFavorite = (id: string) => {
+        setFavCardIds(prev =>
+            prev.includes(id) ? prev.filter(favId => favId !== id) : [...prev, id]
+        );
+    };
+
+    const cards = CardList();
     const tabKeys = Object.keys(cards) as (keyof Cards)[];
     const [selectedCatIndex, setselectedCatIndex] = useState(0);
-    
+
     const handleTabChange = (e: React.SyntheticEvent, newValue: number) => {
         setselectedCatIndex(newValue)
     }
 
-    return (
-        <Box className="bg-background mt-5">
+    const selectedCards = cards[tabKeys[selectedCatIndex]];
 
-            <Tabs value={selectedCatIndex} onChange={handleTabChange} sx={{marginTop: '5em'}} variant="fullWidth">
+    return (
+        <Box>
+            <Tabs value={selectedCatIndex} onChange={handleTabChange} sx={{ mt: 7, backgroundColor: 'background.default', mb: 2, p:1, borderRadius: 1}} variant="fullWidth">
                 {tabKeys.map((tab, i) => (
                     <Tab
                         key={tab}
@@ -49,9 +60,15 @@ const CategoryTabs: React.FC = () => {
                     </Tab>
                 ))}
             </Tabs>
-            <Box role="tabpanel" id={`tabpanel-${selectedCatIndex}`} aria-labelledby={`tab-${selectedCatIndex}`} sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: '1em' }}>
-                {cards[tabKeys[selectedCatIndex]].map(({ text, icon, isFav }: CardData, i: number) => (
-                    <Card key={text + i} text={text} icon={icon} isFav={isFav} />
+            <Box role="tabpanel" id={`tabpanel-${selectedCatIndex}`} aria-labelledby={`tab-${selectedCatIndex}`} sx={{ display: 'flex', flexDirection: 'column', gap: '1em' }}>
+                {selectedCards.map(({ text, icon, id }: CardData) => (
+                    <Card 
+                        key={id} 
+                        text={text} 
+                        icon={icon} 
+                        isFav={favCardIds.includes(id)}
+                        onToggleFavorite={()=> toggleFavorite(id)} 
+                    />
                 ))}
             </Box>
         </Box>

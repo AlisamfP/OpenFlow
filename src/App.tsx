@@ -3,7 +3,7 @@ import Footer from "./components/Footer.tsx";
 import CategoryTabs from "./components/CategoryTabs.tsx";
 
 import Settings from "./components/Settings.tsx";
-import { createTheme, ThemeProvider } from "@mui/material";
+import { Box, Container, createTheme, ThemeProvider } from "@mui/material";
 
 
 const darkTheme = createTheme({  
@@ -54,18 +54,26 @@ function App() {
     return (
         <ThemeProvider theme={darkTheme} defaultMode="light">
 
-            <div className="font-nunito grid grid-rows-[min-content_1fr_min-content] h-full text-text bg-background text-base my-0 mx-auto w-full">
+            <Box sx={{
+                height: '100%',
+                backgroundColor: 'background.default'
+            }} className="font-nunito grid grid-rows-[min-content_1fr_min-content] h-full text-text bg-background text-base my-0 mx-auto w-full">
                 <Header />
-                <main>
-                    <div className="flex flex-col p-4">
+                <Container sx={{
+                    backgroundColor: 'background.default'
+                }}>
+
+                    <Box sx={{
+                        p: 4
+                    }}>
                         <CategoryTabs />
-                    </div>
-                    <div>
+                    </Box>
+                    <Box>
                         {/* <Settings /> */}
-                    </div>
-                </main>
+                    </Box>
+                        </Container>
                 <Footer />
-            </div>
+            </Box>
         </ThemeProvider>
     );
 }

@@ -1,30 +1,27 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import {
+    AppBar,
     Box,
+    Button,
     Container,
     IconButton,
-    Typography,
-    Button,
+    ListItemIcon,
+    ListItemText,
     Menu,
     MenuItem,
-    ListItemButton,
-    ListItemText,
-    ListItemIcon,
-    AppBar,
+    Switch,
     Toolbar,
+    Tooltip,
+    Typography
 } from "@mui/material";
-import {
-    PiCards,
-    PiGear,
-    PiList,
-    PiPlus
-} from "react-icons/pi";
+import { PiCards, PiGear, PiList, PiPlus, PiMoonStars, PiSun, PiSpeakerHigh, PiSpeakerSlash } from "react-icons/pi";
 
 import AudioToggle from "./AudioToggle";
-import DarkModeToggle from "./DarkModeToggle";
+import { useDarkMode } from "../hooks/useDarkMode";
 
 import type { ComponentType, SVGProps } from "react";
+import { useAudioToggle } from "../hooks/useAudioToggle";
 
 interface LinkItem {
     icon: ComponentType<SVGProps<SVGSVGElement>> | null;
@@ -62,91 +59,129 @@ const LINKS: LinkItem[] = [
 
 // Hoizontal Buttons for Desktop
 function NavListDesktop(): JSX.Element {
+    const { isDark, toggleMode } = useDarkMode();
+    const { isAudioOn, toggleAudio } = useAudioToggle();
     return (
-        <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+        <Box sx={{ display: { xs: "none", lg: "grid" }, gridTemplateColumns: 'repeat(5, max-content)', justifyContent: 'end', width: '100%', gap: 4 }}>
             {LINKS.map(({ icon: Icon, title, href }) => {
                 if (title === "Audio Toggle") {
                     return (
-                        <div key={title}>
-
-                            <AudioToggle />
-                        </div>
+                        <Tooltip key={title} title={isAudioOn ? "Audio On" : "Audio Off"}>
+                            <IconButton onClick={toggleAudio} color="inherit" size="small" sx={{ ml: 1 }}>
+                                {isAudioOn ? <PiSpeakerHigh /> : <PiSpeakerSlash />}
+                            </IconButton>
+                        </Tooltip>
                     );
                 }
                 if (title === "Dark Mode Toggle") {
                     return (
-                        <div key={title}>
-
-                            <DarkModeToggle />
-                        </div>
+                        <Tooltip key={title} title={isDark ? "Dark Mode" : "Light Mode"}>
+                            <IconButton onClick={toggleMode} color="inherit" size="small" sx={{ ml: 1 }}>
+                                {isDark ? <PiMoonStars /> : <PiSun />}
+                            </IconButton>
+                        </Tooltip>
                     );
                 } else {
                     return (
-                        <Button key={title}>
-                            <Typography component="a" href={href} className="text-text">
-                                {Icon && <Icon />}
-                                {title}
-                            </Typography>
+                        <Button
+                            variant="text"
+                            color="text.primary"
+                            key={title}
+                            startIcon={Icon && <Icon />}
+                            component="a"
+                            href={href}
+                        >
+                            {title}
                         </Button>
+
                     );
                 }
             })}
         </Box>
-    )
+    );
 }
 
 // Drop Down Nav List On Mobile
 function NavDropDownList(): JSX.Element {
+    const { isDark, toggleMode } = useDarkMode();
+    const { isAudioOn, toggleAudio } = useAudioToggle();
     return (
         <>
             {LINKS.map(({ icon: Icon, title, href }) => {
                 if (title === "Audio Toggle") {
                     return (
-                        <MenuItem key={title} >
-                            <AudioToggle />
+                        <MenuItem key={title}>
+                            <ListItemIcon sx={{ minWidth: "30px" }}>
+                                {isAudioOn ? <PiSpeakerHigh /> : <PiSpeakerSlash />}
+                            </ListItemIcon>
+                            <ListItemText>
+                                {isAudioOn ? "Audio On" : "Audio Off"}
+                            </ListItemText>
+                            <Switch
+                                edge="end"
+                                checked={isAudioOn}
+                                onChange={toggleAudio}
+                                slotProps={{
+                                    input: {
+                                        "aria-label": "Audio Toggle Switch",
+                                    },
+                                }}
+                                color="secondary"
+                            />
                         </MenuItem>
                     );
                 }
                 if (title === "Dark Mode Toggle") {
                     return (
                         <MenuItem key={title}>
-                            <DarkModeToggle />
+                            <ListItemIcon sx={{ minWidth: "30px" }}>
+                                {isDark ? <PiMoonStars /> : <PiSun />}
+                            </ListItemIcon>
+                            <ListItemText>
+                                {isDark ? "Dark Mode Active" : "Light Mode Active"}
+                            </ListItemText>
+                            <Switch
+                                edge="end"
+                                checked={isDark}
+                                onChange={toggleMode}
+                                slotProps={{
+                                    input: {
+                                        "aria-label": "Dark Mode Switch",
+                                    },
+                                }}
+                                color="secondary"
+                            />
                         </MenuItem>
                     );
                 } else {
                     return (
                         <MenuItem key={title} component="a" href={href}>
-                            <ListItemIcon
-                                key={`${title}-icon`}
-                            >
+                            <ListItemIcon key={`${title}-icon`}>
                                 {Icon && <Icon />}
                             </ListItemIcon>
-                            <ListItemText>
-
-                                {title}
-                            </ListItemText>
+                            <ListItemText>{title}</ListItemText>
                         </MenuItem>
                     );
                 }
             })}
         </>
-
     );
 }
 
 function Header() {
+
     const [openNav, setOpenNav] = useState<null | HTMLElement>(null);
 
     const handleNavOpen = (e: React.MouseEvent<HTMLElement>) => {
         setOpenNav(e.currentTarget);
-    }
+    };
 
     const handleNavClose = () => {
         setOpenNav(null);
-    }
+    };
 
     return (
-        <AppBar color="primary" enableColorOnDark>
+        <AppBar color="primary" enableColorOnDark sx={{ p: 1 }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <Typography
@@ -156,15 +191,16 @@ function Header() {
                         href="index.html"
                         sx={{
                             mr: 2,
-                            display: { xs: 'none', md: 'flex' },
-                            textDecoration: 'none',
-                            fontSize: '2.75em',
-                            color: 'text.primary'
+                            minWidth: '9ch',
+                            display: { xs: "none", lg: "flex" },
+                            textDecoration: "none",
+                            fontSize: "2.75em",
+                            color: "text.primary",
                         }}
                     >
                         Open Flow
                     </Typography>
-                    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+                    <Box sx={{ flexGrow: 1, display: { xs: "flex", lg: "none" } }}>
                         <IconButton
                             size="large"
                             aria-controls="nav-menu"
@@ -177,18 +213,18 @@ function Header() {
                             id="nav-menu"
                             anchorEl={openNav}
                             anchorOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'left',
+                                vertical: "bottom",
+                                horizontal: "left",
                             }}
                             keepMounted
                             transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'left',
+                                vertical: "top",
+                                horizontal: "left",
                             }}
                             open={Boolean(openNav)}
                             onClose={handleNavClose}
                             sx={{
-                                display: { xs: 'block', md: 'none' }
+                                display: { xs: "block", lg: "none" },
                             }}
                         >
                             <NavDropDownList />
@@ -202,19 +238,19 @@ function Header() {
                         sx={{
                             mr: 2,
                             p: 2,
-                            color: 'text.primary',
-                            display: { xs: 'flex', md: 'none' },
+                            color: "text.primary",
+                            display: { xs: "flex", lg: "none" },
                             flexGrow: 1,
-                            textDecoration: 'none',
-                            textUnderlineOffset: '0.75rem',
-                            fontSize: '2.75em',
-                            '& a': {
+                            textDecoration: "none",
+                            textUnderlineOffset: "0.75rem",
+                            fontSize: "2.75em",
+                            "& a": {
                                 color: "inherit",
                             },
-                            '&:hover': {
-                                textDecoration: 'underline',
-                                textDecorationColor: 'text.primary'
-                            }
+                            "&:hover": {
+                                textDecoration: "underline",
+                                textDecorationColor: "text.primary",
+                            },
                         }}
                     >
                         Open Flow
@@ -222,7 +258,6 @@ function Header() {
                     <NavListDesktop />
                 </Toolbar>
             </Container>
-
         </AppBar>
         // <header className="bg-secondary">
 
