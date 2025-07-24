@@ -21,8 +21,6 @@ interface Cards {
 const getCustomCards = (): CardData[] => {
     const customCards = localStorage.getItem("customCards");
     if(typeof customCards === 'string' && customCards.trim() != "") {
-        console.log("There are custom cards in local storage...")
-        console.log(JSON.parse(customCards))
         return JSON.parse(customCards);
     }
     return [];

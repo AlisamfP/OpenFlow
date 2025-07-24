@@ -3,6 +3,7 @@ import Footer from "./components/Footer.tsx";
 import CategoryTabs from "./components/CategoryTabs.tsx";
 
 import Settings from "./components/Settings.tsx";
+import CustomCardForm from "./components/Custom.tsx";
 import { Box, Container, createTheme, ThemeProvider } from "@mui/material";
 import { useState } from "react";
 
@@ -58,16 +59,17 @@ function App() {
             <Box sx={{ height: '100%', backgroundColor: 'background.default' }}>
                 <Header setPage={setPage} currentPage={page} />
                 <Container sx={{ backgroundColor: 'background.default', marginTop: 10 }}>
-                    {page === "settings" && (
-                        <Box>
+                    <Box sx={{ p: 4 }}>
+                        {page === "settings" && (
                             <Settings />
-                        </Box>
-                    )}
-                    {page === "cards" && (
-                        <Box sx={{ p: 4 }}>
+                        )}
+                        {page === "custom" && (
+                            <CustomCardForm />
+                        )}
+                        {page === "cards" && (
                             <CategoryTabs />
-                        </Box>
-                    )}
+                        )}
+                    </Box>
                 </Container>
                 <Footer />
             </Box>
