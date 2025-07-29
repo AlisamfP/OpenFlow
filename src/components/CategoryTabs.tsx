@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Box, Tabs, Tab } from "@mui/material";
+import { Box, Tabs, Tab, Container } from "@mui/material";
 import { Card } from "./Card";
 import { CardList } from "../assets/CardList";
 import useLocalStorage from "../hooks/useLocalStorage";
@@ -42,8 +42,9 @@ const CategoryTabs: React.FC = () => {
     };
 
     const cards = CardList();
+    const categoryPref = localStorage.getItem("categoryPref") as keyof Cards
     const tabKeys = Object.keys(cards) as (keyof Cards)[];
-    const [selectedCatIndex, setselectedCatIndex] = useState(0);
+    const [selectedCatIndex, setselectedCatIndex] = useState(categoryPref ? tabKeys.indexOf(categoryPref) : 0);
 
     const handleTabChange = (e: React.SyntheticEvent, newValue: number) => {
         setselectedCatIndex(newValue)
@@ -68,7 +69,7 @@ const CategoryTabs: React.FC = () => {
     }
     
     return (
-        <Box>
+        <Container>
             <Tabs value={selectedCatIndex} onChange={handleTabChange} sx={{  backgroundColor: 'background.default', mb: 2, p:1, borderRadius: 1}} variant="fullWidth">
                 {tabKeys.map((tab, i) => (
                     <Tab
@@ -90,7 +91,7 @@ const CategoryTabs: React.FC = () => {
                     />
                 ))}
             </Box>
-        </Box>
+        </Container>
     )
 }
 

@@ -17,8 +17,6 @@ interface Emoji {
 
 
 export const Card = ({ isFav, text, icon, onClick, onToggleFavorite }: CardProps) => {
-
-
     return (
         <CardMUI sx={{ position: 'relative', minHeight: '250px', display: 'flex' }}>
             <CardHeader

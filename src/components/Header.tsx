@@ -151,9 +151,11 @@ function NavListDesktop({
 function NavDropDownList({
     setPage,
     currentPage,
+    onClose
 }: {
     setPage: HeaderProps["setPage"];
     currentPage: HeaderProps["currentPage"];
+    onClose: () => void;
 }): JSX.Element {
     const { isDark, toggleMode } = useDarkMode();
     const { isAudioOn, toggleAudio } = useAudioToggle();
@@ -215,6 +217,7 @@ function NavDropDownList({
                                 if (page && page !== "#") {
                                     setPage(page as HeaderProps["currentPage"]);
                                 }
+                                onClose();
                             }}
                         >
                             <ListItemIcon key={`${title}-icon`}>
@@ -296,7 +299,7 @@ function Header({ currentPage, setPage }: HeaderProps) {
                                 display: { xs: "block", lg: "none" },
                             }}
                         >
-                            <NavDropDownList setPage={setPage} currentPage={currentPage} />
+                            <NavDropDownList setPage={setPage} currentPage={currentPage} onClose={handleNavClose} />
                         </Menu>
                     </Box>
                     <Typography
