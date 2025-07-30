@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {
+    Alert,
     Container,
     FormControl,
     FormControlLabel,
@@ -9,11 +10,14 @@ import {
     MenuItem,
     Select,
     Slider,
+    Snackbar,
     Typography,
     type SelectChangeEvent,
 } from "@mui/material";
+import { PiX } from "react-icons/pi";
 
 import { useTTS } from "../hooks/useTTS";
+import useLocalStorage from '../hooks/useLocalStorage';
 
 interface TTSVoiceSetting {
     title: string;
@@ -23,61 +27,53 @@ interface TTSVoiceSetting {
     setValue: (val: number) => void;
 }
 
+
 const Settings: React.FC = () => {
-    const savedCategoryPref = localStorage.getItem("categoryPref");
-    const [categoryPref, setCategoryPref] = useState<string>(
-        savedCategoryPref || "general"
-    );
+    const [categoryPref, setCategoryPref] = useLocalStorage<string>("categoryPref", "general");
+    const [pitch, setPitch] = useLocalStorage<number>("pitch", 1);
+    const [rate, setRate] = useLocalStorage<number>("rate", 1);
+    const [volume, setVolume] = useLocalStorage<number>("volume", 1);
+    const [storedVoice, setStoredVoice] = useLocalStorage<string>("voice", "");
 
-    const savedPitch = localStorage.getItem("pitch");
-    const [pitch, setPitch] = useState<number>(
-        savedPitch ? parseFloat(savedPitch) : 1
-    );
+    const [open, setOpen] = useState<boolean>(false);
 
-    const savedRate = localStorage.getItem("rate");
-    const [rate, setRate] = useState<number>(
-        savedRate ? parseFloat(savedRate) : 1
-    );
+    const showSaveNotification = () => {
+        setOpen(true);
+    }
 
-    const savedVolume = localStorage.getItem("volume");
-    const [volume, setVolume] = useState<number>(
-        savedVolume ? parseFloat(savedVolume) : 1
-    );
+    const hideSaveNotification = () => {
+        setOpen(false);
+    }
+
 
     const { voices } = useTTS();
-    const [selectedVoice, setSelectedVoice] = useState<string>("");
+
 
     useEffect(() => {
         if (voices.length) {
-            const stored = localStorage.getItem("voice");
-            const storedVoice = voices.find((v) => v.voiceURI === stored);
-            const defaultVoice = voices.find((v) => v.default) || voices[0];
-
-            setSelectedVoice((storedVoice || defaultVoice).voiceURI);
-            localStorage.setItem("voice", (storedVoice || defaultVoice).voiceURI);
+            const voiceToUse = 
+            voices.find((v) => v.voiceURI === storedVoice) ||
+            voices.find((v) => v.default) || 
+            voices[0];
+            
+            setStoredVoice(voiceToUse.voiceURI);
         }
-    }, [voices]);
+    }, [setStoredVoice, storedVoice, voices]);
 
-    const ALL_TTS_VOICE_SETTINGS: TTSVoiceSetting[] = [
+    const RANGE_SLIDER_OPTIONS: TTSVoiceSetting[] = [
         { title: "pitch", min: 0, max: 2, value: pitch, setValue: setPitch },
         { title: "rate", min: 0, max: 1.5, value: rate, setValue: setRate },
         { title: "volume", min: 0, max: 1, value: volume, setValue: setVolume },
     ];
+
     const saveCategoryPref = (e: SelectChangeEvent) => {
         setCategoryPref(e.target.value as string);
-        localStorage.setItem("categoryPref", e.target.value as string);
+        showSaveNotification();
     };
 
-    const handleSliderChange =
-        (title: string, setValue: (val: number) => void) =>
-            (_: Event, newVal: number, __: number) => {
-                setValue(newVal);
-                localStorage.setItem(title, String(newVal));
-            };
-
     const saveVoice = (e: SelectChangeEvent) => {
-        setSelectedVoice(e.target.value);
-        localStorage.setItem("voice", e.target.value);
+        setStoredVoice(e.target.value)
+        showSaveNotification();
     };
 
     return (
@@ -122,7 +118,7 @@ const Settings: React.FC = () => {
                     <Select
                         label="Change Spoken Voice"
                         labelId="voice-label"
-                        value={selectedVoice}
+                        value={storedVoice}
                         onChange={saveVoice}
                     >
                         {voices.map((voice) => (
@@ -141,7 +137,7 @@ const Settings: React.FC = () => {
             >
                 <FormLabel component="legend">Adjust Voice Characteristics</FormLabel>
                 <FormGroup sx={{ minHeight: "250px", gap: 4 }} row>
-                    {ALL_TTS_VOICE_SETTINGS.map(
+                    {RANGE_SLIDER_OPTIONS.map(
                         ({ title, min, max, value, setValue }) => (
                             <FormControlLabel
                                 key={title}
@@ -157,7 +153,8 @@ const Settings: React.FC = () => {
                                         orientation="vertical"
                                         aria-label={title}
                                         value={value}
-                                        onChange={handleSliderChange(title, setValue)}
+                                        onChange={(_,val) => setValue(val as number)}
+                                        onChangeCommitted={showSaveNotification}
                                         min={min}
                                         max={max}
                                         step={0.25}
@@ -169,6 +166,21 @@ const Settings: React.FC = () => {
                     )}
                 </FormGroup>
             </FormControl>
+
+            <Snackbar 
+                anchorOrigin={{vertical: "top", horizontal: "right"}}
+                open={open}
+                autoHideDuration={4000}
+                onClose={hideSaveNotification}
+            >
+                <Alert
+                    onClose={hideSaveNotification}
+                    severity="success"
+                    sx={{display: 'flex', alignItems: 'center'}}
+                >
+                    Settings saved!
+                </Alert>
+            </Snackbar>
         </Container>
     );
 };

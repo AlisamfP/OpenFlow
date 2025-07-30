@@ -5,10 +5,11 @@ import CategoryTabs from "./components/CategoryTabs.tsx";
 import Settings from "./components/Settings.tsx";
 import CustomCardForm from "./components/Custom.tsx";
 import { Box, Container, createTheme, ThemeProvider } from "@mui/material";
-import { useState } from "react";
+import useLocalStorage from "./hooks/useLocalStorage.tsx";
 
 
 const darkTheme = createTheme({
+    cssVariables: true,
     colorSchemes: {
         light: {
             palette: {
@@ -52,7 +53,7 @@ const darkTheme = createTheme({
 });
 
 function App() {
-    const [page, setPage] = useState<"cards" | "custom" | "settings">("cards");
+    const [page, setPage] = useLocalStorage("currentPage");
 
     return (
         <ThemeProvider theme={darkTheme} defaultMode="light">

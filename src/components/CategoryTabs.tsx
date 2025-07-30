@@ -5,23 +5,8 @@ import { CardList } from "../assets/CardList";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { useTTS } from "../hooks/useTTS";
 
-interface Emoji {
-    name: string;
-    unicode: string;
-}
+import type { CardData, Cards } from "../types/cardTypes";
 
-interface CardData {
-    id: string;
-    icon: Emoji | undefined;
-    text: string;
-}
-
-interface Cards {
-    general: CardData[];
-    feelings: CardData[];
-    custom: CardData[];
-    favorites: CardData[];
-}
 
 function a11yProps(index: number) {
     return {
@@ -32,8 +17,9 @@ function a11yProps(index: number) {
 
 
 const CategoryTabs: React.FC = () => {
-    const [ favCardIds, setFavCardIds ] = useLocalStorage<string[]>("favCardIds", []);
+    const [ favCardIds, setFavCardIds ] = useLocalStorage("favCardIds");
     const { speak, voices } = useTTS();
+
     
     const toggleFavorite = (id: string) => {
         setFavCardIds(prev =>
@@ -41,23 +27,29 @@ const CategoryTabs: React.FC = () => {
         );
     };
 
-    const cards = CardList();
-    const categoryPref = localStorage.getItem("categoryPref") as keyof Cards
+    const cards = CardList(favCardIds);
+    const [categoryPref] = useLocalStorage("categoryPref")
     const tabKeys = Object.keys(cards) as (keyof Cards)[];
     const [selectedCatIndex, setselectedCatIndex] = useState(categoryPref ? tabKeys.indexOf(categoryPref) : 0);
 
     const handleTabChange = (e: React.SyntheticEvent, newValue: number) => {
+        e.preventDefault();
         setselectedCatIndex(newValue)
     }
     
     const selectedCards = cards[tabKeys[selectedCatIndex]];
 
-    const pitch = parseFloat(localStorage.getItem("pitch")|| "1");
-    const rate = parseFloat(localStorage.getItem("rate")|| "1");
-    const volume = parseFloat(localStorage.getItem("volume")|| "1");
-    const savedVoice = localStorage.getItem("voice") || "";
+    const [pitch] = useLocalStorage("pitch");
+    const [rate] = useLocalStorage("rate");
+    const [volume] = useLocalStorage("volume");
+    const [savedVoice] = useLocalStorage("voice");
+    const [audioEnabled] = useLocalStorage("audioEnabled")
 
     const handleCardClick = (text:string) => {
+        if(!audioEnabled){
+            console.log("AUDIO OFF")
+            return;
+        }
         const voice = voices.find(v => v.voiceURI === savedVoice) || null;
         speak({
             text, 

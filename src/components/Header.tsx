@@ -81,7 +81,7 @@ function NavListDesktop({
     currentPage: HeaderProps["currentPage"];
 }): JSX.Element {
     const { isDark, toggleMode } = useDarkMode();
-    const { isAudioOn, toggleAudio } = useAudioToggle();
+    const { isAudioEnabled, toggleAudio } = useAudioToggle();
     return (
         <Box
             sx={{
@@ -95,14 +95,14 @@ function NavListDesktop({
             {LINKS.map(({ icon: Icon, title, page }) => {
                 if (title === "Audio Toggle") {
                     return (
-                        <Tooltip key={title} title={isAudioOn ? "Audio On" : "Audio Off"}>
+                        <Tooltip key={title} title={isAudioEnabled ? "Audio On" : "Audio Off"}>
                             <IconButton
                                 onClick={toggleAudio}
                                 color="inherit"
                                 size="small"
                                 sx={{ p: 2 }}
                             >
-                                {isAudioOn ? <PiSpeakerHigh /> : <PiSpeakerSlash />}
+                                {isAudioEnabled ? <PiSpeakerHigh /> : <PiSpeakerSlash />}
                             </IconButton>
                         </Tooltip>
                     );
@@ -158,7 +158,7 @@ function NavDropDownList({
     onClose: () => void;
 }): JSX.Element {
     const { isDark, toggleMode } = useDarkMode();
-    const { isAudioOn, toggleAudio } = useAudioToggle();
+    const { isAudioEnabled, toggleAudio } = useAudioToggle();
     return (
         <>
             {LINKS.map(({ icon: Icon, title, page }) => {
@@ -166,14 +166,14 @@ function NavDropDownList({
                     return (
                         <MenuItem key={title}>
                             <ListItemIcon sx={{ minWidth: "30px" }}>
-                                {isAudioOn ? <PiSpeakerHigh /> : <PiSpeakerSlash />}
+                                {isAudioEnabled ? <PiSpeakerHigh /> : <PiSpeakerSlash />}
                             </ListItemIcon>
                             <ListItemText>
-                                {isAudioOn ? "Audio On" : "Audio Off"}
+                                {isAudioEnabled ? "Audio On" : "Audio Off"}
                             </ListItemText>
                             <Switch
                                 edge="end"
-                                checked={isAudioOn}
+                                checked={!!isAudioEnabled}
                                 onChange={toggleAudio}
                                 slotProps={{
                                     input: {

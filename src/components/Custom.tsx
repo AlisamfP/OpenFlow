@@ -10,20 +10,12 @@ import {
 } from "@mui/material";
 import { Card } from "./Card";
 import { EmojiList } from "../assets/EmojiList";
-
-interface Emoji {
-  name: string;
-  unicode: string;
-}
-
-interface CardData {
-  id: string;
-  text: string;
-  icon?: Emoji;
-}
+import useLocalStorage from "../hooks/useLocalStorage";
+import type { CardData, Emoji } from "../types/cardTypes";
 
 const CustomCardForm = () => {
   const [text, setText] = useState("");
+  const [customCards, setCustomCards] = useLocalStorage("customCards");
   const [selectedEmoji, setSelectedEmoji] = useState<Emoji | null>(null);
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,10 +26,8 @@ const CustomCardForm = () => {
       text,
       icon: selectedEmoji,
     };
-    const existing = JSON.parse(localStorage.getItem("customCards") || "[]");
-    const updated = [...existing, newCard];
-    localStorage.setItem("customCards", JSON.stringify(updated));
-
+    console.log(newCard)
+    setCustomCards([...customCards, newCard])
     setText("");
     setSelectedEmoji(null);
   };
@@ -63,7 +53,9 @@ const CustomCardForm = () => {
         <Autocomplete
           id="emoji-select"
           options={EmojiList}
+          value={selectedEmoji}
           onChange={(e, newVal) => {
+            e.preventDefault();
             setSelectedEmoji(newVal);
           }}
           getOptionLabel={(option) => option.name.replace(/-/g, " ")}

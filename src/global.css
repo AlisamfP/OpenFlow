@@ -5,6 +5,7 @@
 body {
     margin: 0 auto;
     height: 100vh;
+    background-color: var(--mui-palette-background-default);
 }
 
 #root {

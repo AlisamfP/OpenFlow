@@ -6,7 +6,7 @@ function Footer() {
             <Box sx={{backgroundColor: 'primary.main', position: 'fixed', bottom: 0, width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
 
             <p>Site created by Alisa Palson</p>
-            <p>icons by: <a href="https://openmoji.org/">OpenMoji</a></p>
+            <p>Icons by: <a href="https://openmoji.org/">OpenMoji</a></p>
             </Box>
         </footer>
     )
