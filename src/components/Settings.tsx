@@ -11,6 +11,7 @@ import {
     Select,
     Slider,
     Snackbar,
+    Stack,
     Typography,
     type SelectChangeEvent,
 } from "@mui/material";
@@ -77,7 +78,7 @@ const Settings: React.FC = () => {
     };
 
     return (
-        <Container id="settings" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Container id="settings" sx={{ display: 'flex', flexDirection: 'column', gap: 2, pb: 6 }}>
             <Typography variant="h3" color="primary">
                 Settings
             </Typography>
@@ -136,7 +137,8 @@ const Settings: React.FC = () => {
                 sx={{ border: "2px solid", borderColor: "primary.main", p: 4 }}
             >
                 <FormLabel component="legend">Adjust Voice Characteristics</FormLabel>
-                <FormGroup sx={{ minHeight: "250px", gap: 4 }} row>
+                <FormGroup>
+                    <Stack sx={{height: 250}} direction="row">
                     {RANGE_SLIDER_OPTIONS.map(
                         ({ title, min, max, value, setValue }) => (
                             <FormControlLabel
@@ -164,6 +166,7 @@ const Settings: React.FC = () => {
                             />
                         )
                     )}
+                    </Stack>
                 </FormGroup>
             </FormControl>
 

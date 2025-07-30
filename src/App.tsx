@@ -9,7 +9,9 @@ import useLocalStorage from "./hooks/useLocalStorage.tsx";
 
 
 const darkTheme = createTheme({
-    cssVariables: true,
+    cssVariables: {
+        colorSchemeSelector: 'data'
+    },
     colorSchemes: {
         light: {
             palette: {

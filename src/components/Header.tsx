@@ -6,6 +6,7 @@ import {
     Button,
     Container,
     IconButton,
+    Link,
     ListItemIcon,
     ListItemText,
     Menu,
@@ -95,7 +96,10 @@ function NavListDesktop({
             {LINKS.map(({ icon: Icon, title, page }) => {
                 if (title === "Audio Toggle") {
                     return (
-                        <Tooltip key={title} title={isAudioEnabled ? "Audio On" : "Audio Off"}>
+                        <Tooltip
+                            key={title}
+                            title={isAudioEnabled ? "Audio On" : "Audio Off"}
+                        >
                             <IconButton
                                 onClick={toggleAudio}
                                 color="inherit"
@@ -132,10 +136,9 @@ function NavListDesktop({
                             }
                             sx={{
                                 borderBottom: currentPage === page ? "2px solid" : "",
-                                borderColor: 'text.primary',
+                                borderColor: "text.primary",
                                 borderRadius: 0,
-                                px: 1
-                                
+                                px: 1,
                             }}
                         >
                             {title}
@@ -151,7 +154,7 @@ function NavListDesktop({
 function NavDropDownList({
     setPage,
     currentPage,
-    onClose
+    onClose,
 }: {
     setPage: HeaderProps["setPage"];
     currentPage: HeaderProps["currentPage"];
@@ -250,27 +253,34 @@ function Header({ currentPage, setPage }: HeaderProps) {
                     <Typography
                         variant="h1"
                         noWrap
-                        component="a"
-                        href="index.html"
                         sx={{
                             mr: 2,
                             p: 1,
                             minWidth: "9ch",
-                            display: { xs: "none", lg: "flex" },
-                            textDecoration: "none",
-                            fontSize: "3.5em",
                             color: "text.primary",
-                            textUnderlineOffset: "0.75rem",
-                            "& a": {
-                                color: "inherit",
-                            },
-                            "&:hover": {
-                                textDecoration: "underline",
-                                textDecorationColor: "text.primary",
-                            },
+                            display: { xs: "none", lg: "flex" },
+                            fontSize: "3.5em",
+                            flexGrow: 1
                         }}
                     >
-                        Open Flow
+                        <Link component="button"
+                            onClick={() => setPage("cards")}
+                            sx={{
+                                color: "text.primary",
+                                textDecoration: "none",
+                                "&a": {
+
+                                    textDecoration: "none",
+                                },
+                                textUnderlineOffset: "0.75rem",
+                                "&:hover": {
+                                    textDecoration: "underline",
+                                    textDecorationColor: "text.primary",
+                                },
+                            }}
+                        >
+                            Open Flow
+                        </Link>
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: "flex", lg: "none" } }}>
                         <IconButton
@@ -299,33 +309,44 @@ function Header({ currentPage, setPage }: HeaderProps) {
                                 display: { xs: "block", lg: "none" },
                             }}
                         >
-                            <NavDropDownList setPage={setPage} currentPage={currentPage} onClose={handleNavClose} />
+                            <NavDropDownList
+                                setPage={setPage}
+                                currentPage={currentPage}
+                                onClose={handleNavClose}
+                            />
                         </Menu>
                     </Box>
                     <Typography
                         variant="h1"
                         noWrap
-                        component="a"
-                        href="index.html"
                         sx={{
                             mr: 2,
                             p: 1,
                             color: "text.primary",
+                            minWidth: "9ch",
                             display: { xs: "flex", lg: "none" },
-                            flexGrow: 1,
-                            textDecoration: "none",
-                            textUnderlineOffset: "0.75rem",
                             fontSize: "3.5em",
-                            "& a": {
-                                color: "inherit",
-                            },
-                            "&:hover": {
-                                textDecoration: "underline",
-                                textDecorationColor: "text.primary",
-                            },
+                            flexGrow: 1
                         }}
                     >
-                        Open Flow
+                        <Link component="button"
+                            onClick={() => setPage("cards")}
+                            sx={{
+                                color: "text.primary",
+                                textDecoration: "none",
+                                "&a": {
+
+                                    textDecoration: "none",
+                                },
+                                textUnderlineOffset: "0.75rem",
+                                "&:hover": {
+                                    textDecoration: "underline",
+                                    textDecorationColor: "text.primary",
+                                },
+                            }}
+                        >
+                            Open Flow
+                        </Link>
                     </Typography>
                     <NavListDesktop setPage={setPage} currentPage={currentPage} />
                 </Toolbar>
