@@ -18,12 +18,12 @@ function isCardData(obj: unknown):obj is CardData {
     )
 }
 
-
 export function validateValues<K extends LocalStorageKey>(
     key: K, 
     value: unknown
 ): LocalStorageMap[K]{
     const config = localStorageSchema[key];
+    console.log(`validating ${key} is ${value}`)
 
     if(!config) {
         throw new Error(`Invalid config key: ${key}`);
@@ -44,6 +44,9 @@ export function validateValues<K extends LocalStorageKey>(
         return (typeof value === "string" ? value : config.fallback) as LocalStorageMap[K]
     }
     else if (config.type === "boolean"){
+        console.log("BOOLEAN")
+        console.log((typeof value === "boolean" ? value : config.fallback))
+        console.log("BOOLEAN type check:", value, typeof value)
         return (typeof value === "boolean" ? value : config.fallback) as LocalStorageMap[K]
     }
     else if (config.type === "array"){

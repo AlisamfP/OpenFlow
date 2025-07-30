@@ -4,7 +4,7 @@ export interface Emoji {
 }
 
 export interface CardData {
-    icon: Emoji | undefined;
+    icon: Emoji;
     text: string;
     id: string;
 }

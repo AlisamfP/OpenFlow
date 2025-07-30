@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Box, Tabs, Tab, Container } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Box, Tabs, Tab, Container, Backdrop } from "@mui/material";
 import { Card } from "./Card";
 import { CardList } from "../assets/CardList";
 import useLocalStorage from "../hooks/useLocalStorage";
@@ -18,8 +18,32 @@ function a11yProps(index: number) {
 
 const CategoryTabs: React.FC = () => {
     const [ favCardIds, setFavCardIds ] = useLocalStorage("favCardIds");
+    const [categoryPref] = useLocalStorage("categoryPref")
+    const [pitch] = useLocalStorage("pitch");
+    const [rate] = useLocalStorage("rate");
+    const [volume] = useLocalStorage("volume");
+    const [savedVoice] = useLocalStorage("voice");
+    const [audioEnabledStored] = useLocalStorage("audioEnabled")
+    
+    const [audioEnabled, setAudioEnabled] = useState<boolean>(audioEnabledStored);
+    const [ fullscreenCard, setFullscreenCard ] = useState<CardData | null>(null);
     const { speak, voices } = useTTS();
+    
+    const cards = CardList(favCardIds);
+    const tabKeys = Object.keys(cards) as (keyof Cards)[];
+    const [selectedCatIndex, setselectedCatIndex] = useState(categoryPref ? tabKeys.indexOf(categoryPref) : 0);
+    const selectedCards = cards[tabKeys[selectedCatIndex]];
+    
+    useEffect(() => {
+        const handleAudioChange = (e:Event) => {
+            const custom = e as CustomEvent<boolean>
+            setAudioEnabled(custom.detail)
+        }
 
+        window.addEventListener("audioChanged", handleAudioChange)
+
+        return () => window.removeEventListener("audioChanged", handleAudioChange)
+    }, []);
     
     const toggleFavorite = (id: string) => {
         setFavCardIds(prev =>
@@ -27,27 +51,18 @@ const CategoryTabs: React.FC = () => {
         );
     };
 
-    const cards = CardList(favCardIds);
-    const [categoryPref] = useLocalStorage("categoryPref")
-    const tabKeys = Object.keys(cards) as (keyof Cards)[];
-    const [selectedCatIndex, setselectedCatIndex] = useState(categoryPref ? tabKeys.indexOf(categoryPref) : 0);
 
     const handleTabChange = (e: React.SyntheticEvent, newValue: number) => {
         e.preventDefault();
         setselectedCatIndex(newValue)
     }
     
-    const selectedCards = cards[tabKeys[selectedCatIndex]];
 
-    const [pitch] = useLocalStorage("pitch");
-    const [rate] = useLocalStorage("rate");
-    const [volume] = useLocalStorage("volume");
-    const [savedVoice] = useLocalStorage("voice");
-    const [audioEnabled] = useLocalStorage("audioEnabled")
-
-    const handleCardClick = (text:string) => {
+    const handleCardClick = (text:string, card: CardData) => {
+        console.log("IN CARD CLICK.....audioenabled is ", audioEnabled)
         if(!audioEnabled){
             console.log("AUDIO OFF")
+            setFullscreenCard(card);
             return;
         }
         const voice = voices.find(v => v.voiceURI === savedVoice) || null;
@@ -76,13 +91,20 @@ const CategoryTabs: React.FC = () => {
                     <Card 
                         key={id} 
                         text={text} 
-                        icon={icon} 
+                        icon={icon}
                         isFav={favCardIds.includes(id)}
-                        onClick={() => handleCardClick(text)}
+                        onClick={() => handleCardClick(text, {text, icon, id})}
                         onToggleFavorite={()=> toggleFavorite(id)} 
                     />
                 ))}
             </Box>
+            {fullscreenCard && (<Backdrop open={!!fullscreenCard} onClick={() => setFullscreenCard(null)}>
+                <Card 
+                    text={fullscreenCard.text}
+                    icon={fullscreenCard.icon}
+                    onClick={() => setFullscreenCard(null)}
+                />
+            </Backdrop>)}
         </Container>
     )
 }

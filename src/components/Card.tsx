@@ -1,23 +1,21 @@
-import { Box, Card as CardMUI, CardContent, CardHeader, IconButton, Typography, CardActionArea } from "@mui/material";
+import { Box, Card as CardMUI, CardContent, CardHeader, IconButton, Typography, CardActionArea, Backdrop } from "@mui/material";
 import { pink } from "@mui/material/colors";
 import { PiHeartFill } from 'react-icons/pi';
 
+import type { Emoji } from "../types/cardTypes";
+
 interface CardProps {
-    isFav: boolean;
+    isFav?: boolean;
     text: string;
     icon?: Emoji;
     onClick: () => void;
-    onToggleFavorite: () => void;
-}
-
-interface Emoji {
-    name: string;
-    unicode: string;
+    onToggleFavorite?: () => void;
 }
 
 
 export const Card = ({ isFav, text, icon, onClick, onToggleFavorite }: CardProps) => {
     return (
+        // <Backdrop open={fullscreenOn}>
         <CardMUI sx={{ position: 'relative', minHeight: '250px', display: 'flex' }}>
             <CardHeader
                 sx={{
@@ -27,6 +25,7 @@ export const Card = ({ isFav, text, icon, onClick, onToggleFavorite }: CardProps
                     top: 0
                 }}
                 action={
+                    onToggleFavorite ? (
                     <IconButton
                         aria-label={isFav ? "Remove From Favorites" : "Add To Favorites"}
                         onClick={(e) => {
@@ -43,7 +42,7 @@ export const Card = ({ isFav, text, icon, onClick, onToggleFavorite }: CardProps
                         }}
                     >
                         <PiHeartFill />
-                    </IconButton>
+                    </IconButton>) : null
 
                 }
             />
@@ -65,5 +64,6 @@ export const Card = ({ isFav, text, icon, onClick, onToggleFavorite }: CardProps
                 </CardContent>
             </CardActionArea>
         </CardMUI>
+        // </Backdrop>
     )
 }
