@@ -127,7 +127,12 @@ const Settings: React.FC = () => {
             <FormControl
                 component="fieldset"
                 variant="standard"
-                sx={{ border: "2px solid", borderColor: "primary.main", p: 4 }}
+                sx={{ 
+                    border: "2px solid", 
+                    borderColor: "primary.main", 
+                    p: {xs: 2, md: 4},
+                    alignItems: 'center',
+                }}
             >
                 <FormLabel component="legend">Adjust Voice Characteristics</FormLabel>
                 <FormGroup>
