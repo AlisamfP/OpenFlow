@@ -15,26 +15,19 @@ import {
     Typography,
     type SelectChangeEvent,
 } from "@mui/material";
-import { PiX } from "react-icons/pi";
 
-import { useTTS } from "../hooks/useTTS";
+import { useTTS, type TTSVoiceSetting } from "../hooks/useTTS";
 import useLocalStorage from '../hooks/useLocalStorage';
+import type { Category } from "../types/cardTypes";
 
-interface TTSVoiceSetting {
-    title: string;
-    min: number;
-    max: number;
-    value: number;
-    setValue: (val: number) => void;
-}
 
 
 const Settings: React.FC = () => {
-    const [categoryPref, setCategoryPref] = useLocalStorage<string>("categoryPref", "general");
-    const [pitch, setPitch] = useLocalStorage<number>("pitch", 1);
-    const [rate, setRate] = useLocalStorage<number>("rate", 1);
-    const [volume, setVolume] = useLocalStorage<number>("volume", 1);
-    const [storedVoice, setStoredVoice] = useLocalStorage<string>("voice", "");
+    const [categoryPref, setCategoryPref] = useLocalStorage("categoryPref");
+    const [pitch, setPitch] = useLocalStorage("pitch");
+    const [rate, setRate] = useLocalStorage("rate");
+    const [volume, setVolume] = useLocalStorage("volume");
+    const [storedVoice, setStoredVoice] = useLocalStorage("voice");
 
     const [open, setOpen] = useState<boolean>(false);
 
@@ -68,7 +61,7 @@ const Settings: React.FC = () => {
     ];
 
     const saveCategoryPref = (e: SelectChangeEvent) => {
-        setCategoryPref(e.target.value as string);
+        setCategoryPref(e.target.value as Category);
         showSaveNotification();
     };
 

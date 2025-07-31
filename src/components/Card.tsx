@@ -1,4 +1,4 @@
-import { Box, Card as CardMUI, CardContent, CardHeader, IconButton, Typography, CardActionArea, Backdrop } from "@mui/material";
+import { Box, Card as CardMUI, CardContent, CardHeader, IconButton, Typography, CardActionArea } from "@mui/material";
 import { pink } from "@mui/material/colors";
 import { PiHeartFill } from 'react-icons/pi';
 
@@ -7,16 +7,23 @@ import type { Emoji } from "../types/cardTypes";
 interface CardProps {
     isFav?: boolean;
     text: string;
-    icon?: Emoji;
+    icon: Emoji;
     onClick: () => void;
     onToggleFavorite?: () => void;
+    fullscreen?: boolean;
 }
 
 
-export const Card = ({ isFav, text, icon, onClick, onToggleFavorite }: CardProps) => {
+export const Card = ({ isFav, text, icon, onClick, onToggleFavorite, fullscreen }: CardProps) => {
     return (
-        // <Backdrop open={fullscreenOn}>
-        <CardMUI sx={{ position: 'relative', minHeight: '250px', display: 'flex' }}>
+        <CardMUI
+            sx={{
+                display: 'flex',
+                position: 'relative',
+                minHeight: fullscreen ? '90vh' : '250px',
+                width: fullscreen ? '90vw' : 'auto',
+                zIndex: fullscreen ? 3 : 0,
+            }}>
             <CardHeader
                 sx={{
                     color: isFav ? 'pink' : 'background.paper',
@@ -26,23 +33,23 @@ export const Card = ({ isFav, text, icon, onClick, onToggleFavorite }: CardProps
                 }}
                 action={
                     onToggleFavorite ? (
-                    <IconButton
-                        aria-label={isFav ? "Remove From Favorites" : "Add To Favorites"}
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            onToggleFavorite()
-                        }}
-                        size="medium"
-                        sx={{
-                            color: isFav ? pink[400] : 'secondary.main',
-                            zIndex: 2,
-                            '&:hover': {
-                                color: pink[300]
-                            }
-                        }}
-                    >
-                        <PiHeartFill />
-                    </IconButton>) : null
+                        <IconButton
+                            aria-label={isFav ? "Remove From Favorites" : "Add To Favorites"}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                onToggleFavorite()
+                            }}
+                            size="medium"
+                            sx={{
+                                color: isFav ? pink[400] : 'secondary.main',
+                                zIndex: 2,
+                                '&:hover': {
+                                    color: pink[300]
+                                }
+                            }}
+                        >
+                            <PiHeartFill />
+                        </IconButton>) : null
 
                 }
             />
@@ -64,6 +71,5 @@ export const Card = ({ isFav, text, icon, onClick, onToggleFavorite }: CardProps
                 </CardContent>
             </CardActionArea>
         </CardMUI>
-        // </Backdrop>
     )
 }

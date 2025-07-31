@@ -45,3 +45,11 @@ export const useTTS = () => {
 
   return { speak, voices };
 };
+
+export interface TTSVoiceSetting {
+    title: string;
+    min: number;
+    max: number;
+    value: number;
+    setValue: (val: number) => void;
+}
