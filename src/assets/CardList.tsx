@@ -1,5 +1,5 @@
 import { EmojiList } from "./EmojiList";
-import type { Cards } from "../types/cardTypes";
+import type { CardData, Cards } from "../types/cardTypes";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { useMemo } from "react";
 
@@ -23,16 +23,16 @@ export const CardList = (favCardIds: string[]): Cards => {
     ].map((card, i) => ({
         ...card,
         id: `general-${i}`
-    })), []);
+    })) as CardData[], []);
     const feelings = useMemo(() => [
         { icon: EmojiList.find((emoji) => emoji.name === "grinning-face"), text: "I'm happy and content" },
         { icon: EmojiList.find((emoji) => emoji.name === "enraged-face"), text: "I'm angry right now" },
         { icon: EmojiList.find((emoji) => emoji.name === "loudly-crying-face"), text: "I'm sad" },
         { icon: EmojiList.find((emoji) => emoji.name === "sleeping-face"), text: "I'm so tired" }
-    ].map((card, i) => ({
+    ].filter(card => card.icon).map((card, i) => ({
         ...card,
         id: `feelings-${i}`
-    })), []);
+    })) as CardData[], []);
 
     const custom = customCards
         .filter(card => card.icon && isValidEmoji(card.icon.unicode))
