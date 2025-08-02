@@ -1,11 +1,12 @@
 import { useState } from "react";
 
 import {
+  Alert,
   Autocomplete,
   Box,
   Button,
-  Container,
   Grid,
+  Snackbar,
   TextField,
   Typography,
 } from "@mui/material";
@@ -18,6 +19,16 @@ const CustomCardForm = () => {
   const [text, setText] = useState("");
   const [customCards, setCustomCards] = useLocalStorage("customCards");
   const [selectedEmoji, setSelectedEmoji] = useState<Emoji | null>(null);
+  const [open, setOpen] = useState<boolean>(false);
+
+  const showSaveNotification = () => {
+    setOpen(true);
+  }
+
+  const hideSaveNotification = () => {
+    setOpen(false);
+  }
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!text || !selectedEmoji) return;
@@ -27,100 +38,140 @@ const CustomCardForm = () => {
       text,
       icon: selectedEmoji,
     };
-    console.log(newCard)
-    setCustomCards([...customCards, newCard])
+    setCustomCards([...customCards, newCard]);
     setText("");
     setSelectedEmoji(null);
+    showSaveNotification();
   };
 
   return (
-    <Grid container spacing={{xs: 2, md: 6}}>
-      <Grid size={{xs:12, md:6}}>
-        <Box
-          component="form"
-          onSubmit={handleSubmit}
-          sx={{ display: "flex", flexDirection: "column", gap: 2 }}
-        >
-          <Typography variant="h4" sx={{ color: "primary.main" }}>
-            Create a Custom Card
-          </Typography>
+    <>
+      <Typography variant="h4" sx={{ color: "primary.main", mb: 2 }}>
+        Create a Custom Card
+      </Typography>
+      <Grid container spacing={{ xs: 2, md: 6 }}>
+        <Grid size={{ xs: 12, md: 6, lg: 4 }}>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+          >
+            <Typography variant="h5">Custom Card Info</Typography>
 
-          <TextField
-            label="Card Text"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            required
-          />
+            <TextField
+              label="Card Text"
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              required
+            />
 
-          <Autocomplete
-            id="emoji-select"
-            options={EmojiList}
-            value={selectedEmoji}
-            onChange={(e, newVal) => {
-              e.preventDefault();
-              setSelectedEmoji(newVal);
+            <Autocomplete
+              id="emoji-select"
+              options={EmojiList}
+              value={selectedEmoji}
+              onChange={(e, newVal) => {
+                e.preventDefault();
+                setSelectedEmoji(newVal);
+              }}
+              getOptionLabel={(option) => option.name.replace(/-/g, " ")}
+              autoHighlight
+              renderOption={(props, option) => {
+                const { key, ...optionProps } = props;
+                return (
+                  <Box
+                    key={key}
+                    component="li"
+                    sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+                    {...optionProps}
+                  >
+                    <img
+                      src={`https://openmoji.org/data/color/svg/${option.unicode}.svg`}
+                      alt={option.name.replace(/-/g, " ")}
+                      loading="lazy"
+                      width="80"
+                    />
+                    {option.name.replace(/-/g, " ")}
+                  </Box>
+                );
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Choose an icon"
+                  slotProps={{
+                    htmlInput: {
+                      ...params.inputProps,
+                      autoComplete: "new-password",
+                    },
+                  }}
+                />
+              )}
+            />
+
+            <Button type="submit" variant="contained" color="primary">
+              Save Card
+            </Button>
+          </Box>
+        </Grid>
+        <Grid size={{ xs: 12, md: 6, lg: 4 }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 2,
             }}
-            getOptionLabel={(option) => option.name.replace(/-/g, " ")}
-            autoHighlight
-            renderOption={(props, option) => {
-              const { key, ...optionProps } = props;
-              return (
-                <Box
-                  key={key}
-                  component="li"
-                  sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-                  {...optionProps}
-                >
-                  <img
-                    src={`https://openmoji.org/data/color/svg/${option.unicode}.svg`}
-                    alt={option.name.replace(/-/g, " ")}
-                    loading="lazy"
-                    width="80"
-                  />
-                  {option.name.replace(/-/g, " ")}
-                </Box>
-              );
+          >
+            <Typography variant="h5">Card preview</Typography>
+            <Card
+              isFav={false}
+              text={text}
+              icon={selectedEmoji}
+              onClick={() => { }}
+              onToggleFavorite={() => { }}
+              isCustom={true}
+            />
+          </Box>
+        </Grid>
+        <Grid size={{ xs: 12, md: 6, lg: 4 }}>
+          <Typography variant="h5">Custom Card List</Typography>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: { sm: "column", md: "row", lg: "column" },
+              gap: 2,
             }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Choose an icon"
-                slotProps={{
-                  htmlInput: {
-                    ...params.inputProps,
-                    autoComplete: "new-password",
-                  },
+          >
+            {customCards.map((card) => (
+              <Card
+                key={card.id}
+                isFav={false}
+                text={card.text}
+                icon={card.icon}
+                onClick={() => { }}
+                isCustom={true}
+                onDelete={() => {
+                  setCustomCards(customCards.filter((c) => c.id !== card.id));
                 }}
               />
-            )}
-          />
-
-          <Button type="submit" variant="contained" color="primary">
-            Save Card
-          </Button>
-        </Box>
+            ))}
+          </Box>
+        </Grid>
       </Grid>
-      <Grid size={{xs:12, md:6}}>
-
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 2,
-          }}
-          >
-          <Typography variant="h5">Card preview</Typography>
-          <Card
-            isFav={false}
-            text={text}
-            icon={selectedEmoji || undefined}
-            onClick={() => {}}
-            onToggleFavorite={() => {}}
-            />
-        </Box>
-      </Grid>
-
-    </Grid>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        open={open}
+        autoHideDuration={4000}
+        onClose={hideSaveNotification}
+      >
+        <Alert
+          onClose={hideSaveNotification}
+          severity="success"
+          sx={{ display: 'flex', alignItems: 'center' }}
+        >
+          Custom Card Created!
+        </Alert>
+      </Snackbar>
+    </>
   );
 };
 

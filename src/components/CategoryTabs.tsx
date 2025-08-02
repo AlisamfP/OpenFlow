@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
-import { Box, Tabs, Tab, Backdrop, Modal } from "@mui/material";
+import { Box, Tabs, Tab, Typography, Modal, Button } from "@mui/material";
 import { Card } from "./Card";
 import { CardList } from "../assets/CardList";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { useTTS } from "../hooks/useTTS";
 
 import type { CardData, Cards } from "../types/cardTypes";
+
+interface CategoryTabsProps {
+  setPage: React.Dispatch<
+    React.SetStateAction<"cards" | "custom" | "settings">
+  >;
+}
 
 function a11yProps(index: number) {
   return {
@@ -14,7 +20,7 @@ function a11yProps(index: number) {
   };
 }
 
-const CategoryTabs: React.FC = () => {
+const CategoryTabs = ({ setPage }: CategoryTabsProps) => {
   const [favCardIds, setFavCardIds] = useLocalStorage("favCardIds");
   const [categoryPref] = useLocalStorage("categoryPref");
   const [pitch] = useLocalStorage("pitch");
@@ -87,25 +93,84 @@ const CategoryTabs: React.FC = () => {
           aria-label="change card category"
           sx={{
             backgroundColor: "background.default",
-            mb: 1,
             p: 1,
             borderRadius: 1,
+            mb: 1,
           }}
         >
           {tabKeys.map((tab, i) => (
-            <Tab key={tab} label={tab} {...a11yProps(i)}></Tab>
+            <Tab key={tab} label={tab} {...a11yProps(i)} />
           ))}
         </Tabs>
+        
         <Box
           role="tabpanel"
           id={`tabpanel-${selectedCatIndex}`}
           aria-labelledby={`category-${selectedCatIndex}`}
           sx={{
             display: "flex",
-            flexDirection: "column",
+            flexDirection: { xs: "column", md: "row" },
+            justifyContent: "space-evenly",
+            flexWrap: "wrap",
             gap: "1em",
+            pb: 6,
           }}
         >
+          {selectedCards.length === 0 && tabKeys[selectedCatIndex] === "custom" && (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                width: "100%",
+                alignItems: "center",
+                gap: 2,
+                px: 8,
+                py: 4,
+              }}
+            >
+              <Typography
+                variant="h5"
+                color="text.primary"
+                sx={{ textAlign: "center" }}
+              >
+                You don't have any custom cards yet.
+              </Typography>
+              <Typography variant="body2" sx={{ textAlign: "center" }}>
+                But don't fear, you can make them here
+              </Typography>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => setPage("custom")}
+              >
+                Make A Custom Card
+              </Button>
+            </Box>
+          )}
+          {selectedCards.length === 0 && tabKeys[selectedCatIndex] === "favorites" && (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                width: "100%",
+                alignItems: "center",
+                gap: 2,
+                px: 8,
+                py: 4,
+              }}
+            >
+              <Typography
+                variant="h5"
+                color="text.primary"
+                sx={{ textAlign: "center" }}
+              >
+                No Favorited Cards Available.
+              </Typography>
+              <Typography variant="body2" sx={{ textAlign: "center" }}>
+                Try clicking on the heart icon near the top right of a card to add it to your favorites.
+              </Typography>
+            </Box>
+          )}
           {selectedCards.map(({ text, icon, id }: CardData) => (
             <Card
               key={id}
@@ -130,7 +195,7 @@ const CategoryTabs: React.FC = () => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            border: 'none',
+            border: "none",
           }}
         >
           <Box>

@@ -61,7 +61,7 @@ function App() {
         <ThemeProvider theme={darkTheme} defaultMode="light">
             <Box sx={{ height: '100%', backgroundColor: 'background.default' }}>
                 <Header setPage={setPage} currentPage={page} />
-                <Container sx={{ backgroundColor: 'background.default', marginTop: 10, p:0 }}>
+                <Container sx={{ backgroundColor: 'background.default', marginTop: 10, p:0 }} maxWidth={false}>
                     <Box sx={{ px: {xs: 2, md: 4}, py: 4 }}>
                         {page === "settings" && (
                             <Settings />
@@ -70,7 +70,7 @@ function App() {
                             <CustomCardForm />
                         )}
                         {page === "cards" && (
-                            <CategoryTabs />
+                            <CategoryTabs setPage={setPage} />
                         )}
                     </Box>
                 </Container>

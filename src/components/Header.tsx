@@ -248,7 +248,7 @@ function Header({ currentPage, setPage }: HeaderProps) {
 
     return (
         <AppBar color="primary" enableColorOnDark sx={{ p: 1, zIndex: 1 }}>
-            <Container maxWidth="xl">
+            <Container maxWidth={false}>
                 <Toolbar disableGutters>
                     <Typography
                         variant="h1"
