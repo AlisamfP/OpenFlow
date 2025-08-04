@@ -41,7 +41,7 @@ export const Card = ({
                 minHeight: fullscreen ? "90vh" : "250px",
                 width: fullscreen ? "90vw" : isCustom ? "100%" : { xs: "100%", md: "40%", lg: "30%" },
                 minWidth: fullscreen ? "90vw" : "300px",
-                maxWidth: fullscreen ? "90vw" : "100%",
+                maxWidth: fullscreen ? "90vw" : isCustom ? "450px" : "100%",
                 zIndex: fullscreen ? 3 : 0,
                 borderRadius: 2,
             }}

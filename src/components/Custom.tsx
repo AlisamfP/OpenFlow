@@ -23,11 +23,11 @@ const CustomCardForm = () => {
 
   const showSaveNotification = () => {
     setOpen(true);
-  }
+  };
 
   const hideSaveNotification = () => {
     setOpen(false);
-  }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,7 +50,7 @@ const CustomCardForm = () => {
         Create a Custom Card
       </Typography>
       <Grid container spacing={{ xs: 2, md: 6 }}>
-        <Grid size={{ xs: 12, md: 6, lg: 4 }}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Box
             component="form"
             onSubmit={handleSubmit}
@@ -113,31 +113,38 @@ const CustomCardForm = () => {
             </Button>
           </Box>
         </Grid>
-        <Grid size={{ xs: 12, md: 6, lg: 4 }}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Box
             sx={{
               display: "flex",
               flexDirection: "column",
+              alignItems: "flex-end",
               gap: 2,
             }}
           >
-            <Typography variant="h5">Card preview</Typography>
+            <Typography
+              variant="h5"
+              align="right"
+            >
+              Card preview
+            </Typography>
             <Card
               isFav={false}
               text={text}
               icon={selectedEmoji}
-              onClick={() => { }}
-              onToggleFavorite={() => { }}
+              onClick={() => {}}
+              onToggleFavorite={() => {}}
               isCustom={true}
             />
           </Box>
         </Grid>
-        <Grid size={{ xs: 12, md: 6, lg: 4 }}>
+        <Grid size={12}>
           <Typography variant="h5">Custom Card List</Typography>
           <Box
             sx={{
               display: "flex",
-              flexDirection: { sm: "column", md: "row", lg: "column" },
+              flexDirection: { sm: "column", md: "row" },
+              flexWrap: "wrap",
               gap: 2,
             }}
           >
@@ -147,7 +154,7 @@ const CustomCardForm = () => {
                 isFav={false}
                 text={card.text}
                 icon={card.icon}
-                onClick={() => { }}
+                onClick={() => {}}
                 isCustom={true}
                 onDelete={() => {
                   setCustomCards(customCards.filter((c) => c.id !== card.id));
@@ -166,7 +173,7 @@ const CustomCardForm = () => {
         <Alert
           onClose={hideSaveNotification}
           severity="success"
-          sx={{ display: 'flex', alignItems: 'center' }}
+          sx={{ display: "flex", alignItems: "center" }}
         >
           Custom Card Created!
         </Alert>
