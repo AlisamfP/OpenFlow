@@ -6,6 +6,7 @@ import {
     IconButton,
     Typography,
     CardActionArea,
+    Tooltip,
 } from "@mui/material";
 import { pink } from "@mui/material/colors";
 import { PiHeartFill, PiX, PiTrash } from "react-icons/pi";
@@ -56,49 +57,53 @@ export const Card = ({
                 action={
                     <>
                         {onToggleFavorite ? (
-                            <IconButton
-                                aria-label={isFav ? "Remove From Favorites" : "Add To Favorites"}
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    onToggleFavorite();
-                                }}
-                                size="medium"
-                                sx={{
-                                    color: isFav ? pink[400] : "background.default",
-                                    zIndex: 2,
-                                    "&:hover": {
-                                        color: pink[300],
-                                    },
-                                }}
-                            >
-                                <PiHeartFill />
-                            </IconButton>
-                        ) : null}
-                        {onDelete ? (
-                            <IconButton
-                                aria-label="Delete Card"
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    onDelete();
-                                }}
-                                size="medium"
-                                sx={{
-                                    color: "background.default",
-                                    zIndex: 2,
-                                    "&:hover": {
-                                        color: "warning",
-                                    },
-                                }}
-                            >
-                                <PiTrash />
-                            </IconButton>
-                        ) : null}
-                        {fullscreen ? (
-                            <IconButton
-                                aria-label="Exit Fullscreen"
-                            >
-                                <PiX />
-                            </IconButton>
+                            <Tooltip title={isFav ? "Remove From Favorites" : "Add To Favorites"}>
+                                <IconButton
+                                    aria-label={isFav ? "Remove From Favorites" : "Add To Favorites"}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        onToggleFavorite();
+                                    }}
+                                    size="medium"
+                                    sx={{
+                                        color: isFav ? pink[400] : "background.default",
+                                        zIndex: 2,
+                                        "&:hover": {
+                                            color: pink[500],
+                                        },
+                                    }}
+                                >
+                                    <PiHeartFill />
+                                </IconButton>
+                            </Tooltip>
+
+                        ) : onDelete ? (
+                            <Tooltip title="Delete Card">
+                                <IconButton
+                                    aria-label="Delete Card"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        onDelete();
+                                    }}
+                                    size="medium"
+                                    sx={{
+                                        color: "error.main",
+                                        zIndex: 2,
+                                        "&:hover": {
+                                            color: "error.dark",
+                                        },
+                                    }}
+                                >
+                                    <PiTrash />
+                                </IconButton>
+                            </Tooltip>
+
+                        ) : fullscreen ? (
+                            <Tooltip title="Exit Fullscreen">
+                                <IconButton>
+                                    <PiX />
+                                </IconButton>
+                            </Tooltip>
                         ) : null}
                     </>
                 }

@@ -13,7 +13,6 @@ import {
   MenuItem,
   Toolbar,
   Tooltip,
-  Typography,
 } from "@mui/material";
 import {
   PiCards,
@@ -159,39 +158,35 @@ function Header({ currentPage, setPage }: HeaderProps) {
   };
 
   return (
-    <AppBar color="primary" enableColorOnDark sx={{ p: 1, zIndex: 2, alignItems: "center" }}>
-      <Toolbar disableGutters sx={{ width: "100%"}}>
-        <Typography
+    <AppBar
+      color="primary"
+      enableColorOnDark
+      sx={{ p: 1, zIndex: 2, alignItems: "center" }}
+    >
+      <Toolbar disableGutters sx={{ width: "100%" }}>
+        <Link
+          component="h1"
+          underline="none"
+          color="textPrimary"
           variant="h1"
-          noWrap
+          onClick={() => setPage("cards")}
           sx={{
-            p: 1,
-            minWidth: "9ch",
+            cursor: "pointer",
+            pl: 2,
+            minWidth: "8.5ch",
             color: "text.primary",
             display: { xs: "none", lg: "flex" },
             fontSize: "3.5em",
+            textAlign: 'center',
             flexGrow: 1,
+            borderBottom: "2px solid transparent",
+            "&:hover": {
+              borderColor: "text.primary"
+            }
           }}
         >
-          <Link
-            component="button"
-            onClick={() => setPage("cards")}
-            sx={{
-              color: "text.primary",
-              textDecoration: "none",
-              "&a": {
-                textDecoration: "none",
-              },
-              textUnderlineOffset: "0.75rem",
-              "&:hover": {
-                textDecoration: "underline",
-                textDecorationColor: "text.primary",
-              },
-            }}
-          >
-            Open Flow
-          </Link>
-        </Typography>
+          Open Flow
+        </Link>
         <Box sx={{ flexGrow: 1, display: { xs: "flex", lg: "none" } }}>
           <IconButton
             size="large"
@@ -226,57 +221,59 @@ function Header({ currentPage, setPage }: HeaderProps) {
             />
           </Menu>
         </Box>
-        <Typography
+        <Link
+          component="h1"
+          underline="none"
+          color="textPrimary"
           variant="h1"
-          noWrap
+          onClick={() => setPage("cards")}
           sx={{
-            p: 0,
-            color: "text.primary",
+            cursor: 'pointer',
             minWidth: "9ch",
+            color: "text.primary",
+            justifyContent: 'center',
             display: { xs: "flex", lg: "none" },
-            fontSize: { xs: "2.5em", md: "3.5em" },
+            fontSize: "2.5em",
             flexGrow: 1,
+                        borderBottom: "2px solid transparent",
+            "&:hover": {
+              borderColor: "text.primary"
+            }
           }}
         >
-          <Link
-            component="button"
-            onClick={() => setPage("cards")}
-            sx={{
-              color: "text.primary",
-              textDecoration: "none",
-              "&a": {
-                textDecoration: "none",
-              },
-              textUnderlineOffset: "0.75rem",
-              "&:hover": {
-                textDecoration: "underline",
-                textDecorationColor: "text.primary",
-              },
-            }}
-          >
-            Open Flow
-          </Link>
-        </Typography>
+          Open Flow
+        </Link>
         <NavListDesktop setPage={setPage} currentPage={currentPage} />
-        <Divider orientation="vertical" flexItem />
-        <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "row", pl: { xs: 1, md: 2 } }}>
-          <Tooltip title={isAudioEnabled ? "Audio On" : "Audio Off"}>
+        <Box
+          sx={{
+            flexGrow: 1,
+            display: "flex",
+            flexDirection: "row",
+            pl: { xs: 1, md: 2 },
+            justifyContent: "end",
+          }}
+        >
+          <Divider orientation="vertical" sx={{ mr: {xs: 0, sm: 2} }} flexItem />
+          <Tooltip arrow title={isAudioEnabled ? "Audio On" : "Audio Off"}>
             <IconButton
               onClick={toggleAudio}
               color="inherit"
               size="small"
-              sx={{ pr: { xs: 2 }, p: { md: 2 } }}
+              sx={{ 
+                mr: { xs: 0, sm: 2 }, 
+                ml: 1 ,
+                p: { xs: 1, sm: 2 } }}
             >
               {isAudioEnabled ? <PiSpeakerHigh /> : <PiSpeakerSlash />}
             </IconButton>
           </Tooltip>
 
-          <Tooltip title={isDark ? "Dark Mode" : "Light Mode"}>
+          <Tooltip arrow title={isDark ? "Dark Mode" : "Light Mode"}>
             <IconButton
               onClick={toggleMode}
               color="inherit"
               size="small"
-              sx={{ pr: { xs: 2 }, p: { md: 2 } }}
+              sx={{ mr: { xs: 0, sm: 2 }, p: { xs: 1, sm: 2 } }}
             >
               {isDark ? <PiMoonStars /> : <PiSun />}
             </IconButton>
