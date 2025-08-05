@@ -86,7 +86,7 @@ export const Card = ({
                                     color: "background.default",
                                     zIndex: 2,
                                     "&:hover": {
-                                        color: pink[300],
+                                        color: "warning",
                                     },
                                 }}
                             >

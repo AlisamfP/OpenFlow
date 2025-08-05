@@ -6,10 +6,11 @@ import useLocalStorage from "../hooks/useLocalStorage";
 import { useTTS } from "../hooks/useTTS";
 
 import type { CardData, Cards } from "../types/cardTypes";
+import type { navOptions } from "../types/navTypes";
 
 interface CategoryTabsProps {
   setPage: React.Dispatch<
-    React.SetStateAction<"cards" | "custom" | "settings">
+    React.SetStateAction<navOptions>
   >;
 }
 
@@ -189,7 +190,7 @@ const CategoryTabs = ({ setPage }: CategoryTabsProps) => {
           onClose={() => setFullscreenCard(null)}
           aria-labelledby={fullscreenCard.text}
           sx={{
-            zIndex: 2,
+            zIndex: 99,
             width: "90vw",
             height: "90vh",
             top: "50%",

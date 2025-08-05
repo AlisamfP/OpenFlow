@@ -17,10 +17,16 @@ const darkTheme = createTheme({
         light: {
             palette: {
                 primary: {
-                    main: '#8aa093',
+                    main: '#A2AEA5',
+                    light: '#bfccc3',
+                    dark: '#78847b',
+                    contrastText: '#212121'
                 },
                 secondary: {
-                    main: '#aaabcb',
+                    main: '#B3A8B0',
+                    light: '#d1cbcf',
+                    dark: '#968591',
+                    contrastText: '#212121'
                 },
                 background: {
                     default: '#f2f2f2',
@@ -28,23 +34,31 @@ const darkTheme = createTheme({
                 },
                 text: {
                     primary: '#212121',
+                    secondary: '#30433E'
                 }
             }
         },
         dark: {
             palette: {
                 primary: {
-                    main: '#62776b',
+                    main: '#30433E',
+                    light: '#3e564f',
+                    dark: '#1f2e2a',
+                    contrastText: '#f2f2f2'
                 },
                 secondary: {
-                    main: '#8082a0',
+                    main: '#574750',
+                    dark: '#473b43',
+                    light: '#67535e',
+                    contrastText: '#f2f2f2'
                 },
                 background: {
                     default: '#333',
                     paper: '#3e3e3e',
                 },
                 text: {
-                    primary: '#d0d0d0',
+                    primary: '#f2f2f2',
+                    secondary: '#BEC6C0'
                 }
             }
         }
@@ -62,7 +76,7 @@ function App() {
         <ThemeProvider theme={darkTheme} defaultMode="light">
             <Box sx={{ height: '100%', backgroundColor: 'background.default' }}>
                 <Header setPage={setPage} currentPage={page} />
-                <Container sx={{ backgroundColor: 'background.default', marginTop: 9, p: 0 }} maxWidth={false}>
+                <Container sx={{ backgroundColor: 'background.default', marginTop: 9, p: 0, pb: 9 }} maxWidth={false}>
                     <Box
                         sx={{
                             px: { xs: 2, md: 4 },

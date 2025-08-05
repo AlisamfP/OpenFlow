@@ -46,8 +46,15 @@ const CustomCardForm = () => {
 
   return (
     <>
-      <Typography variant="h4" sx={{ color: "primary.main", mb: 2 }}>
-        Create a Custom Card
+      <Typography
+        variant="h4"
+        color="textSecondary"
+        sx={{
+          mb: 2,
+          fontSize: { xs: "2.5em", md: "3em" },
+        }}
+      >
+        Custom Card Creation
       </Typography>
       <Grid container spacing={{ xs: 2, md: 6 }}>
         <Grid size={{ xs: 12, md: 6 }}>
@@ -97,6 +104,7 @@ const CustomCardForm = () => {
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  required
                   label="Choose an icon"
                   slotProps={{
                     htmlInput: {
@@ -122,18 +130,15 @@ const CustomCardForm = () => {
               gap: 2,
             }}
           >
-            <Typography
-              variant="h5"
-              align="right"
-            >
+            <Typography variant="h5" align="right">
               Card preview
             </Typography>
             <Card
               isFav={false}
               text={text}
               icon={selectedEmoji}
-              onClick={() => {}}
-              onToggleFavorite={() => {}}
+              onClick={() => { }}
+              onToggleFavorite={() => { }}
               isCustom={true}
             />
           </Box>
@@ -154,7 +159,7 @@ const CustomCardForm = () => {
                 isFav={false}
                 text={card.text}
                 icon={card.icon}
-                onClick={() => {}}
+                onClick={() => { }}
                 isCustom={true}
                 onDelete={() => {
                   setCustomCards(customCards.filter((c) => c.id !== card.id));

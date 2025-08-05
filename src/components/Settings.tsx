@@ -72,7 +72,7 @@ const Settings: React.FC = () => {
 
     return (
         <Container id="settings" sx={{ display: 'flex', flexDirection: 'column', gap: 2, pb: 6 }}>
-            <Typography variant="h3" color="primary">
+            <Typography variant="h3" color="textSecondary">
                 Settings
             </Typography>
 

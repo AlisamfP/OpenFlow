@@ -1,4 +1,5 @@
 import type { Category, CardData } from "../types/cardTypes";
+import type { navOptions } from "../types/navTypes";
 
 export const localStorageSchema = {
     currentPage: {
@@ -53,7 +54,7 @@ export type LocalStorageConfigMap = typeof localStorageSchema;
 export type LocalStorageKey = keyof LocalStorageConfigMap;
 
 export type LocalStorageMap = {
-    currentPage: "cards" | "custom" | "settings";
+    currentPage: navOptions;
     audioEnabled: boolean;
     pitch: number;
     rate: number;
