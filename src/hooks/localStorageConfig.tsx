@@ -3,7 +3,7 @@ import type { Category, CardData } from "../types/cardTypes";
 export const localStorageSchema = {
     currentPage: {
         type: "enum",
-        values: ["cards", "custom", "settings"] as const,
+        values: ["cards", "custom", "settings", "about"] as const,
         fallback: "cards",
     } as const,
     audioEnabled: {

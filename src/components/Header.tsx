@@ -17,6 +17,7 @@ import {
 import {
     PiCards,
     PiGear,
+    PiInfo,
     PiList,
     PiPlus,
     PiMoonStars,
@@ -58,6 +59,11 @@ const LINKS: LinkItem[] = [
         icon: PiGear,
         title: "Settings",
         page: "settings",
+    },
+    {
+        icon: PiInfo,
+        title: "About",
+        page: "about"
     }
 ];
 

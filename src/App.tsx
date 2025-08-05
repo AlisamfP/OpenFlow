@@ -1,6 +1,7 @@
 import Header from "./components/Header.tsx";
 import Footer from "./components/Footer.tsx";
 import CategoryTabs from "./components/CategoryTabs.tsx";
+import About from "./components/About.tsx"
 
 import Settings from "./components/Settings.tsx";
 import CustomCardForm from "./components/Custom.tsx";
@@ -61,7 +62,7 @@ function App() {
         <ThemeProvider theme={darkTheme} defaultMode="light">
             <Box sx={{ height: '100%', backgroundColor: 'background.default' }}>
                 <Header setPage={setPage} currentPage={page} />
-                <Container sx={{ backgroundColor: 'background.default', marginTop: 10, p: 0 }} maxWidth={false}>
+                <Container sx={{ backgroundColor: 'background.default', marginTop: 9, p: 0 }} maxWidth={false}>
                     <Box
                         sx={{
                             px: { xs: 2, md: 4 },
@@ -75,6 +76,9 @@ function App() {
                         )}
                         {page === "cards" && (
                             <CategoryTabs setPage={setPage} />
+                        )}
+                        {page === "about" && (
+                            <About />
                         )}
                     </Box>
                 </Container>
