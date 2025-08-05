@@ -4,7 +4,6 @@ import {
   Box,
   Container,
   FormControl,
-  FormControlLabel,
   FormGroup,
   FormLabel,
   InputLabel,
