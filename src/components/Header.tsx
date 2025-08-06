@@ -93,10 +93,14 @@ function NavListDesktop({
             onClick={() => page && setPage(page as HeaderProps["currentPage"])}
             sx={{
               color: "text.primary",
-              borderBottom: currentPage === page ? "2px solid" : "",
-              borderColor: "text.primary",
+              borderBottom: "2px solid transparent",
+              borderColor: currentPage === page ? "primary.dark" : "transparent",
               borderRadius: 0,
               px: 1,
+              "&:hover": {
+                borderBottom: "2px solid",
+                borderColor: "primary.dark"  
+              }
             }}
           >
             {title}

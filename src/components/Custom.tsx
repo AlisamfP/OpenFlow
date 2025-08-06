@@ -143,7 +143,8 @@ const CustomCardForm = () => {
             />
           </Box>
         </Grid>
-        <Grid size={12}>
+
+        {customCards.length > 0 && (<Grid size={12}>
           <Typography variant="h5">Custom Card List</Typography>
           <Box
             sx={{
@@ -167,7 +168,7 @@ const CustomCardForm = () => {
               />
             ))}
           </Box>
-        </Grid>
+        </Grid>)}
       </Grid>
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "right" }}

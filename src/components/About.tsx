@@ -14,7 +14,7 @@ import { PiCaretDown } from "react-icons/pi";
 const About: React.FC = () => {
     return (
         <>
-            <Typography variant="h3" color="primary.main">
+            <Typography variant="h3" color="text.secondary">
                 About
             </Typography>
             <Box mt={2} sx={{ mb: 10 }}>
