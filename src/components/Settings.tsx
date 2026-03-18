@@ -196,6 +196,8 @@ const Settings: React.FC = () => {
         <Alert
           onClose={hideSaveNotification}
           severity="success"
+          role="status"
+          aria-live="polite"
           sx={{ display: "flex", alignItems: "center", mt: 10 }}
         >
           Settings saved!

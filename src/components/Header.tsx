@@ -28,6 +28,7 @@ import {
 
 import { useDarkMode } from "../hooks/useDarkMode";
 import { useAudioToggle } from "../hooks/useAudioToggle";
+import { useIsDesktop } from "../hooks/resizeListener";
 
 import type { ComponentType, SVGProps } from "react";
 import type { navOptions } from "../types/navTypes";
@@ -91,16 +92,18 @@ function NavListDesktop({
             key={title}
             startIcon={Icon && <Icon />}
             onClick={() => page && setPage(page as HeaderProps["currentPage"])}
+            disableFocusRipple
             sx={{
               color: "text.primary",
               borderBottom: "2px solid transparent",
-              borderColor: currentPage === page ? "primary.dark" : "transparent",
+              borderColor:
+                currentPage === page ? "primary.dark" : "transparent",
               borderRadius: 0,
               px: 1,
               "&:hover": {
                 borderBottom: "2px solid",
-                borderColor: "primary.dark"  
-              }
+                borderColor: "primary.dark",
+              },
             }}
           >
             {title}
@@ -153,6 +156,9 @@ function Header({ currentPage, setPage }: HeaderProps) {
   const { isDark, toggleMode } = useDarkMode();
   const { isAudioEnabled, toggleAudio } = useAudioToggle();
 
+  // using breakpoint checker to hide/show aria stuff on h1
+  const isDesktop = useIsDesktop();
+
   const handleNavOpen = (e: React.MouseEvent<HTMLElement>) => {
     setOpenNav(e.currentTarget);
   };
@@ -168,86 +174,101 @@ function Header({ currentPage, setPage }: HeaderProps) {
       sx={{ p: 1, zIndex: 2, alignItems: "center" }}
     >
       <Toolbar disableGutters sx={{ width: "100%" }}>
-        <Link
-          component="h1"
-          underline="none"
-          color="textPrimary"
-          variant="h1"
-          onClick={() => setPage("cards")}
-          sx={{
-            cursor: "pointer",
-            pl: 2,
-            minWidth: "8.5ch",
-            color: "text.primary",
-            display: { xs: "none", lg: "flex" },
-            fontSize: "3.5em",
-            textAlign: 'center',
-            flexGrow: 1,
-            borderBottom: "2px solid transparent",
-            "&:hover": {
-              borderColor: "text.primary"
-            }
-          }}
-        >
-          Open Flow
-        </Link>
-        <Box sx={{ flexGrow: 1, display: { xs: "flex", lg: "none" } }}>
-          <IconButton
-            size="large"
-            aria-controls="nav-menu"
-            aria-haspopup="true"
-            onClick={handleNavOpen}
-          >
-            <PiList />
-          </IconButton>
-          <Menu
-            id="nav-menu"
-            anchorEl={openNav}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "left",
-            }}
-            keepMounted
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "left",
-            }}
-            open={Boolean(openNav)}
-            onClose={handleNavClose}
+        {/* desktop title/h1 */}
+        {isDesktop && (
+          <Link
+            component="h1"
+            underline="none"
+            color="textPrimary"
+            variant="h1"
+            onClick={() => setPage("cards")}
             sx={{
-              display: { xs: "block", lg: "none" },
+              cursor: "pointer",
+              pl: 2,
+              minWidth: "8.5ch",
+              color: "text.primary",
+              display: "flex",
+              fontSize: "3.5em",
+              textAlign: "center",
+              flexGrow: 1,
+              borderBottom: "2px solid transparent",
+              "&:hover": {
+                borderColor: "text.primary",
+              },
             }}
           >
-            <NavDropDownList
-              setPage={setPage}
-              currentPage={currentPage}
+            Open Flow
+          </Link>
+        )}
+
+        {/* mobile navigation menu */}
+        {!isDesktop && (
+          <Box sx={{ flexGrow: 1, display: "flex" }}>
+            <IconButton
+              size="large"
+              aria-controls="nav-menu"
+              aria-haspopup="true"
+              onClick={handleNavOpen}
+            >
+              <PiList />
+            </IconButton>
+            <Menu
+              id="nav-menu"
+              anchorEl={openNav}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "left",
+              }}
+              open={Boolean(openNav)}
               onClose={handleNavClose}
-            />
-          </Menu>
-        </Box>
-        <Link
-          component="h1"
-          underline="none"
-          color="textPrimary"
-          variant="h1"
-          onClick={() => setPage("cards")}
-          sx={{
-            cursor: 'pointer',
-            minWidth: "9ch",
-            color: "text.primary",
-            justifyContent: 'center',
-            display: { xs: "flex", lg: "none" },
-            fontSize: "2.5em",
-            flexGrow: 1,
-                        borderBottom: "2px solid transparent",
-            "&:hover": {
-              borderColor: "text.primary"
-            }
-          }}
-        >
-          Open Flow
-        </Link>
-        <NavListDesktop setPage={setPage} currentPage={currentPage} />
+              sx={{
+                display: "block",
+              }}
+            >
+              <NavDropDownList
+                setPage={setPage}
+                currentPage={currentPage}
+                onClose={handleNavClose}
+              />
+            </Menu>
+          </Box>
+        )}
+
+        {/* mobile menu h1/title */}
+        {!isDesktop && (
+          <Link
+            component="h1"
+            underline="none"
+            color="textPrimary"
+            variant="h1"
+            onClick={() => setPage("cards")}
+            sx={{
+              cursor: "pointer",
+              minWidth: "9ch",
+              color: "text.primary",
+              justifyContent: "center",
+              display: { xs: "flex", lg: "none" },
+              fontSize: "2.5em",
+              flexGrow: 1,
+              borderBottom: "2px solid transparent",
+              "&:hover": {
+                borderColor: "text.primary",
+              },
+            }}
+          >
+            Open Flow
+          </Link>
+        )}
+
+        {/* desktop navigation */}
+        {isDesktop && (
+          <NavListDesktop setPage={setPage} currentPage={currentPage} />
+        )}
         <Box
           sx={{
             flexGrow: 1,
@@ -257,16 +278,21 @@ function Header({ currentPage, setPage }: HeaderProps) {
             justifyContent: "end",
           }}
         >
-          <Divider orientation="vertical" sx={{ mr: {xs: 0, sm: 2} }} flexItem />
+          <Divider
+            orientation="vertical"
+            sx={{ mr: { xs: 0, sm: 2 } }}
+            flexItem
+          />
           <Tooltip arrow title={isAudioEnabled ? "Audio On" : "Audio Off"}>
             <IconButton
               onClick={toggleAudio}
               color="inherit"
               size="small"
-              sx={{ 
-                mr: { xs: 0, sm: 2 }, 
-                ml: 1 ,
-                p: { xs: 1, sm: 2 } }}
+              sx={{
+                mr: { xs: 0, sm: 2 },
+                ml: 1,
+                p: { xs: 1, sm: 2 },
+              }}
             >
               {isAudioEnabled ? <PiSpeakerHigh /> : <PiSpeakerSlash />}
             </IconButton>

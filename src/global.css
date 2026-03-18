@@ -11,3 +11,15 @@ body {
 #root {
     height: 100%;
 }
+
+.Mui-focusVisible {
+    outline: 2px solid var(--mui-palette-text-primary);
+    outline-offset: 4px;
+}
+
+label.Mui-focused{
+    color: var(--mui-palette-text-primary);
+}
+.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: var(--mui-palette-text-primary);
+}
