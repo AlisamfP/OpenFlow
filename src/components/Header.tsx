@@ -251,6 +251,10 @@ function Header({ currentPage, setPage }: HeaderProps) {
             color="textPrimary"
             variant="h1"
             onClick={() => setPage("cards")}
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") setPage("cards");
+            }}
             sx={{
               cursor: "pointer",
               minWidth: "9ch",
