@@ -215,26 +215,30 @@ function Header({ currentPage, setPage }: HeaderProps) {
             <Menu
               id="nav-menu"
               anchorEl={openNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
+              anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+              transformOrigin={{ vertical: "top", horizontal: "left" }}
               open={Boolean(openNav)}
               onClose={handleNavClose}
-              sx={{
-                display: "block",
-              }}
+              autoFocus
+              sx={{ display: "block" }}
             >
-              <NavDropDownList
-                setPage={setPage}
-                currentPage={currentPage}
-                onClose={handleNavClose}
-              />
+              {LINKS.map(({ icon: Icon, title, page }) => (
+                <MenuItem
+                  key={title}
+                  selected={page === currentPage}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (page && page !== "#") {
+                      setPage(page as HeaderProps["currentPage"]);
+                    }
+                    handleNavClose();
+                  }}
+                  sx={{ p: 2 }}
+                >
+                  <ListItemIcon>{Icon && <Icon />}</ListItemIcon>
+                  <ListItemText>{title}</ListItemText>
+                </MenuItem>
+              ))}
             </Menu>
           </Box>
         )}

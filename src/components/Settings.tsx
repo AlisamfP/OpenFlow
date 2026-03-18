@@ -82,7 +82,7 @@ const Settings: React.FC = () => {
           flexDirection: { xs: "column", md: "row" },
         }}
       >
-        <Box sx={{ display: "flex", flexDirection: "column", pt: 2, gap: 4 }}>
+        <Box sx={{ display: "flex", flexDirection: "column", pt: 2, gap: 4, maxWidth: {xs: "100%", md: "50%", lg: "75%"} }}>
           <FormControl fullWidth>
             <InputLabel id="categoryPref-label">
               Change the default category for the home page
@@ -143,7 +143,7 @@ const Settings: React.FC = () => {
             alignItems: "center",
             backgroundColor: "background.paper",
             borderRadius: 4,
-            width: "fit-content",
+            minWidth: "fit-content",
           }}
         >
           <FormLabel component="legend" id="voice-settings-label">

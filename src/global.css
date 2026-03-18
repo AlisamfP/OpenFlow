@@ -12,10 +12,11 @@ body {
     height: 100%;
 }
 
-.Mui-focusVisible {
+header .Mui-focusVisible {
     outline: 2px solid var(--mui-palette-text-primary);
     outline-offset: 4px;
 }
+
 
 label.Mui-focused{
     color: var(--mui-palette-text-primary);
