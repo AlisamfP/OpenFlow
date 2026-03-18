@@ -114,43 +114,6 @@ function NavListDesktop({
   );
 }
 
-// Drop Down Nav List On Mobile
-function NavDropDownList({
-  setPage,
-  currentPage,
-  onClose,
-}: {
-  setPage: HeaderProps["setPage"];
-  currentPage: HeaderProps["currentPage"];
-  onClose: () => void;
-}): JSX.Element {
-  return (
-    <>
-      {LINKS.map(({ icon: Icon, title, page }) => {
-        return (
-          <MenuItem
-            key={title}
-            selected={page === currentPage}
-            onClick={(e) => {
-              e.preventDefault();
-              if (page && page !== "#") {
-                setPage(page as HeaderProps["currentPage"]);
-              }
-              onClose();
-            }}
-            sx={{ p: 2 }}
-          >
-            <ListItemIcon key={`${title}-icon`}>
-              {Icon && <Icon />}
-            </ListItemIcon>
-            <ListItemText>{title}</ListItemText>
-          </MenuItem>
-        );
-      })}
-    </>
-  );
-}
-
 function Header({ currentPage, setPage }: HeaderProps) {
   const [openNav, setOpenNav] = useState<null | HTMLElement>(null);
   const { isDark, toggleMode } = useDarkMode();
