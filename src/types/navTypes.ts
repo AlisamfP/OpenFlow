@@ -1,1 +1,0 @@
-export type navOptions = "cards" | "custom" | "settings" | "about";

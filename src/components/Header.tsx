@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 
 import {
@@ -26,55 +27,53 @@ import {
   PiSpeakerSlash,
 } from "react-icons/pi";
 
-import { useDarkMode } from "../hooks/useDarkMode";
-import { useAudioToggle } from "../hooks/useAudioToggle";
-import { useIsDesktop } from "../hooks/resizeListener";
+// import { useDarkMode } from "../hooks/useDarkMode";
+// import { useAudioToggle } from "../hooks/useAudioToggle";
 
 import type { ComponentType, SVGProps } from "react";
-import type { navOptions } from "../types/navTypes";
+import { usePathname, useRouter } from "next/navigation";
+import { checkIfDesktop } from "@/hooks/checkIfDesktop";
+// import type { navOptions } from "../types/navTypes";
 
-interface HeaderProps {
-  currentPage: navOptions;
-  setPage: React.Dispatch<React.SetStateAction<navOptions>>;
-}
+// interface HeaderProps {
+//   currentPage: navOptions;
+//   setPage: React.Dispatch<React.SetStateAction<navOptions>>;
+// }
 
 interface LinkItem {
   icon: ComponentType<SVGProps<SVGSVGElement>> | null;
   title: string;
-  page: string;
+  path: string;
 }
 
 const LINKS: LinkItem[] = [
   {
     icon: PiCards,
     title: "Cards",
-    page: "cards",
+    path: "/",
   },
   {
     icon: PiPlus,
     title: "Custom Cards",
-    page: "custom",
+    path: "/custom",
   },
   {
     icon: PiGear,
     title: "Settings",
-    page: "settings",
+    path: "/settings",
   },
   {
     icon: PiInfo,
     title: "About",
-    page: "about",
+    path: "/about",
   },
 ];
 
 // Hoizontal Buttons for Desktop
-function NavListDesktop({
-  setPage,
-  currentPage,
-}: {
-  setPage: HeaderProps["setPage"];
-  currentPage: HeaderProps["currentPage"];
-}): JSX.Element {
+function NavListDesktop() {
+  const router = useRouter();
+  const pathname = usePathname();
+
   return (
     <Box
       sx={{
@@ -85,19 +84,19 @@ function NavListDesktop({
         gap: 4,
       }}
     >
-      {LINKS.map(({ icon: Icon, title, page }) => {
+      {LINKS.map(({ icon: Icon, title, path }) => {
         return (
           <Button
             variant="text"
             key={title}
             startIcon={Icon && <Icon />}
-            onClick={() => page && setPage(page as HeaderProps["currentPage"])}
+            onClick={() => router.push(path)}
             disableFocusRipple
             sx={{
               color: "text.primary",
               borderBottom: "2px solid transparent",
               borderColor:
-                currentPage === page ? "primary.dark" : "transparent",
+                pathname === path ? "primary.dark" : "transparent",
               borderRadius: 0,
               px: 1,
               "&:hover": {
@@ -114,13 +113,13 @@ function NavListDesktop({
   );
 }
 
-function Header({ currentPage, setPage }: HeaderProps) {
+function Header() {
   const [openNav, setOpenNav] = useState<null | HTMLElement>(null);
-  const { isDark, toggleMode } = useDarkMode();
-  const { isAudioEnabled, toggleAudio } = useAudioToggle();
+//   const { isDark, toggleMode } = useDarkMode();
+//   const { isAudioEnabled, toggleAudio } = useAudioToggle();
 
   // using breakpoint checker to hide/show aria stuff on h1
-  const isDesktop = useIsDesktop();
+  const isDesktop = checkIfDesktop();
 
   const handleNavOpen = (e: React.MouseEvent<HTMLElement>) => {
     setOpenNav(e.currentTarget);
@@ -129,6 +128,9 @@ function Header({ currentPage, setPage }: HeaderProps) {
   const handleNavClose = () => {
     setOpenNav(null);
   };
+
+  const router = useRouter();
+  const pathname = usePathname();
 
   return (
     <AppBar
@@ -144,7 +146,7 @@ function Header({ currentPage, setPage }: HeaderProps) {
             underline="none"
             color="textPrimary"
             variant="h1"
-            onClick={() => setPage("cards")}
+            onClick={() => router.push("/")}
             sx={{
               cursor: "pointer",
               pl: 2,
@@ -185,15 +187,13 @@ function Header({ currentPage, setPage }: HeaderProps) {
               autoFocus
               sx={{ display: "block" }}
             >
-              {LINKS.map(({ icon: Icon, title, page }) => (
+              {LINKS.map(({ icon: Icon, title, path }) => (
                 <MenuItem
                   key={title}
-                  selected={page === currentPage}
+                  selected={pathname === path}
                   onClick={(e) => {
                     e.preventDefault();
-                    if (page && page !== "#") {
-                      setPage(page as HeaderProps["currentPage"]);
-                    }
+                    router.push(path);
                     handleNavClose();
                   }}
                   sx={{ p: 2 }}
@@ -238,9 +238,9 @@ function Header({ currentPage, setPage }: HeaderProps) {
 
         {/* desktop navigation */}
         {isDesktop && (
-          <NavListDesktop setPage={setPage} currentPage={currentPage} />
+          <NavListDesktop />
         )}
-        <Box
+        {/* <Box
           sx={{
             flexGrow: 1,
             display: "flex",
@@ -279,7 +279,7 @@ function Header({ currentPage, setPage }: HeaderProps) {
               {isDark ? <PiMoonStars /> : <PiSun />}
             </IconButton>
           </Tooltip>
-        </Box>
+        </Box> */}
       </Toolbar>
     </AppBar>
   );
