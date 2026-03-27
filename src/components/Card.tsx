@@ -1,6 +1,7 @@
 "use client";
-import { Box, Card as CardMUI, CardContent, CardActionArea, Typography } from "@mui/material";
+import { Card as CardMUI, CardContent, CardActionArea, Typography } from "@mui/material";
 import type { CardData } from "@/types/cardTypes";
+import Image from "next/image";
 
 interface CardProps {
     card: CardData;
@@ -11,16 +12,18 @@ export const Card = ({ card, onClick }: CardProps) => {
     return (
         <CardMUI>
             <CardActionArea onClick={onClick}>
-                <CardContent>
+                <CardContent sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
                     {card.emojiUnicode && (
-                        <Box 
-                            component="img"
-                            sx={{height: "7em", width: "auto"}}
+                        <Image 
+                            width={200}
+                            height={200}
                             src={`https://openmoji.org/data/color/svg/${card.emojiUnicode}.svg`}
-                            alt={card.text}
+                            alt={card.emojiName.replace(/-/g, " ")}
+                            role="img"
+                            data-unicode={card.emojiUnicode}
                         />
                     )}
-                    <Typography>{card.text}</Typography>
+                    <Typography variant="h5">{card.text}</Typography>
                 </CardContent>
             </CardActionArea>
         </CardMUI>

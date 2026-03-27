@@ -16,7 +16,7 @@ export default function CardGrid({ cards }: CardGridProps) {
             {cards.map((card) => (
                 <Card
                     key={card._id}
-                    card={{ id: card._id, emojiUnicode: card.emojiUnicode, text: card.text }}
+                    card={{ id: card._id, emojiUnicode: card.emojiUnicode, emojiName: card.emojiName, text: card.text }}
                     onClick={() => handleCardClick(card)}
                 />
             ))}
