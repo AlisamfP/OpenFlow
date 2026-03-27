@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Open Flow",
@@ -14,6 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <AppRouterCacheProvider>
           <Header />
           {children}
+          <Footer />
         </AppRouterCacheProvider>
       </body>
     </html>

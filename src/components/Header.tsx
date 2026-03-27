@@ -32,7 +32,7 @@ import {
 
 import type { ComponentType, SVGProps } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { checkIfDesktop } from "@/hooks/checkIfDesktop";
+import useWindowSize from "@/hooks/useWindowSize";
 // import type { navOptions } from "../types/navTypes";
 
 // interface HeaderProps {
@@ -119,7 +119,8 @@ function Header() {
 //   const { isAudioEnabled, toggleAudio } = useAudioToggle();
 
   // using breakpoint checker to hide/show aria stuff on h1
-  const isDesktop = checkIfDesktop();
+  const { width } = useWindowSize();
+  const isDesktop = width >= 1200;
 
   const handleNavOpen = (e: React.MouseEvent<HTMLElement>) => {
     setOpenNav(e.currentTarget);
@@ -213,10 +214,10 @@ function Header() {
             underline="none"
             color="textPrimary"
             variant="h1"
-            onClick={() => setPage("cards")}
+            onClick={() => router.push("/")}
             tabIndex={0}
             onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") setPage("cards");
+              if (e.key === "Enter" || e.key === " ") router.push("/");
             }}
             sx={{
               cursor: "pointer",
