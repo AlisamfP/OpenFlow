@@ -27,7 +27,7 @@ import {
   PiSpeakerSlash,
 } from "react-icons/pi";
 
-// import { useDarkMode } from "../hooks/useDarkMode";
+import { useDarkMode } from "@/hooks/useDarkMode";
 // import { useAudioToggle } from "../hooks/useAudioToggle";
 
 import type { ComponentType, SVGProps } from "react";
@@ -115,7 +115,7 @@ function NavListDesktop() {
 
 function Header() {
   const [openNav, setOpenNav] = useState<null | HTMLElement>(null);
-//   const { isDark, toggleMode } = useDarkMode();
+  const { isDark, toggleMode } = useDarkMode();
 //   const { isAudioEnabled, toggleAudio } = useAudioToggle();
 
   // using breakpoint checker to hide/show aria stuff on h1
@@ -151,10 +151,10 @@ function Header() {
             sx={{
               cursor: "pointer",
               pl: 2,
-              minWidth: "8.5ch",
+              minWidth: "10ch",
               color: "text.primary",
               display: "flex",
-              fontSize: "3.5em",
+              fontSize: "2.5em",
               textAlign: "center",
               flexGrow: 1,
               borderBottom: "2px solid transparent",
@@ -241,7 +241,7 @@ function Header() {
         {isDesktop && (
           <NavListDesktop />
         )}
-        {/* <Box
+        <Box
           sx={{
             flexGrow: 1,
             display: "flex",
@@ -255,7 +255,7 @@ function Header() {
             sx={{ mr: { xs: 0, sm: 2 } }}
             flexItem
           />
-          <Tooltip arrow title={isAudioEnabled ? "Audio On" : "Audio Off"}>
+          {/* <Tooltip arrow title={isAudioEnabled ? "Audio On" : "Audio Off"}>
             <IconButton
               onClick={toggleAudio}
               color="inherit"
@@ -268,7 +268,7 @@ function Header() {
             >
               {isAudioEnabled ? <PiSpeakerHigh /> : <PiSpeakerSlash />}
             </IconButton>
-          </Tooltip>
+          </Tooltip> */}
 
           <Tooltip arrow title={isDark ? "Dark Mode" : "Light Mode"}>
             <IconButton
@@ -280,7 +280,7 @@ function Header() {
               {isDark ? <PiMoonStars /> : <PiSun />}
             </IconButton>
           </Tooltip>
-        </Box> */}
+        </Box>
       </Toolbar>
     </AppBar>
   );

@@ -10,7 +10,15 @@ interface CardProps {
 
 export const Card = ({ card, onClick }: CardProps) => {
     return (
-        <CardMUI>
+        <CardMUI
+            sx={{
+                display: "flex",
+                position: "relative",
+                minHeight: "250px",
+                minWidth: "300px",
+                borderRadius: 2
+            }}
+        >
             <CardActionArea onClick={onClick}>
                 <CardContent sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
                     {card.emojiUnicode && (

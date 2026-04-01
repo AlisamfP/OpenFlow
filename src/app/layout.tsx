@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
-import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+
+import './globals.css'
+import ThemeRegistry from "@/components/ThemeRegistry";
 
 export const metadata: Metadata = {
   title: "Open Flow",
@@ -12,11 +14,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <AppRouterCacheProvider>
+        <ThemeRegistry>
           <Header />
-          {children}
+          <main style={{ marginTop: '100px', paddingBottom: '72px' }}>
+            {children}
+          </main>
           <Footer />
-        </AppRouterCacheProvider>
+        </ThemeRegistry>
       </body>
     </html>
   );
