@@ -13,11 +13,10 @@ import {
   Menu,
   MenuItem,
   Toolbar,
-  Tooltip,
+  Tooltip
 } from "@mui/material";
 import {
   PiCards,
-  PiGear,
   PiInfo,
   PiList,
   PiPlus,
@@ -25,20 +24,17 @@ import {
   PiSun,
   PiSpeakerHigh,
   PiSpeakerSlash,
+  PiUser
 } from "react-icons/pi";
 
 import { useDarkMode } from "@/hooks/useDarkMode";
-// import { useAudioToggle } from "../hooks/useAudioToggle";
 
 import type { ComponentType, SVGProps } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import useWindowSize from "@/hooks/useWindowSize";
-// import type { navOptions } from "../types/navTypes";
 
-// interface HeaderProps {
-//   currentPage: navOptions;
-//   setPage: React.Dispatch<React.SetStateAction<navOptions>>;
-// }
+import { authClient } from "@/lib/auth-client";
+
 
 interface LinkItem {
   icon: ComponentType<SVGProps<SVGSVGElement>> | null;
@@ -47,6 +43,11 @@ interface LinkItem {
 }
 
 const LINKS: LinkItem[] = [
+  {
+    icon: PiInfo,
+    title: "About",
+    path: "/about",
+  },
   {
     icon: PiCards,
     title: "Cards",
@@ -58,14 +59,9 @@ const LINKS: LinkItem[] = [
     path: "/custom",
   },
   {
-    icon: PiGear,
-    title: "Settings",
-    path: "/settings",
-  },
-  {
-    icon: PiInfo,
-    title: "About",
-    path: "/about",
+    icon: PiUser,
+    title: "Account",
+    path: "/account",
   },
 ];
 
@@ -116,7 +112,7 @@ function NavListDesktop() {
 function Header() {
   const [openNav, setOpenNav] = useState<null | HTMLElement>(null);
   const { isDark, toggleMode } = useDarkMode();
-//   const { isAudioEnabled, toggleAudio } = useAudioToggle();
+  //   const { isAudioEnabled, toggleAudio } = useAudioToggle();
 
   // using breakpoint checker to hide/show aria stuff on h1
   const { width } = useWindowSize();
@@ -132,6 +128,8 @@ function Header() {
 
   const router = useRouter();
   const pathname = usePathname();
+
+  const { data: session } = authClient.useSession();
 
   return (
     <AppBar
