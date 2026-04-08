@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Box, Tabs, Tab, Typography } from "@mui/material";
 import CardGrid from "@/components/CardGrid";
 import { authClient } from "@/lib/auth-client";
@@ -8,24 +8,22 @@ import type { BaseCardData, Category } from "@/types/cardTypes";
 interface CategoryTabsProps {
     general: BaseCardData[];
     feelings: BaseCardData[];
+    initialCategory: Category;
+    initialFavCards: { cardId: string; type: string }[];
+    initialAudio: AudioSettings;
 }
 
-export default function CategoryTabs({ general, feelings }: CategoryTabsProps) {
-    const [selectedCategory, setSelectedCategory] = useState<Category>("general");
-    const [favCards, setFavCards] = useState<{ cardId: string; type: string; }[]>([]);
-    const { data: session } = authClient.useSession();
+interface AudioSettings {
+    pitch: number;
+    rate: number;
+    volume: number;
+    selectedVoice: string;
+}
 
-    useEffect(() => {
-        if(!session) return;
-        const fetchSettings = async() => {
-            const res = await fetch("/api/user/settings")
-            if(res.ok){
-                const data = await res.json();
-                setFavCards(data.favCards || [])
-            }
-        }
-        fetchSettings();
-    }, [session]);
+export default function CategoryTabs({ general, feelings, initialCategory, initialFavCards, initialAudio }: CategoryTabsProps) {
+    const [selectedCategory, setSelectedCategory] = useState<Category>(initialCategory);
+    const [favCards, setFavCards] = useState<{ cardId: string; type: string; }[]>(initialFavCards);
+    const { data: session } = authClient.useSession();
 
     const handleFavToggle = async (cardId: string, type: "base" | "custom") => {
         const res = await fetch("/api/user/favorites", {
@@ -54,7 +52,7 @@ export default function CategoryTabs({ general, feelings }: CategoryTabsProps) {
     }
 
     return (
-        <Box>
+        <Box sx={{ px: 2 }}>
             <Tabs
                 value={selectedCategory}
                 onChange={handleTabChange}
@@ -101,7 +99,8 @@ export default function CategoryTabs({ general, feelings }: CategoryTabsProps) {
                 <CardGrid 
                     cards={getCards()}
                     favCards={favCards}
-                    onFavToggle={handleFavToggle} 
+                    onFavToggle={handleFavToggle}
+                    audio={initialAudio}
                 />
             )}
         </Box>

@@ -6,6 +6,7 @@ import {
     Box,
     Button,
     Container,
+    Divider,
     FormControl,
     IconButton,
     InputAdornment,
@@ -15,8 +16,11 @@ import {
     Tabs,
     TextField,
     Typography,
+    useMediaQuery,
 } from "@mui/material";
 import { PiEye, PiEyeSlash } from "react-icons/pi";
+import SettingsPanel from "@/components/Settings";
+import { useTheme } from "@mui/material/styles";
 
 function SignInForm() {
     const router = useRouter();
@@ -203,18 +207,38 @@ function AccountInfo() {
     const router = useRouter();
     const { data: session } = authClient.useSession();
 
+    const theme = useTheme();
+    const responsiveDivider = useMediaQuery(theme.breakpoints.down("md")) 
+        ? (<Divider orientation="horizontal" sx={{ mt: "1rem" }} flexItem aria-hidden="true" />) 
+        : (<Divider orientation="vertical" sx={{ mt: "-20px" }} flexItem aria-hidden="true" />)
+
     return (
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            <Typography variant="h5">Account</Typography>
-            <Typography color="text.secondary">{session?.user.email}</Typography>
-            <Button
-                variant="outlined"
-                color="error"
-                onClick={() => authClient.signOut().then(() => router.push("/"))}
-            >
-                Sign Out
-            </Button>
+        <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: { xs: 6, md: 4 } }}>
+            <Box sx={{ 
+                display: "flex", 
+                flexDirection: "column", 
+                gap: 2, 
+                width: { xs: "100%", md: "25%" }, 
+                position: { md: "sticky" }, 
+                top: { md: "100px" }, 
+                alignSelf: { md: "flex-start"}, 
+                height: { md: "fit-content" }
+            }}>
+                <Typography variant="h4">Account</Typography>
+                <Typography color="text.secondary">email: {session?.user.email}</Typography>
+                <Button
+                    variant="outlined"
+                    color="error"
+                    onClick={() => authClient.signOut().then(() => router.push("/"))}
+                    size="large"
+                >
+                    Sign Out
+                </Button>
+            </Box>
+            {responsiveDivider}
+            <SettingsPanel />
         </Box>
+
     );
 }
 
@@ -223,7 +247,7 @@ export default function AccountPage() {
 
     if (isPending) {
         return (
-            <Container maxWidth="sm">
+            <Container>
                 <Box sx={{ mt: 8 }}>
                     <Typography>Loading...</Typography>
                 </Box>
@@ -232,7 +256,7 @@ export default function AccountPage() {
     }
 
     return (
-        <Container maxWidth="sm">
+        <Container>
             <Box sx={{ mt: 8 }}>
                 {session ? <AccountInfo /> : <AuthForms />}
             </Box>

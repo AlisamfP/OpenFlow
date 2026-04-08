@@ -5,20 +5,33 @@ import { authClient } from "@/lib/auth-client";
 import type { BaseCardData } from "@/types/cardTypes";
 import { Box } from "@mui/material";
 
-interface CardGridProps {
-    cards: BaseCardData[];
-    favCards?: { 
-        cardId: string; 
-        type: string
-    }[];
-    onFavToggle?: (cardId: string, type: "base" | "custom") => void;
+interface AudioSettings {
+    pitch: number;
+    rate: number;
+    volume: number;
+    selectedVoice: string;
 }
 
-export default function CardGrid({ cards, favCards = [], onFavToggle }: CardGridProps) {
-    const { speak } = useTTS();
+interface CardGridProps {
+    cards: BaseCardData[];
+    favCards?: { cardId: string; type: string }[];
+    onFavToggle?: (cardId: string, type: "base" | "custom") => void;
+    audio: AudioSettings;
+}
+
+export default function CardGrid({ cards, favCards = [], onFavToggle, audio }: CardGridProps) {
+    const { speak, voices } = useTTS();
     const { data: session } = authClient.useSession();
     const handleCardClick = (card: BaseCardData) => {
-        speak({ text: card.text })
+        const voice = audio?.selectedVoice ? voices.find(v => v.voiceURI === audio.selectedVoice) || null : null;
+        console.log(audio)
+        speak({ 
+            text: card.text,
+            pitch: audio?.pitch ?? 1,
+            rate: audio?.rate ?? 1,
+            volume: audio?.volume ?? 1,
+            voice,
+        })
     };
 
     return (
@@ -30,8 +43,7 @@ export default function CardGrid({ cards, favCards = [], onFavToggle }: CardGrid
                 justifyContent: "space-evenly",
                 flexWrap: "wrap",
                 gap: "1em",
-                pb: 6,
-                pt: 2
+                pt: 3
             }}
         >
             {cards.map((card) => (
