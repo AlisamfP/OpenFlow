@@ -135,7 +135,7 @@ function Header() {
     <AppBar
       color="primary"
       enableColorOnDark
-      sx={{ p: 1, zIndex: 2, alignItems: "center" }}
+      sx={{ p: 1, zIndex: 5, alignItems: "center" }}
     >
       <Toolbar disableGutters sx={{ width: "100%" }}>
         {/* desktop title/h1 */}
