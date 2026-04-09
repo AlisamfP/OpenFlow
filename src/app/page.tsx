@@ -1,10 +1,11 @@
 import connectDB from "@/lib/mongoose"
 import BaseCard from "@/models/BaseCard"
-import { BaseCardData, Category } from "@/types/cardTypes"
+import CustomCard from "@/models/CustomCard"
+import UserSettings from "@/models/UserSettings";
 import CategoryTabs from "@/components/CategoryTabs";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-import UserSettings from "@/models/UserSettings";
+import { BaseCardData, Category } from "@/types/cardTypes"
 
 interface AudioSettings {
     pitch: number;
@@ -26,6 +27,7 @@ export default async function Home() {
   let initialCategory: Category = "general";
   let initialFavCards: { cardId: string; type: string}[] = [];
   let initialAudio: AudioSettings = { pitch: 1, rate: 1, volume: 1, selectedVoice: "" };
+  let customCards: BaseCardData[] = [];
 
   if(session) {
     const rawSettings = await UserSettings.findOne({ userId: session.user.id })
@@ -42,10 +44,19 @@ export default async function Home() {
         }
       }
     }
+    const rawCustomCards = await CustomCard.find({ ownerId: session.user.id });
+    customCards = JSON.parse(JSON.stringify(rawCustomCards));
   }
 
 
   return (
-    <CategoryTabs general={general} feelings={feelings} initialCategory={initialCategory} initialFavCards={initialFavCards} initialAudio={initialAudio} />
+    <CategoryTabs 
+      general={general} 
+      feelings={feelings} 
+      customCards={customCards}
+      initialCategory={initialCategory} 
+      initialFavCards={initialFavCards} 
+      initialAudio={initialAudio} 
+    />
   );
 }

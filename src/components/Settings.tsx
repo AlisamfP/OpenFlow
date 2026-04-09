@@ -95,6 +95,7 @@ export default function SettingsPanel() {
                         >
                             <MenuItem value="general">General</MenuItem>
                             <MenuItem value="feelings">Feelings</MenuItem>
+                            <MenuItem value="custom">Custom</MenuItem>
                             <MenuItem value="favorites">Favorites</MenuItem>
                         </Select>
                     </FormControl>

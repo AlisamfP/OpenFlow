@@ -21,7 +21,8 @@ export interface CardData {
 export interface Cards {
     general: BaseCardData[];
     feelings: BaseCardData[];
-    favorites: BaseCardData[]
+    favorites: BaseCardData[];
+    customCards: BaseCardData[];
 }
 
-export type Category = "general" | "feelings" | "favorites";
+export type Category = "general" | "feelings" | "favorites" | "custom";

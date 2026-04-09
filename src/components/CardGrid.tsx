@@ -17,9 +17,10 @@ interface CardGridProps {
     favCards?: { cardId: string; type: string }[];
     onFavToggle?: (cardId: string, type: "base" | "custom") => void;
     audio: AudioSettings;
+    cardType: "base" | "custom";
 }
 
-export default function CardGrid({ cards, favCards = [], onFavToggle, audio }: CardGridProps) {
+export default function CardGrid({ cards, favCards = [], onFavToggle, audio, cardType }: CardGridProps) {
     const { speak, voices } = useTTS();
     const { data: session } = authClient.useSession();
     const handleCardClick = (card: BaseCardData) => {
@@ -52,7 +53,7 @@ export default function CardGrid({ cards, favCards = [], onFavToggle, audio }: C
                     card={{ id: card._id, emojiUnicode: card.emojiUnicode, emojiName: card.emojiName, text: card.text }}
                     onClick={() => handleCardClick(card)}
                     isFav={favCards.some(c => c.cardId === card._id)}
-                    onToggleFavorite={session ? () => onFavToggle?.(card._id, "base") : undefined}
+                    onToggleFavorite={session ? () => onFavToggle?.(card._id, cardType) : undefined}
                 />
             ))}
         </Box>
