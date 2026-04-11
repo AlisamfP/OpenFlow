@@ -103,7 +103,7 @@ export default function CategoryTabs({ general, feelings, customCards, initialCa
     const isEmpty = cards.length === 0 && (selectedCategory === "favorites" || selectedCategory === "custom")
 
     return (
-        <Box sx={{ px: 2 }}>
+        <Box sx={{ px: 2, pb: 4 }}>
             <Tabs
                 value={selectedCategory}
                 onChange={handleTabChange}
@@ -127,6 +127,7 @@ export default function CategoryTabs({ general, feelings, customCards, initialCa
                     onFavToggle={handleFavToggle}
                     audio={initialAudio}
                     cardType={selectedCategory === "custom" ? "custom" : "base"}
+                    role="tabpanel"
                 />
             )}
         </Box>

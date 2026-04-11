@@ -18,9 +18,10 @@ interface CardGridProps {
     onFavToggle?: (cardId: string, type: "base" | "custom") => void;
     audio: AudioSettings;
     cardType: "base" | "custom";
+    role?: string;
 }
 
-export default function CardGrid({ cards, favCards = [], onFavToggle, audio, cardType }: CardGridProps) {
+export default function CardGrid({ cards, favCards = [], onFavToggle, audio, cardType, role }: CardGridProps) {
     const { speak, voices } = useTTS();
     const { data: session } = authClient.useSession();
     const handleCardClick = (card: BaseCardData) => {
@@ -37,7 +38,7 @@ export default function CardGrid({ cards, favCards = [], onFavToggle, audio, car
 
     return (
         <Box
-            role="tabpanel"
+            {...(role ? { role } : {})}
             sx={{
                 display: "flex",
                 flexDirection: {xs: "column", md: "row"},

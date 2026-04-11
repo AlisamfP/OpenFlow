@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 import { Alert, Box, Container, FormControl, FormGroup, FormLabel, InputLabel, MenuItem, Select, SelectChangeEvent, Slider, Snackbar, Stack, Typography } from "@mui/material";
 import { type TTSVoiceSetting, useTTS } from "@/hooks/useTTS";
 import { Category } from "@/types/cardTypes";
+import { useDarkMode } from "@/hooks/useDarkMode";
 
 
 export default function SettingsPanel() {
     const { voices } = useTTS();
+    const { isDark, saveModePref } = useDarkMode();
 
     const [categoryPref, setCategoryPref] = useState<Category>("general")
     const [pitch, setPitch] = useState(1);
@@ -35,6 +37,7 @@ export default function SettingsPanel() {
 
     const saveSettings = async (updates: {
         categoryPref?: Category;
+        darkModeOnPref?: boolean;
         audio?: {
             pitch: number;
             rate: number;
@@ -73,6 +76,7 @@ export default function SettingsPanel() {
                 flexDirection: { xs: "column", md: "row" }
             }}>
                 <Box sx={{ display: "flex", flexDirection: "column", pt: 2, gap: 4, minWidth: 0, flex: 1 }}>
+                    {/* changing default category */}
                     <FormControl>
                         <InputLabel id="categoryPref-label">
                             Change the default category for the home page
@@ -100,6 +104,33 @@ export default function SettingsPanel() {
                         </Select>
                     </FormControl>
 
+                    {/* setting theme preference */}
+                    <FormControl>
+                        <InputLabel id="darkModeOnPref-label">
+                            Change the default theme
+                        </InputLabel>
+                        <Select
+                            labelId="darkModeOnPref-label"
+                            id="darkModeOnPref"
+                            value={isDark ? "dark" : "light"}
+                            label="Change the default theme"
+                            onChange={(e: SelectChangeEvent) => {
+                                const val = e.target.value === "dark";
+                                console.log(`in select on change value being saved is: ${val}`);
+                                saveModePref(val);
+                            }}
+                            onClose={() => {
+                                setTimeout(() => {
+                                    (document.activeElement as HTMLElement)?.blur();
+                                }, 0)
+                            }}
+                        >
+                            <MenuItem value="light">Light</MenuItem>
+                            <MenuItem value="dark">Dark</MenuItem>
+                        </Select>
+                    </FormControl>
+
+                    {/* changing default voice */}
                     <FormControl>
                         <InputLabel id="voice-label">
                             {voices.length === 0 ? "Loading Voices..." : "Change Spoken Voice"}
@@ -135,6 +166,7 @@ export default function SettingsPanel() {
                     </FormControl>
                 </Box>
 
+                {/* changing voice characteristics (rate, pitch, & volume) */}
                 <FormControl
                     component="fieldset"
                     variant="standard"
@@ -189,6 +221,7 @@ export default function SettingsPanel() {
                     </FormGroup>
                 </FormControl>
             </Box>
+            {/* settings saved alert */}
             <Snackbar
                 anchorOrigin={{ vertical: "top", horizontal: "right" }}
                 open={open}

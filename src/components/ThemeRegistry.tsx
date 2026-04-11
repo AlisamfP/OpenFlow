@@ -1,7 +1,8 @@
 "use client";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { ThemeProvider, createTheme, useColorScheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
+import { useEffect } from "react";
 
 const theme = createTheme({
     cssVariables: {
@@ -63,10 +64,26 @@ const theme = createTheme({
     },
 });
 
-export default function ThemeRegistry({ children }: { children: React.ReactNode }) {
+
+export default function ThemeRegistry({ 
+    children, 
+    initialMode = "light", 
+    userSignedIn = false 
+}: { 
+    children: React.ReactNode; 
+    initialMode?: "light" | "dark"; 
+    userSignedIn?: boolean; 
+}) {
+    console.log(`in theme registry, theme should be: ${initialMode}`)
+    const { setMode } = useColorScheme()
+    useEffect(() => {
+        if (userSignedIn) {
+            setMode(initialMode)
+        }
+    }, [initialMode, userSignedIn, setMode])
     return (
         <AppRouterCacheProvider>
-            <ThemeProvider theme={theme} defaultMode="light">
+            <ThemeProvider theme={theme} defaultMode={initialMode}>
                 <CssBaseline />
                 {children}
             </ThemeProvider>

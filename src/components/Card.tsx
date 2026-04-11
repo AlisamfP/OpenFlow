@@ -83,7 +83,7 @@ export const Card = ({ card, onClick, isFav, onToggleFavorite, onDelete }: CardP
                             data-unicode={card.emojiUnicode}
                         />
                     )}
-                    <Typography variant="h5">{card.text}</Typography>
+                    <Typography variant="h6" component="p">{card.text}</Typography>
                 </CardContent>
             </CardActionArea>
         </CardMUI>

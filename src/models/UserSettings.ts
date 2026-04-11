@@ -16,6 +16,7 @@ const UserSettingsSchema = new Schema({
         enabled: { type: Boolean, default: true },
     },
     categoryPref: { type: String, default: "general" },
+    darkModeOnPref: { type: Boolean, default: false },
 });
 
 const UserSettings = mongoose.models.UserSettings || mongoose.model("UserSettings", UserSettingsSchema);

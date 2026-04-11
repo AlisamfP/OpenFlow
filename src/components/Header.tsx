@@ -33,7 +33,6 @@ import type { ComponentType, SVGProps } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import useWindowSize from "@/hooks/useWindowSize";
 
-import { authClient } from "@/lib/auth-client";
 
 
 interface LinkItem {
@@ -129,7 +128,6 @@ function Header() {
   const router = useRouter();
   const pathname = usePathname();
 
-  const { data: session } = authClient.useSession();
 
   return (
     <AppBar
