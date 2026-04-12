@@ -3,6 +3,7 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { ThemeProvider, createTheme, useColorScheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { useEffect } from "react";
+import { AudioProvider } from "@/context/AudioContext";
 
 const theme = createTheme({
     cssVariables: {
@@ -85,7 +86,9 @@ export default function ThemeRegistry({
         <AppRouterCacheProvider>
             <ThemeProvider theme={theme} defaultMode={initialMode}>
                 <CssBaseline />
-                {children}
+                <AudioProvider>
+                    {children}
+                </AudioProvider>
             </ThemeProvider>
         </AppRouterCacheProvider>
     );

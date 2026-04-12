@@ -11,9 +11,10 @@ interface CardProps {
     isFav?: boolean;
     onToggleFavorite?: () => void;
     onDelete?: () => void;
+    fullscreen?: boolean;
 }
 
-export const Card = ({ card, onClick, isFav, onToggleFavorite, onDelete }: CardProps) => {
+export const Card = ({ card, onClick, isFav, onToggleFavorite, onDelete, fullscreen }: CardProps) => {
     // increase width for head shaking horizontally/vertically emojis since they appear smaller than all others
     const size = card.emojiUnicode === "1F642-200D-2195-FE0F" || card.emojiUnicode === "1F642-200D-2194-FE0F" ? 120 : 100
     return (
@@ -21,9 +22,9 @@ export const Card = ({ card, onClick, isFav, onToggleFavorite, onDelete }: CardP
             sx={{
                 display: "flex",
                 position: "relative",
-                minHeight: "250px",
-                minWidth: "300px",
-                width: {xs: "100%", md: "40%", lg: "30%", xl: "20%"},
+                minHeight: fullscreen ? "90vh" : "250px",
+                minWidth: fullscreen ? "90vw" :"300px",
+                width: fullscreen? "90vw" : {xs: "100%", md: "40%", lg: "30%", xl: "20%"},
                 borderRadius: 2
             }}
         >

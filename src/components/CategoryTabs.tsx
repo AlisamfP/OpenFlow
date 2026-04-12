@@ -4,6 +4,7 @@ import { Box, Tabs, Tab, Typography } from "@mui/material";
 import CardGrid from "@/components/CardGrid";
 import { authClient } from "@/lib/auth-client";
 import type { BaseCardData, Category } from "@/types/cardTypes";
+import { useAudioToggle } from "@/context/AudioContext";
 
 interface CategoryTabsProps {
     general: BaseCardData[];
@@ -19,12 +20,14 @@ interface AudioSettings {
     rate: number;
     volume: number;
     selectedVoice: string;
+    enabled: boolean;
 }
 
 export default function CategoryTabs({ general, feelings, customCards, initialCategory, initialFavCards, initialAudio }: CategoryTabsProps) {
     const [selectedCategory, setSelectedCategory] = useState<Category>(initialCategory);
     const [favCards, setFavCards] = useState<{ cardId: string; type: string; }[]>(initialFavCards);
     const { data: session } = authClient.useSession();
+    const { isAudioEnabled } = useAudioToggle();
 
     const handleFavToggle = async (cardId: string, type: "base" | "custom") => {
         const res = await fetch("/api/user/favorites", {
@@ -125,7 +128,7 @@ export default function CategoryTabs({ general, feelings, customCards, initialCa
                     cards={cards}
                     favCards={favCards}
                     onFavToggle={handleFavToggle}
-                    audio={initialAudio}
+                    audio={{...initialAudio, enabled: isAudioEnabled}}
                     cardType={selectedCategory === "custom" ? "custom" : "base"}
                     role="tabpanel"
                 />

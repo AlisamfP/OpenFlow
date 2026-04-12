@@ -3,13 +3,15 @@ import { Card } from "@/components/Card";
 import { useTTS } from "@/hooks/useTTS";
 import { authClient } from "@/lib/auth-client";
 import type { BaseCardData } from "@/types/cardTypes";
-import { Box } from "@mui/material";
+import { Box, Modal } from "@mui/material";
+import { useState } from "react";
 
 interface AudioSettings {
     pitch: number;
     rate: number;
     volume: number;
     selectedVoice: string;
+    enabled: boolean;
 }
 
 interface CardGridProps {
@@ -24,9 +26,18 @@ interface CardGridProps {
 export default function CardGrid({ cards, favCards = [], onFavToggle, audio, cardType, role }: CardGridProps) {
     const { speak, voices } = useTTS();
     const { data: session } = authClient.useSession();
+
+    const [fullScreenCard, setFullScreenCard] = useState<BaseCardData | null>(null);
+
     const handleCardClick = (card: BaseCardData) => {
+        if(!audio?.enabled) {
+            console.log(`in card grid handle card click, audio enabled is: ${audio.enabled}`)
+            console.log("audio should NOT be enabled if we're here")
+            setFullScreenCard(card);
+            return;
+        }
+
         const voice = audio?.selectedVoice ? voices.find(v => v.voiceURI === audio.selectedVoice) || null : null;
-        console.log(audio)
         speak({ 
             text: card.text,
             pitch: audio?.pitch ?? 1,
@@ -37,6 +48,7 @@ export default function CardGrid({ cards, favCards = [], onFavToggle, audio, car
     };
 
     return (
+        <>
         <Box
             {...(role ? { role } : {})}
             sx={{
@@ -58,5 +70,31 @@ export default function CardGrid({ cards, favCards = [], onFavToggle, audio, car
                 />
             ))}
         </Box>
+        {fullScreenCard && (
+            <Modal
+                open={!!fullScreenCard}
+                onClose={() => setFullScreenCard(null)}
+                aria-labelledby={fullScreenCard.text}
+                sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center"
+                }}
+            >
+                <Box sx={{ outline: "none" }}>
+                    <Card 
+                        fullscreen
+                        card={{
+                            id: fullScreenCard._id,
+                            emojiUnicode: fullScreenCard.emojiUnicode,
+                            emojiName: fullScreenCard.emojiName,
+                            text: fullScreenCard.text,
+                        }}
+                        onClick={() => setFullScreenCard(null)}
+                    />
+                </Box>
+            </Modal>
+        )}
+        </>
     );
 }

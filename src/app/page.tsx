@@ -12,6 +12,7 @@ interface AudioSettings {
     rate: number;
     volume: number;
     selectedVoice: string;
+    enabled: boolean;
 }
 
 export default async function Home() {
@@ -26,7 +27,7 @@ export default async function Home() {
   
   let initialCategory: Category = "general";
   let initialFavCards: { cardId: string; type: string}[] = [];
-  let initialAudio: AudioSettings = { pitch: 1, rate: 1, volume: 1, selectedVoice: "" };
+  let initialAudio: AudioSettings = { pitch: 1, rate: 1, volume: 1, selectedVoice: "", enabled: true };
   let customCards: BaseCardData[] = [];
 
   if(session) {
@@ -40,7 +41,8 @@ export default async function Home() {
           pitch: settings.audio.pitch ?? 1,
           rate: settings.audio.rate ?? 1,
           volume: settings.audio.volume ?? 1,
-          selectedVoice: settings.audio.selectedVoice || ""
+          selectedVoice: settings.audio.selectedVoice || "",
+          enabled: settings.audio.enabled ?? true,
         }
       }
     }

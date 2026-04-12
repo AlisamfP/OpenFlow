@@ -32,6 +32,7 @@ import { useDarkMode } from "@/hooks/useDarkMode";
 import type { ComponentType, SVGProps } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import useWindowSize from "@/hooks/useWindowSize";
+import { useAudioToggle } from "@/context/AudioContext";
 
 
 
@@ -111,7 +112,7 @@ function NavListDesktop() {
 function Header() {
   const [openNav, setOpenNav] = useState<null | HTMLElement>(null);
   const { isDark, toggleMode } = useDarkMode();
-  //   const { isAudioEnabled, toggleAudio } = useAudioToggle();
+  const { isAudioEnabled, toggleAudio } = useAudioToggle();
 
   // using breakpoint checker to hide/show aria stuff on h1
   const { width } = useWindowSize();
@@ -251,7 +252,7 @@ function Header() {
             sx={{ mr: { xs: 0, sm: 2 } }}
             flexItem
           />
-          {/* <Tooltip arrow title={isAudioEnabled ? "Audio On" : "Audio Off"}>
+          <Tooltip arrow title={isAudioEnabled ? "Audio On" : "Audio Off"}>
             <IconButton
               onClick={toggleAudio}
               color="inherit"
@@ -264,7 +265,7 @@ function Header() {
             >
               {isAudioEnabled ? <PiSpeakerHigh /> : <PiSpeakerSlash />}
             </IconButton>
-          </Tooltip> */}
+          </Tooltip>
 
           <Tooltip arrow title={isDark ? "Dark Mode" : "Light Mode"}>
             <IconButton
