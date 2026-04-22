@@ -28,7 +28,7 @@ export default function SettingsPanel() {
                 setPitch(data.audio?.pitch ?? 1)
                 setRate(data.audio?.rate ?? 1);
                 setVolume(data.audio?.volume ?? 1);
-                setSelectedVoice(data.audio?.selectedVoice || 1);
+                setSelectedVoice(data.audio?.selectedVoice || "");
                 setLoaded(true);
             }
         }
