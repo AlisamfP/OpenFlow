@@ -1,3 +1,4 @@
+"use client";
 import { Box, Divider, Link, Typography } from "@mui/material";
 
 function Footer() {

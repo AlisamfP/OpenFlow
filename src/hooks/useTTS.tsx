@@ -1,49 +1,65 @@
-import { useEffect, useState } from "react";
+"use client";
+import { useEffect, useRef, useState } from "react";
 
-export const useTTS = () => {
-  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
+export const useTTS = ({ eager = false }: { eager?: boolean } = {}) => {
+    const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
+    const voicesLoaded = useRef(false);
 
-  useEffect(() => {
-    const populateVoices = () => {
-      const availableVoices = speechSynthesis.getVoices();
-      if(availableVoices.length > 0){
-        setVoices(availableVoices)
-      }
+    const loadVoices = () => {
+        if (voicesLoaded.current) return;
+        const availableVoices = window.speechSynthesis.getVoices();
+        if (availableVoices.length > 0) {
+            setVoices(availableVoices);
+            voicesLoaded.current = true;
+        } else {
+            window.speechSynthesis.addEventListener("voiceschanged", () => {
+                const v = window.speechSynthesis.getVoices();
+                setVoices(v);
+                voicesLoaded.current = true;
+            }, { once: true });
+        }
     };
-    populateVoices();
 
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        if (eager) loadVoices();
+    }, [eager]);
 
-    window.speechSynthesis.addEventListener("voiceschanged", populateVoices);
+    const speak = ({
+        text,
+        pitch = 1,
+        rate = 1,
+        volume = 1,
+        voiceURI = "",
+    }: {
+        text: string;
+        pitch?: number;
+        rate?: number;
+        volume?: number;
+        voiceURI?: string;
+    }) => {
+        if (!text) return;
 
-    return () => {
-      window.speechSynthesis.removeEventListener("voiceschanged", populateVoices);
-    }
-  }, []);
+        loadVoices();
 
-  const speak = ({
-    text,
-    pitch = 1,
-    rate = 1,
-    volume = 1,
-    voice = null as SpeechSynthesisVoice | null
-  }: {
-    text: string;
-    pitch?: number;
-    rate?: number;
-    volume?: number;
-    voice?: SpeechSynthesisVoice | null;
-  }) => {
-    if (!text) return;
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.pitch = pitch;
-    utterance.rate = rate;
-    utterance.volume = volume;
-    if (voice) utterance.voice = voice;
-    speechSynthesis.cancel();
-    speechSynthesis.speak(utterance);
-  };
+        window.speechSynthesis.cancel();
 
-  return { speak, voices };
+        window.requestAnimationFrame(() => {
+            window.requestAnimationFrame(() => {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.pitch = pitch;
+                utterance.rate = rate;
+                utterance.volume = volume;
+                if (voiceURI) {
+                    const found = window.speechSynthesis.getVoices().find(v => v.voiceURI === voiceURI);
+                    if (found) utterance.voice = found;
+                }
+                window.speechSynthesis.speak(utterance);
+            });
+        });
+    };
+
+    return { speak, voices };
 };
 
 export interface TTSVoiceSetting {

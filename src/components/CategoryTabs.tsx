@@ -1,216 +1,138 @@
-import { useEffect, useState } from "react";
-import { Box, Tabs, Tab, Typography, Modal, Button } from "@mui/material";
-import { Card } from "./Card";
-import { CardList } from "../assets/CardList";
-import useLocalStorage from "../hooks/useLocalStorage";
-import { useTTS } from "../hooks/useTTS";
-
-import type { CardData, Cards } from "../types/cardTypes";
-import type { navOptions } from "../types/navTypes";
+"use client";
+import { useState } from "react";
+import { Box, Tabs, Tab, Typography } from "@mui/material";
+import CardGrid from "@/components/CardGrid";
+import { authClient } from "@/lib/auth-client";
+import type { BaseCardData, Category } from "@/types/cardTypes";
+import { useAudioToggle } from "@/context/AudioContext";
 
 interface CategoryTabsProps {
-  setPage: React.Dispatch<
-    React.SetStateAction<navOptions>
-  >;
+    general: BaseCardData[];
+    feelings: BaseCardData[];
+    customCards: BaseCardData[];
+    initialCategory: Category;
+    initialFavCards: { cardId: string; type: string }[];
+    initialAudio: AudioSettings;
 }
 
-function a11yProps(index: number) {
-  return {
-    id: `category-${index}`,
-    "aria-controls": `tabpanel-${index}`,
-  };
+interface AudioSettings {
+    pitch: number;
+    rate: number;
+    volume: number;
+    selectedVoice: string;
+    enabled: boolean;
 }
 
-const CategoryTabs = ({ setPage }: CategoryTabsProps) => {
-  const [favCardIds, setFavCardIds] = useLocalStorage("favCardIds");
-  const [categoryPref] = useLocalStorage("categoryPref");
-  const [pitch] = useLocalStorage("pitch");
-  const [rate] = useLocalStorage("rate");
-  const [volume] = useLocalStorage("volume");
-  const [savedVoice] = useLocalStorage("voice");
-  const [audioEnabledStored] = useLocalStorage("audioEnabled");
+export default function CategoryTabs({ general, feelings, customCards, initialCategory, initialFavCards, initialAudio }: CategoryTabsProps) {
+    const [selectedCategory, setSelectedCategory] = useState<Category>(initialCategory);
+    const [favCards, setFavCards] = useState<{ cardId: string; type: string; }[]>(initialFavCards);
+    const { data: session } = authClient.useSession();
+    const { isAudioEnabled } = useAudioToggle();
 
-  const [audioEnabled, setAudioEnabled] = useState<boolean>(audioEnabledStored);
-  const [fullscreenCard, setFullscreenCard] = useState<CardData | null>(null);
-  const { speak, voices } = useTTS();
-
-  const cards = CardList(favCardIds);
-  const tabKeys = Object.keys(cards) as (keyof Cards)[];
-  const [selectedCatIndex, setselectedCatIndex] = useState(
-    categoryPref ? tabKeys.indexOf(categoryPref) : 0
-  );
-  const selectedCards = cards[tabKeys[selectedCatIndex]];
-
-  useEffect(() => {
-    const handleAudioChange = (e: Event) => {
-      const custom = e as CustomEvent<boolean>;
-      setAudioEnabled(custom.detail);
+    const handleFavToggle = async (cardId: string, type: "base" | "custom") => {
+        const res = await fetch("/api/user/favorites", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ cardId, type })
+        });
+        if (res.ok) {
+            const updated = await res.json();
+            setFavCards(updated);
+        }
     };
 
-    window.addEventListener("audioChanged", handleAudioChange);
+    const handleTabChange = (_e: React.SyntheticEvent, newValue: Category) => {
+        setSelectedCategory(newValue);
+    };
 
-    return () => window.removeEventListener("audioChanged", handleAudioChange);
-  }, []);
+    const allCards = [...general, ...feelings, ...customCards];
+    const favCardIds = favCards.map(f => f.cardId)
+    const favoriteCards = allCards.filter(card => favCardIds.includes(card._id));
 
-  const toggleFavorite = (id: string) => {
-    setFavCardIds((prev) =>
-      prev.includes(id) ? prev.filter((favId) => favId !== id) : [...prev, id]
-    );
-  };
-
-  const handleTabChange = (e: React.SyntheticEvent, newValue: number) => {
-    e.preventDefault();
-    setselectedCatIndex(newValue);
-  };
-
-  const handleCardClick = (card: CardData) => {
-    if (!audioEnabled) {
-      setFullscreenCard(card);
-    } else {
-      const voice = voices.find((v) => v.voiceURI === savedVoice) || null;
-      const { text } = card;
-      speak({
-        text,
-        pitch,
-        rate,
-        volume,
-        voice,
-      });
+    const getCards = () => {
+        if (selectedCategory === "general") return general;
+        if (selectedCategory === "feelings") return feelings;
+        if (selectedCategory === "custom") return customCards;
+        return favoriteCards;
     }
-  };
 
-  return (
-    <>
-      <Box component="section">
-        <Tabs
-          value={selectedCatIndex}
-          onChange={handleTabChange}
-          variant="scrollable"
-          scrollButtons
-          allowScrollButtonsMobile
-          selectionFollowsFocus
-          textColor="inherit"
-          indicatorColor="secondary"
-          aria-label="change card category"
-          sx={{
-            backgroundColor: "background.default",
-            p: 1,
-            borderRadius: 1,
-            mb: 1,
-          }}
-        >
-          {tabKeys.map((tab, i) => (
-            <Tab key={tab} label={tab} {...a11yProps(i)} />
-          ))}
-        </Tabs>
-        
-        <Box
-          role="tabpanel"
-          id={`tabpanel-${selectedCatIndex}`}
-          aria-labelledby={`category-${selectedCatIndex}`}
-          sx={{
-            display: "flex",
-            flexDirection: { xs: "column", md: "row" },
-            justifyContent: "space-evenly",
-            flexWrap: "wrap",
-            gap: "1em",
-            pb: 6,
-          }}
-        >
-          {selectedCards.length === 0 && tabKeys[selectedCatIndex] === "custom" && (
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                width: "100%",
-                alignItems: "center",
-                gap: 2,
-                px: 8,
-                py: 4,
-              }}
+    const renderEmptyState = () => {
+        if (selectedCategory === "favorites") {
+            return session ? (
+                <>
+                    <Typography variant="h5" color="text.primary" sx={{ textAlign: "center" }}>
+                        No favorited cards yet.
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ textAlign: "center" }}>
+                        Click the heart icon on any card to add it to your favorites.
+                    </Typography>
+                </>
+            ) : (
+                <>
+                    <Typography variant="h5" color="text.primary" sx={{ textAlign: "center" }}>
+                        Sign in to use favorites.
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ textAlign: "center" }}>
+                        Create an account or sign in to save your favorite cards.
+                    </Typography>
+                </>
+            )
+        }
+        if (selectedCategory === "custom") {
+            return session ? (
+                <>
+                    <Typography variant="h5" color="text.primary" sx={{ textAlign: "center" }}>
+                        No custom cards yet.
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ textAlign: "center" }}>
+                        Create a custom card to see it here.
+                    </Typography>
+                </>
+            ) : (
+                <>
+                    <Typography variant="h5" color="text.primary" sx={{ textAlign: "center" }}>
+                        Sign in to create custom cards.
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ textAlign: "center" }}>
+                        Sign In
+                    </Typography>
+                </>
+            )
+        }
+        return null;
+    }
+
+    const cards = getCards();
+    const isEmpty = cards.length === 0 && (selectedCategory === "favorites" || selectedCategory === "custom")
+
+    return (
+        <Box sx={{ px: 2, pb: 4 }}>
+            <Tabs
+                value={selectedCategory}
+                onChange={handleTabChange}
+                textColor="inherit"
+                indicatorColor="secondary"
+                aria-label="card categories"
             >
-              <Typography
-                variant="h5"
-                color="text.primary"
-                sx={{ textAlign: "center" }}
-              >
-                You don't have any custom cards yet.
-              </Typography>
-              <Typography variant="body2" sx={{ textAlign: "center" }}>
-                But don't fear, you can make them here
-              </Typography>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={() => setPage("custom")}
-              >
-                Make A Custom Card
-              </Button>
-            </Box>
-          )}
-          {selectedCards.length === 0 && tabKeys[selectedCatIndex] === "favorites" && (
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                width: "100%",
-                alignItems: "center",
-                gap: 2,
-                px: 8,
-                py: 4,
-              }}
-            >
-              <Typography
-                variant="h5"
-                color="text.primary"
-                sx={{ textAlign: "center" }}
-              >
-                No Favorited Cards Available.
-              </Typography>
-              <Typography variant="body2" sx={{ textAlign: "center" }}>
-                Try clicking on the heart icon near the top right of a card to add it to your favorites.
-              </Typography>
-            </Box>
-          )}
-          {selectedCards.map(({ text, icon, id }: CardData) => (
-            <Card
-              key={id}
-              text={text}
-              icon={icon}
-              isFav={favCardIds.includes(id)}
-              onClick={() => handleCardClick({ text, icon, id })}
-              onToggleFavorite={() => toggleFavorite(id)}
-            />
-          ))}
+                <Tab label="General" value="general" />
+                <Tab label="Feelings" value="feelings" />
+                <Tab label="Custom" value="custom" />
+                <Tab label="favorites" value="favorites" />
+            </Tabs>
+            {isEmpty ? (
+                <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2, px: 8, py: 6 }}>
+                    {renderEmptyState()}
+                </Box>
+            ) : (
+                <CardGrid
+                    cards={cards}
+                    favCards={favCards}
+                    onFavToggle={handleFavToggle}
+                    audio={{...initialAudio, enabled: isAudioEnabled}}
+                    cardType={selectedCategory === "custom" ? "custom" : "base"}
+                    role="tabpanel"
+                />
+            )}
         </Box>
-      </Box>
-      {fullscreenCard && (
-        <Modal
-          open={!!fullscreenCard}
-          onClose={() => setFullscreenCard(null)}
-          aria-labelledby={fullscreenCard.text}
-          sx={{
-            zIndex: 99,
-            width: "90vw",
-            height: "90vh",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            border: "none",
-          }}
-        >
-          <Box>
-            <Card
-              fullscreen={true}
-              text={fullscreenCard.text}
-              icon={fullscreenCard.icon}
-              onClick={() => setFullscreenCard(null)}
-            />
-          </Box>
-        </Modal>
-      )}
-    </>
-  );
-};
-
-export default CategoryTabs;
+    );
+}

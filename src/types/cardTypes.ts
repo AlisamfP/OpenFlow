@@ -3,18 +3,26 @@ export interface Emoji {
     unicode: string;
 }
 
-export interface CardData {
-    icon: Emoji;
+export interface BaseCardData {
+    _id: string;
+    emojiUnicode: string;
+    emojiName: string;
     text: string;
+    category: "general" | "feelings";
+}
+
+export interface CardData {
     id: string;
+    emojiUnicode: string;
+    emojiName: string;
+    text: string;
 }
 
 export interface Cards {
-    general: CardData[];
-    feelings: CardData[];
-    custom: CardData[];
-    favorites: CardData[];
+    general: BaseCardData[];
+    feelings: BaseCardData[];
+    favorites: BaseCardData[];
+    customCards: BaseCardData[];
 }
 
-
-export type Category = "general" | "feelings" | "custom" | "favorites";
+export type Category = "general" | "feelings" | "favorites" | "custom";
