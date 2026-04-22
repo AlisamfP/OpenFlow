@@ -8,7 +8,7 @@ import { useDarkMode } from "@/hooks/useDarkMode";
 
 
 export default function SettingsPanel() {
-    const { voices } = useTTS();
+    const { voices } = useTTS({eager: true});
     const { isDark, saveModePref } = useDarkMode();
 
     const [categoryPref, setCategoryPref] = useState<Category>("general")

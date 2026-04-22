@@ -24,26 +24,24 @@ interface CardGridProps {
 }
 
 export default function CardGrid({ cards, favCards = [], onFavToggle, audio, cardType, role }: CardGridProps) {
-    const { speak, voices } = useTTS();
+    const { speak } = useTTS();
     const { data: session } = authClient.useSession();
 
     const [fullScreenCard, setFullScreenCard] = useState<BaseCardData | null>(null);
 
     const handleCardClick = (card: BaseCardData) => {
         if(!audio?.enabled) {
-            console.log(`in card grid handle card click, audio enabled is: ${audio.enabled}`)
-            console.log("audio should NOT be enabled if we're here")
             setFullScreenCard(card);
             return;
         }
 
-        const voice = audio?.selectedVoice ? voices.find(v => v.voiceURI === audio.selectedVoice) || null : null;
+        // const voice = audio?.selectedVoice ? voices.find(v => v.voiceURI === audio.selectedVoice) || null : null;
         speak({ 
             text: card.text,
             pitch: audio?.pitch ?? 1,
             rate: audio?.rate ?? 1,
             volume: audio?.volume ?? 1,
-            voice,
+            voiceURI: audio?.selectedVoice || "",
         })
     };
 

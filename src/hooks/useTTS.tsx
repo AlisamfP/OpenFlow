@@ -1,37 +1,46 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-export const useTTS = () => {
+export const useTTS = ({ eager = false }: { eager?: boolean } = {}) => {
     const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
+    const voicesLoaded = useRef(false);
+
+    const loadVoices = () => {
+        if (voicesLoaded.current) return;
+        const availableVoices = window.speechSynthesis.getVoices();
+        if (availableVoices.length > 0) {
+            setVoices(availableVoices);
+            voicesLoaded.current = true;
+        } else {
+            window.speechSynthesis.addEventListener("voiceschanged", () => {
+                const v = window.speechSynthesis.getVoices();
+                setVoices(v);
+                voicesLoaded.current = true;
+            }, { once: true });
+        }
+    };
 
     useEffect(() => {
-        const populateVoices = () => {
-            const availableVoices = speechSynthesis.getVoices();
-            if (availableVoices.length > 0) {
-                setVoices(availableVoices);
-            }
-        };
-        populateVoices();
-        window.speechSynthesis.addEventListener("voiceschanged", populateVoices);
-        return () => {
-            window.speechSynthesis.removeEventListener("voiceschanged", populateVoices);
-        };
-    }, []);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        if (eager) loadVoices();
+    }, [eager]);
 
     const speak = ({
         text,
         pitch = 1,
         rate = 1,
         volume = 1,
-        voice = null as SpeechSynthesisVoice | null,
+        voiceURI = "",
     }: {
         text: string;
         pitch?: number;
         rate?: number;
         volume?: number;
-        voice?: SpeechSynthesisVoice | null;
+        voiceURI?: string;
     }) => {
         if (!text) return;
+
+        loadVoices();
 
         window.speechSynthesis.cancel();
 
@@ -41,7 +50,10 @@ export const useTTS = () => {
                 utterance.pitch = pitch;
                 utterance.rate = rate;
                 utterance.volume = volume;
-                if (voice) utterance.voice = voice;
+                if (voiceURI) {
+                    const found = window.speechSynthesis.getVoices().find(v => v.voiceURI === voiceURI);
+                    if (found) utterance.voice = found;
+                }
                 window.speechSynthesis.speak(utterance);
             });
         });
